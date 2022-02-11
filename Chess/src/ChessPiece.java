@@ -15,6 +15,46 @@ public abstract class ChessPiece {
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		//TODO: implement this method
 		
+
+
+
+		// THIS IS A TEST PUSH/PULL
+
+
+
+
+
+
+	ChessPiece startingPos[][] = new ChessPiece[move.fromRow][move.fromColumn];
+	ChessPiece endingPos[][] = new ChessPiece[move.toRow][move.toColumn];
+	 
+	if(startingPos != null)
+	{
+		if(move.toColumn <= 8 && move.toRow <= 8)
+		{
+			if(startingPos != endingPos)
+			{
+				if(endingPos == null)
+				{
+					return true;
+				}
+				else
+				{
+					if(ChessPiece(player.next()) == ChessPiece(player.next()) )
+				}
+			}
+			else
+			{
+				
+			}
+		}
+	} 
+
+
+
+
+
+	/*
 	try
 	{	
 		// Rows array for loop
@@ -47,16 +87,16 @@ public abstract class ChessPiece {
 		System.out.println("Invalid piece placement");
 	}
 
-
+	
 	if(board[move.toRow][move.toColumn] == null){
 
-	}
-	
+				}
+	*/
 
 		/*
 
 		if (piece == starting place in move){
-
+			if(piece === startingPos[][=])
 			if (move(newspace) != current space){
 
 				if (rows < 8 && columns < 8){
