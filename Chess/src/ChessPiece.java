@@ -15,11 +15,11 @@ public abstract class ChessPiece {
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		//TODO: implement this method
 		
-
+		Move q = move;
 
 
 		// THIS IS A TEST PUSH/PULL
-
+		// aibd
 
 
 
