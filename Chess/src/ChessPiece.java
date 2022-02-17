@@ -14,12 +14,6 @@ public abstract class ChessPiece {
 
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		//TODO: implement this method
-		
-		Move q = move;
-
-
-		// THIS IS A TEST PUSH/PULL
-		// aibd
 
 
 
@@ -28,7 +22,7 @@ public abstract class ChessPiece {
 	ChessPiece startingPos[][] = new ChessPiece[move.fromRow][move.fromColumn];
 	ChessPiece endingPos[][] = new ChessPiece[move.toRow][move.toColumn];
 	 
-	if(startingPos != null)
+	if(startingPos == board)
 	{
 		if(move.toColumn <= 8 && move.toRow <= 8)
 		{
@@ -40,7 +34,10 @@ public abstract class ChessPiece {
 				}
 				else
 				{
-					if(ChessPiece(player.next()) == ChessPiece(player.next()) )
+					if(board.player() == endingPos.player())
+					{
+						
+					}
 				}
 			}
 			else
