@@ -19,20 +19,20 @@ public abstract class ChessPiece {
 		
 		// creating new variables for the place the current player is trying to move from 
 		// and the place the current player is trying to move to
-		ChessPiece from = board[move.fromRow][move.fromColumn];
-		ChessPiece to = board[move.toRow][move.toColumn];
+		ChessPiece fromPosition = board[move.fromRow][move.fromColumn];
+		ChessPiece toPosition = board[move.toRow][move.toColumn];
 
 		// checks if the place you are trying to move is in bounds
 		if(move.toColumn <= 8 && move.toColumn >=0 && move.toRow >= 0 && move.toRow <= 8 )
 		{
 			// checks if the place the current player is trying to move is not the place the current player is staring from
-			if(from != to)
+			if(fromPosition != toPosition)
 			{	
 				// checks if the place the current player is trying to move from has a piece that belongs to the current player
-				if(from != null &&  from.owner == this.owner)
+				if(fromPosition != null &&  fromPosition.owner == this.owner)
 				{
 					// checks if the place the current player is trying to move has a piece already there that is the current owners 
-					if(from.owner != this.owner)
+					if(fromPosition.owner != this.owner)
 						validMove = true;
 					else{/* the place the current player is trying to move has a piece that is the current owners already */ }
 				}
