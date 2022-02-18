@@ -57,7 +57,47 @@ public class King extends ChessPiece {
 		
 		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
 		return validMove;
+<<<<<<< HEAD
 
+=======
+
+	}
+
+
+
+
+
+
+
+
+
+	// ****************************************************************************************************************************************************************
+
+	// METHOD THAT RETURNS A BOOLEAN IF THE MOVE IS VALID FOR A KING PIECE AND FOR ANY CHESS PIECE
+	// TAKES IN A MOVE AND BOARD AS PARAMETERS
+
+	// ****************************************************************************************************************************************************************
+
+
+	public boolean isValidMove(Move move, ChessPiece[][] board) {
+
+		// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below
+		boolean validMove = false;
+
+		// checks if the move passes the parent ChessPiece class's isValidMove function
+		if (super.isValidMove(move, board))
+		{
+			if(kingIsValidMove(move, board))
+			{
+				return true;
+			}
+			else{/* the place the current player is trying to move is not one space away from the king */}
+		}
+		else{/* the move is not valid in the super class ChessPiece */}
+		
+		// returns valid move as false unless it met the criteria and was set to true
+		return validMove;
+>>>>>>> ed60bab8943edc9686ee57725ebd50864a5fa07c
 	}
 
 
