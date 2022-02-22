@@ -1,5 +1,10 @@
 public class King extends ChessPiece {
 
+
+
+
+
+	
 	public King(Player player) {
 		super(player);
 	}
@@ -14,7 +19,7 @@ public class King extends ChessPiece {
 
 
 
-	
+
 
 	// **************************************************************************************************************************************************************
 
