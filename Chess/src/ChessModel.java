@@ -35,16 +35,16 @@ public class ChessModel {
 		board[0][6] = new Knight(Player.BLACK);
 		/***********************************/
 		/****************bishops ***********/
-		board[0][2] = new Bishop(Player.WHITE);
-		board[0][5] = new Bishop(Player.WHITE);
-		board[7][2] = new Bishop(Player.BLACK);
-		board[7][5] = new Bishop(Player.BLACK);
+		board[7][2] = new Bishop(Player.WHITE);
+		board[7][5] = new Bishop(Player.WHITE);
+		board[0][2] = new Bishop(Player.BLACK);
+		board[0][5] = new Bishop(Player.BLACK);
 		/************************************/
 		/************** Rooks ***************/
-		board[0][0] = new Rook(Player.WHITE);
-		board[0][7] = new Rook(Player.WHITE);
-		board[7][0] = new Rook(Player.BLACK);
-		board[7][7] = new Rook(Player.BLACK);
+		board[0][0] = new Rook(Player.BLACK);
+		board[0][7] = new Rook(Player.BLACK);
+		board[7][0] = new Rook(Player.WHITE);
+		board[7][7] = new Rook(Player.WHITE);
 		/************** Kings & Queens ******/
 		board[0][3] = new Queen(Player.BLACK);
 		board[0][4] = new King(Player.BLACK);
@@ -63,7 +63,7 @@ public class ChessModel {
 
 	public boolean isValidMove(Move move) {
 		// TODO:  implement this method
-		
+
 		return true;
 	}
 
