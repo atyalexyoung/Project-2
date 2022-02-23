@@ -19,12 +19,17 @@ public class Bishop extends ChessPiece {
 		// set boolean variable for if the move is valid or not
 		boolean validMove = false;
 
-		int x = move.toRow - move.fromRow;
-		int y = move.toColumn - move.fromColumn;
+		int y= move.toRow - move.fromRow;
+		int x = move.toColumn - move.fromColumn;
 
-		if(x == y)
+		int absX = Math.abs(x);
+		int absY = Math.abs(y);
+
+		
+
+		if(absX == absY)
 		{
-
+			
 
 
 
@@ -57,7 +62,8 @@ public class Bishop extends ChessPiece {
 			// sets varibale to true if it is 1 space in any direction
 			validMove = true;
 		}
-		else{/* it is not 1 space in any direction and therefore not a valid move for a king */}
+		else
+		{/* it is not 1 space in any direction and therefore not a valid move for a king */}
 		
 		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
 		return validMove;
