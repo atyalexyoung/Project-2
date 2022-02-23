@@ -22,7 +22,7 @@ public class Pawn extends ChessPiece {
 		boolean validMove = false;
 
 		// checks if the player is white (bottom of the board)
-		if(fromPosition.player() == Player.WHITE)
+		if(fromPosition.player() == Player.BLACK)
 		{
 			// checks if pawn is trying to move diagonally
 			if(toPosition == board[move.toRow + 1][move.toColumn + 1] || toPosition == board[move.toRow + 1][move.toColumn - 1])
@@ -47,7 +47,7 @@ public class Pawn extends ChessPiece {
 					if((move.toRow - move.fromRow) <= 2 && (move.toRow - move.fromRow) > 0)
 					{
 						// checks if the move is only going forward
-						if((move.toColumn - move.fromColumn) == 0)
+						if(move.toColumn == move.fromColumn)
 						{
 							// checks if the pawn is trying to move 2 spaces and is on the white? side
 							if((move.toRow - move.fromRow) == 2)
@@ -79,18 +79,16 @@ public class Pawn extends ChessPiece {
 				else
 				{
 					// checks if the move is 1 forward
-					if((toPosition) == board[move.fromRow + 1][move.fromColumn])
+					if(move.toRow == move.fromRow + 1 && move.toColumn == move.fromColumn)
 					{
 						
-						if((move.toRow - move.fromRow) == 1)
+						
+						if(toPosition == null)
 						{
-							if(toPosition == null)
-							{
-								validMove = true;
-							}
-							else{/* there is a piece where the pawn is trying to move */}
+							validMove = true;
 						}
-						else{/* move is not forward 1 or 2 */}
+						else{/* there is a piece where the pawn is trying to move */}
+					
 
 					}
 					else{/* the move is not forward */}
@@ -124,7 +122,7 @@ public class Pawn extends ChessPiece {
 					if((move.toRow - move.fromRow) >= -2 && (move.toRow - move.fromRow) < 0)
 					{
 						// checks if the move is only going forward
-						if((move.toColumn - move.fromColumn) == 0)
+						if(move.toColumn == move.fromColumn)
 						{
 							// checks if the pawn is trying to move 2 spaces
 							if((move.toRow - move.fromRow) == -2)
@@ -156,7 +154,7 @@ public class Pawn extends ChessPiece {
 				else
 				{
 					// checks if the move is 1 forward
-					if((toPosition) == board[move.fromRow - 1][move.fromColumn])
+					if(move.toRow == (move.fromRow + 1) && move.toColumn == move.fromColumn)
 					{
 						
 						if(toPosition == null)
