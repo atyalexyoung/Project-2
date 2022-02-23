@@ -23,7 +23,7 @@ public abstract class ChessPiece {
 		ChessPiece toPosition = board[move.toRow][move.toColumn];
 
 		// checks if the place you are trying to move is in bounds
-		if(move.toColumn <= 8 && move.toColumn >=0 && move.toRow >= 0 && move.toRow <= 8 )
+		if(move.toColumn <= 7 && move.toColumn >= 0 && move.toRow >= 0 && move.toRow <= 7 )
 		{
 			// checks if the place the current player is trying to move is not the place the current player is staring from
 			if(fromPosition != toPosition)
@@ -32,7 +32,7 @@ public abstract class ChessPiece {
 				if(fromPosition != null &&  fromPosition.owner == this.owner)
 				{
 					// checks if the place the current player is trying to move has a piece already there that is the current owners 
-					if(fromPosition.owner != this.owner)
+					if(toPosition.owner != this.owner)
 						validMove = true;
 					else{/* the place the current player is trying to move has a piece that is the current owners already */ }
 				}
