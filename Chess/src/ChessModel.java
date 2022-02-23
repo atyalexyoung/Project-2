@@ -10,6 +10,42 @@ public class ChessModel {
 		player = Player.WHITE;
 
 		// example of how to create and set a couple pieces on board initially
+		/********* ALL PAWNS *****************/	
+		board[6][0] = new Pawn(Player.WHITE);
+		board[6][1] = new Pawn(Player.WHITE);
+		board[6][2] = new Pawn(Player.WHITE);
+		board[6][3] = new Pawn(Player.WHITE);
+		board[6][4] = new Pawn(Player.WHITE);
+		board[6][5] = new Pawn(Player.WHITE);
+		board[6][6] = new Pawn(Player.WHITE);
+		board[6][7] = new Pawn(Player.WHITE);
+		board[1][0] = new Pawn(Player.BLACK);
+		board[1][1] = new Pawn(Player.BLACK);
+		board[1][2] = new Pawn(Player.BLACK);
+		board[1][3] = new Pawn(Player.BLACK);
+		board[1][4] = new Pawn(Player.BLACK);
+		board[1][5] = new Pawn(Player.BLACK);
+		board[1][6] = new Pawn(Player.BLACK);
+		board[1][7] = new Pawn(Player.BLACK);
+		/***********************************/
+		/************ knights **************/
+		board[7][1] = new Knight(Player.WHITE);
+		board[7][6] = new Knight(Player.WHITE);
+		board[0][1] = new Knight(Player.BLACK);
+		board[0][6] = new Knight(Player.BLACK);
+		/***********************************/
+		/****************bishops ***********/
+		board[0][2] = new Bishop(Player.WHITE);
+		board[0][5] = new Bishop(Player.WHITE);
+		board[7][2] = new Bishop(Player.BLACK);
+		board[7][5] = new Bishop(Player.BLACK);
+		/************************************/
+		/************** Rooks ***************/
+		board[0][0] = new Rook(Player.WHITE);
+		board[0][7] = new Rook(Player.WHITE);
+		board[7][0] = new Rook(Player.BLACK);
+		board[7][7] = new Rook(Player.BLACK);
+		/************** Kings & Queens ******/
 		board[0][3] = new Queen(Player.BLACK);
 		board[0][4] = new King(Player.BLACK);
         board[7][3] = new Queen(Player.WHITE);
@@ -27,6 +63,7 @@ public class ChessModel {
 
 	public boolean isValidMove(Move move) {
 		// TODO:  implement this method
+		
 		return true;
 	}
 
