@@ -18,8 +18,237 @@ public class Pawn extends ChessPiece {
 
 		ChessPiece toPosition = board[move.toRow][move.toColumn];
 		ChessPiece fromPosition = board[move.fromRow][move.toRow];
+		int rowDiff = move.toRow - move.fromRow;
+		int colDiff = move.toColumn - move.fromColumn;
 
 		boolean validMove = false;
+
+
+		// checks if player is black
+		if(fromPosition.player() == Player.BLACK)
+		{
+			// checks if the move is forward
+			if(rowDiff > 0)
+			{
+
+
+
+				//************************
+				// checks if diagonal move
+				// ************************
+
+
+				if(rowDiff - Math.abs(colDiff) == 0)
+				{	
+					// checks that the diagonal move is not more than 1
+					if(rowDiff == 1 && Math.abs(colDiff) == 1)
+					{
+						// checks if the diagonal move contains an enemy player
+						if(toPosition != null && toPosition.player() != fromPosition.player())
+						{
+							validMove = true;
+						}
+						else{/* the position the pawn is moving to has an allied player or no player
+						 	 is invalid move for pawn */}
+					}
+					else{/* the diagonal move is not 1 */}
+				}
+
+
+
+
+				// ************************
+				// the move is not diagonal
+				//*************************
+
+
+				else
+				{
+
+
+
+					//****************************** */
+					// checks if in starting position
+					// ********************************
+
+					if(move.fromRow == 1)
+					{
+						// checks if the move is less than or equal to 2 and forward
+						if(rowDiff <= 2 && colDiff == 0)
+						{
+
+
+							// if the pawn is moving forward 2
+
+
+							if(rowDiff == 2)
+							{
+								// checks if there is no player in the way
+								if(toPosition == null && board[move.toColumn - 1][move.fromColumn] == null)
+								{
+									validMove = true;
+								}
+							}
+
+
+							// the pawn is only moving 1 space
+
+
+							else
+							{
+								if(toPosition == null)
+								{
+									validMove = true;
+								}
+							}
+						}
+						
+
+					}
+
+
+
+
+					// ****************************************
+					// the pawn is not in the starting position
+					// ****************************************
+
+
+
+					else
+					{
+						// checks if the pawn is moving forward 1 and sideways none
+						if(rowDiff == 1 && colDiff == 0)
+						{
+							// checks if the place the pawn is trying to move has no player there
+							if(toPosition == null)
+							{
+								validMove = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+
+
+
+		// *********************
+		// player is white
+		// *********************
+
+
+
+		else
+		{
+			// checks if the move is forward
+			if(rowDiff < 0)
+			{
+
+
+
+
+				// checks if diagonal move
+
+
+
+				if(Math.abs(move.toRow) - Math.abs(move.toColumn) == 0)
+				{	
+					// checks that the diagonal move is not more than 1
+					if(rowDiff == -1 && Math.abs(colDiff) == 1)
+					{
+						// checks if the diagonal move contains and enemy player
+						if(toPosition != null && toPosition.player() != fromPosition.player())
+						{
+							validMove = true;
+						}
+					}
+				}
+
+
+
+
+
+				// the move is not diagonal
+
+
+
+				else
+				{
+
+
+					// checks if in starting position
+
+
+
+					if(move.fromRow == 6)
+					{
+						// checks if the move is less than or equal to 2 and forward
+						if(rowDiff >= -2 && colDiff == 0)
+						{
+
+
+							// if the pawn is moving forward 2
+							if(rowDiff == -2)
+							{
+								// checks if there is no player in the way
+								if(toPosition == null && board[move.fromRow - 1][move.fromColumn] == null)
+								{
+									validMove = true;
+								}
+							}
+
+
+							// Pawn is moving forward 1
+							else
+							{
+								if(toPosition == null)
+								{
+									validMove = true;
+								}
+							}
+						}
+					}
+
+
+
+					// the pawn is not in the starting position
+
+
+					else
+					{
+						// checks if the pawn is moving forward 1 and sideways none
+						if(rowDiff == -1 && colDiff == 0)
+						{
+							// checks if the place the pawn is trying to move has no player there
+							if(toPosition == null)
+							{
+								validMove = true;
+							}
+						}
+					}
+
+				}
+			}
+		}
+
+
+		
+		return validMove;
+	}
+
+
+
+
+
+
+
+
+
+
+		/*
 
 		// checks if the player is white (bottom of the board)
 		if(fromPosition.player() == Player.BLACK)
@@ -57,7 +286,7 @@ public class Pawn extends ChessPiece {
 								{
 									validMove = true;
 								}
-								else{/* the position the pawn is trying to move to has a player there */ }
+								else{/* the position the pawn is trying to move to has a player there  }
 							}
 							else if((move.toRow - move.fromRow) == 1)
 							{
@@ -65,15 +294,15 @@ public class Pawn extends ChessPiece {
 								{
 									validMove = true;
 								}
-								else{/* there is a piece where the pawn is trying to move */}
+								else{/* there is a piece where the pawn is trying to move }
 							}
-							else{/* move is not forward 1 or 2 */}
+							else{/* move is not forward 1 or 2 }
 
 						}
-						else{/* the move is not forward */}
+						else{/* the move is not forward }
 
 					}
-					else{/* The move the pawn is trying to make is not valid for a pawn */}
+					else{/* The move the pawn is trying to make is not valid for a pawn }
 				}
 				// the pawn is not in the starting position
 				else
@@ -87,11 +316,11 @@ public class Pawn extends ChessPiece {
 						{
 							validMove = true;
 						}
-						else{/* there is a piece where the pawn is trying to move */}
+						else{/* there is a piece where the pawn is trying to move }
 					
 
 					}
-					else{/* the move is not forward */}
+					else{/* the move is not forward }
 
 				}
 			}
@@ -132,7 +361,7 @@ public class Pawn extends ChessPiece {
 								{
 									validMove = true;
 								}
-								else{/* the position the pawn is trying to move to has a player there */ }
+								else{/* the position the pawn is trying to move to has a player there  }
 							}
 							else if((move.toRow - move.fromRow) == -1)
 							{
@@ -140,15 +369,15 @@ public class Pawn extends ChessPiece {
 								{
 									validMove = true;
 								}
-								else{/* there is a piece where the pawn is trying to move */}
+								else{/* there is a piece where the pawn is trying to move }
 							}
-							else{/* move is not forward 1 or 2 */}
+							else{/* move is not forward 1 or 2 }
 
 						}
-						else{/* the move is not forward */}
+						else{/* the move is not forward }
 
 					}
-					else{/* The move the pawn is trying to make is not valid for a pawn */}
+					else{/* The move the pawn is trying to make is not valid for a pawn }
 				}
 				// the pawn is not in the starting position
 				else
@@ -161,9 +390,9 @@ public class Pawn extends ChessPiece {
 						{
 							validMove = true;
 						}
-						else{/* there is a piece where the pawn is trying to move */}
+						else{/* there is a piece where the pawn is trying to move }
 					}
-					else{/* the move is not forward */}
+					else{/* the move is not forward }
 
 				}
 			}
@@ -220,22 +449,23 @@ public class Pawn extends ChessPiece {
 	*/
 
 
-		public boolean isValidMove(Move move, ChessPiece[][] board) {
+		public boolean isValidMove(Move move, ChessPiece[][] board)
+		{
 			
-			boolean validMove = false;
+			boolean isValidMove = false;
 			
 			
 			if(super.isValidMove(move, board) == true)
 			{
 				if(pawnIsValidMove(move, board) == true)
 				{
-					validMove = true;
+					isValidMove = true;
 				}
 			}
 
-			return validMove;
+			return isValidMove;
 			
-			
+		}	
 			
 			
 			
@@ -387,6 +617,6 @@ public class Pawn extends ChessPiece {
 		
 	}
 	*/
-	}
+	
 }
 	
