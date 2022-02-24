@@ -69,6 +69,8 @@ public class ChessModel {
 
 	public void move(Move move) {
 		// TODO:  implement this method
+
+		
 		// after this board should be updated appropriately
 		// don't forget to update pawn to queen if necessary
 	}

@@ -32,13 +32,39 @@ public class King extends ChessPiece {
 	private boolean kingIsValidMove(Move move, ChessPiece[][] board){
 
 		// creates variable set to the location the current player is trying to move to
-		ChessPiece toPosition = board[move.toRow][move.toColumn];
+		
 
 		// set boolean variable for if the move is valid or not
 		boolean validMove = false;
 
+
+		int rowDiff = move.toRow - move.fromRow;
+		int colDiff = move.toColumn - move.fromColumn;
+
 		// checks if the position the current player is trying to move to is valid for a "King" piece
 		// first checks space right 1 and up 1
+
+
+		// checks if the move is 1 space in any direction
+		if(Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1)
+		{
+			if(board[move.toRow][move.toColumn] == null)
+			{
+				validMove = true;
+			}
+			else
+			{
+				if(board[move.toRow][move.toColumn].player() == player().next())
+				{
+					validMove = true;
+				}
+			}
+		}
+
+
+
+
+		/*
 		if(toPosition == board[move.fromRow + 1][move.fromColumn + 1] || 
 			// checks the space left 1 and down 1
 			toPosition == board[move.fromRow - 1][move.fromColumn - 1] ||
@@ -58,7 +84,7 @@ public class King extends ChessPiece {
 			// sets varibale to true if it is 1 space in any direction
 			validMove = true;
 		}
-		else{/* it is not 1 space in any direction and therefore not a valid move for a king */}
+		else{/* it is not 1 space in any direction and therefore not a valid move for a king */
 		
 		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
 		return validMove;

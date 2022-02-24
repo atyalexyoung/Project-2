@@ -14,25 +14,26 @@ public abstract class ChessPiece {
 
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		
+
+		System.out.println("Starting");
 		// move is set to invalid unless it meets the critera met in "if-statements" below
 		boolean validMove = false;
 		
 		// creating new variables for the place the current player is trying to move from 
 		// and the place the current player is trying to move to
-		ChessPiece fromPosition = board[move.fromRow][move.fromColumn];
-		ChessPiece toPosition = board[move.toRow][move.toColumn];
+
 
 		// checks if the place you are trying to move is in bounds
 		if(move.toColumn < 8 && move.toColumn >= 0 && move.toRow >= 0 && move.toRow < 8 )
 		{
 			// checks if the place the current player is trying to move is not the place the current player is staring from
-			if(fromPosition != toPosition)
+			if(move.fromRow != move.toRow || move.fromColumn != move.toColumn)
 			{	
 				// checks if the place the current player is trying to move from has a piece that belongs to the current player
-				if(fromPosition != null && fromPosition.owner == this.owner)
+				if(board[move.fromRow][move.fromColumn] != null && board[move.fromRow][move.fromColumn] == this)
 				{
 					// checks if the place the current player is trying to move has a piece already there that is the current owners 
-					if(toPosition.owner != this.owner || toPosition == null)
+					if(board[move.toRow][move.toColumn] == null || board[move.toRow][move.toColumn].owner != this.owner)
 						validMove = true;
 					else{/* the place the current player is trying to move has a piece that is the current owners already */ }
 				}
