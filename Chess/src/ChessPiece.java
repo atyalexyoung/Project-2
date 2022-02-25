@@ -15,7 +15,7 @@ public abstract class ChessPiece {
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		
 
-		System.out.println("Starting");
+
 		// move is set to invalid unless it meets the critera met in "if-statements" below
 		boolean validMove = false;
 		
@@ -27,7 +27,7 @@ public abstract class ChessPiece {
 		if(move.toColumn < 8 && move.toColumn >= 0 && move.toRow >= 0 && move.toRow < 8 )
 		{
 			// checks if the place the current player is trying to move is not the place the current player is staring from
-			if(move.fromRow != move.toRow || move.fromColumn != move.toColumn)
+			if(move.fromRow != move.toRow && move.fromColumn != move.toColumn)
 			{	
 				// checks if the place the current player is trying to move from has a piece that belongs to the current player
 				if(board[move.fromRow][move.fromColumn] != null && board[move.fromRow][move.fromColumn] == this)

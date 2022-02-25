@@ -63,7 +63,8 @@ public class Knight extends ChessPiece {
 	// ****************************************************************************************************************************************************************
 
 
-	public boolean isValidMove(Move move, ChessPiece[][] board){
+	public boolean isValidMove(Move move, ChessPiece[][] board)
+	{
 		
 				// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below
 				boolean validMove = false;
