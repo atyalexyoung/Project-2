@@ -184,17 +184,6 @@ public class ChessTest {
 
     }
     @Test
-    public void testBishop1()
-    {
-        Bishop b = new Bishop(Player.WHITE);
-        Bishop b1 = new Bishop(Player.BLACK);
-        ChessPiece[][] cp = new ChessPiece[8][8];
-        cp[7][2] = b;
-        cp[0][2] = b1;
-        Move move = new Move(7, 2, 4, 5);
-        assertTrue(b.isValidMove(move, cp));
-    }
-    @Test
     public void testRook()
     {// testing rook moving out of bounds
         Rook r = new Rook(Player.BLACK);
@@ -906,19 +895,108 @@ public class ChessTest {
     // **************************************************************************************************
     // **************************************************************************************************
 
-
     // ******************************************************************************************
 
     //      TEST BISHOP
     //      VALID
 
     // ******************************************************************************************
-
-
-
-
-
-
+    @Test
+    public void testBishop()
+    { //basic forward move 2 spots
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        Move move = new Move(2, 0, 4, 2);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop1()
+    { //basic backward move one spot
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        Move move = new Move(4, 2, 2, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop2()
+    { //basic backward move 2 spots
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][3] = b;
+        Move move = new Move(5, 3, 2, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop3()
+    { //taking opposing piece
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        cp[2][0] = b1;
+        Move move = new Move(4, 2, 2, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop4()
+    { //moving single space
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        Move move = new Move(2, 0, 3, 1);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop5()
+    { //moving single space 
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[3][1] = b;
+        Move move = new Move(3, 1, 2, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop6()
+    { //moves across board
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        Move move = new Move(2, 0, 7, 5);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop7()
+    { //taking opposing piece with friendly piece one place away
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        Bishop b2 = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        cp[4][1] = b2;
+        cp[2][0] = b1;
+        Move move = new Move(4, 2, 2, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop8()
+    { //basic move 2 spots
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        Move move = new Move(4, 2, 2, 4);
+        assertTrue(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop9()
+    { //basic move 2 spots up right
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        Move move = new Move(4, 2, 6, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
 
     // ******************************************************************************************
 
@@ -926,22 +1004,83 @@ public class ChessTest {
     //      INVALID
 
     // ******************************************************************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Test
+    public void testBishop01()
+    { //move with friendly piece in way
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        cp[4][2] = b1;
+        Move move = new Move(2, 0, 5, 3);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop02()
+    { //move with enemy piece in way
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        cp[4][2] = b1;
+        Move move = new Move(2, 0, 5, 3);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop03()
+    { //Illegal move
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        cp[4][2] = b1;
+        Move move = new Move(2, 0, 2, 1);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop04()
+    { //Illegal move
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        cp[4][2] = b1;
+        Move move = new Move(2, 0, 6, 1);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop05()
+    { //taking opposing piece with opposing piece in the way
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        Bishop b2 = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][2] = b;
+        cp[3][1] = b2;
+        cp[2][0] = b1;
+        Move move = new Move(4, 2, 2, 0);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop06()
+    { //moves across board to OOB position
+        Bishop b = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        Move move = new Move(2, 0, 8, 6);
+        assertFalse(b.isValidMove(move, cp));
+    }
+    @Test
+    public void testBishop07()
+    { //Illegal move
+        Bishop b = new Bishop(Player.BLACK);
+        Bishop b1 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[2][0] = b;
+        cp[4][2] = b1;
+        Move move = new Move(2, 0, 4, 0);
+        assertFalse(b.isValidMove(move, cp));
+    }
 
 
     // **************************************************************************************************
