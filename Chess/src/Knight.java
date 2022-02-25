@@ -23,32 +23,24 @@ public class Knight extends ChessPiece {
 	// **************************************************************************************************************************************************************
 
 
-	private boolean knightIsValidMove(Move move, ChessPiece[][] board){
+	private boolean knightIsValidMove(Move move, ChessPiece[][] board)
+	{
 
 		// creates variable set to the location the current player is trying to move to
-		ChessPiece toPosition = board[move.toRow][move.toColumn];
+		
 
 		// set boolean variable for if the move is valid or not
 		boolean validMove = false;
 
-		// checks if the position the current player is trying to move to is valid for a "King" piece
+
+		int rowDiff = move.toRow - move.fromRow;
+		int colDiff = move.toColumn - move.fromColumn;
+
+		// checks if the position the current player is trying to move to is valid for a "Knight" piece
 		// first checks space right 1 and up 1
-		if(toPosition == board[move.fromRow + 2][move.fromColumn + 3] || 
-			// checks the space left 1 and down 1
-			toPosition == board[move.fromRow + 2][move.fromColumn - 3] ||
-			// checks the space right 1 and down 1
-			toPosition == board[move.fromRow - 2][move.fromColumn + 3] ||
-			// checks the space left one and up 1
-			toPosition == board[move.fromRow - 2][move.fromColumn - 3] ||
-			// checks the space up 1
-			toPosition == board[move.fromRow + 3][move.fromColumn + 2] ||
-			//checks the space down 1
-			toPosition == board[move.fromRow + 3][move.fromColumn - 2] ||
-			// checks the space right 1
-			toPosition == board[move.fromRow - 3][move.fromColumn + 2] ||
-			// checks the space left 1
-			toPosition == board[move.fromRow - 3][move.fromColumn - 2])
+		if((Math.abs(rowDiff) == 3 && Math.abs(colDiff) == 2) || (Math.abs(rowDiff) == 2 && Math.abs(colDiff) == 3))
 		{
+			if(board[move.toRow][move.toColumn] == null || board[move.toRow][move.toColumn].player() == player().next())
 			// sets varibale to true if it is 1 space in any direction
 			validMove = true;
 		}
@@ -76,7 +68,8 @@ public class Knight extends ChessPiece {
 	// ****************************************************************************************************************************************************************
 
 
-	public boolean isValidMove(Move move, ChessPiece[][] board){
+	public boolean isValidMove(Move move, ChessPiece[][] board)
+	{
 		
 				// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below
 				boolean validMove = false;

@@ -84,7 +84,7 @@ public class Pawn extends ChessPiece {
 							if(rowDiff == 2)
 							{
 								// checks if there is no player in the way
-								if(board[move.toRow][move.toColumn] == null && board[move.toColumn - 1][move.fromColumn] == null)
+								if(board[move.toRow][move.toColumn] == null && board[move.toRow - 1][move.fromColumn] == null)
 								{
 									validMove = true;
 								}
@@ -143,7 +143,7 @@ public class Pawn extends ChessPiece {
 
 		else
 		{
-			System.out.println("The piece is white");
+			
 			// checks if the move is forward
 			if(rowDiff < 0)
 			{
@@ -458,8 +458,6 @@ public class Pawn extends ChessPiece {
 			
 			if(super.isValidMove(move, board) == true)
 			{
-				System.out.println("Super passed");
-				
 				if(pawnIsValidMove(move, board) == true)
 				{
 
