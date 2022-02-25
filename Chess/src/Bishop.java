@@ -20,17 +20,20 @@ public class Bishop extends ChessPiece {
 		return bishopHelper(move, board, row, col);
 	}
 	
+	
+	
+	
 	private boolean bishopIsValidMove(Move move, ChessPiece[][] board){
 		
 	boolean valid = false;
 	int rowDiff = move.toRow - move.fromRow;
 	int colDiff = move.toColumn - move.fromColumn;
 	
-//checks to make sure bishop is moving diagonally
-if(abs(rowDiff) == abs(colDiff)){
-//checks each spot in bishops path
+	//checks to make sure bishop is moving diagonally
+	if(abs(rowDiff) == abs(colDiff)){
+	//checks each spot in bishops path
 
-}
+	}
 
 
 	return valid;	
