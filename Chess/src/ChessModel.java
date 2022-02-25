@@ -9,7 +9,6 @@ public class ChessModel {
 		board = new ChessPiece[8][8];
 		player = Player.WHITE;
 
-		// example of how to create and set a couple pieces on board initially
 		/********* ALL PAWNS *****************/	
 		board[6][0] = new Pawn(Player.WHITE);
 		board[6][1] = new Pawn(Player.WHITE);

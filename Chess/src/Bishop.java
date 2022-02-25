@@ -1,3 +1,4 @@
+import static java.lang.Math.abs;
 public class Bishop extends ChessPiece {
 
 	public Bishop(Player player) {
@@ -7,78 +8,33 @@ public class Bishop extends ChessPiece {
 	public String type() {
 		return "Bishop";
 	}
-	
-
-
-
-	private boolean bishopIsValidMove(Move move, ChessPiece[][] board){
-
-		// creates variable set to the location the current player is trying to move to
-		ChessPiece toPosition = board[move.toRow][move.toColumn];
-
-		// set boolean variable for if the move is valid or not
-		boolean validMove = false;
-
-		int y= move.toRow - move.fromRow;
-		int x = move.toColumn - move.fromColumn;
-
-		int absX = Math.abs(x);
-		int absY = Math.abs(y);
-
-		
-
-		if(absX == absY)
-		{
-			
-
-
-
+	private boolean bishopHelper(Move move, ChessPiece[][] board, int row, int col){
+		if((move.toRow == row) && (move.toColumn == col)){
+			return true;
+		}
+		if(board[row][col] != null )
+		if(board[row][col] == null){
+			return bishopHelper(move, board, row + 1, col + 1);
 		}
 
-
-
-
-
-
-
-		// checks if the position the current player is trying to move to is valid for a "King" piece
-		// first checks space right 1 and up 1
-		if(toPosition == board[move.fromRow + x][move.fromColumn + x] || 
-			// checks the space left 1 and down 1
-			toPosition == board[move.fromRow - 1][move.fromColumn - 1] ||
-			// checks the space right 1 and down 1
-			toPosition == board[move.fromRow + 1][move.fromColumn - 1] ||
-			// checks the space left one and up 1
-			toPosition == board[move.fromRow - 1][move.fromColumn + 1] ||
-			// checks the space up 1
-			toPosition == board[move.fromRow][move.fromColumn + 1] ||
-			//checks the space down 1
-			toPosition == board[move.fromRow][move.fromColumn - 1] ||
-			// checks the space right 1
-			toPosition == board[move.fromRow + 1][move.fromColumn] ||
-			// checks the space left 1
-			toPosition == board[move.fromRow - 1][move.fromColumn])
-		{
-			// sets varibale to true if it is 1 space in any direction
-			validMove = true;
-		}
-		else
-		{/* it is not 1 space in any direction and therefore not a valid move for a king */}
-		
-		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
-		return validMove;
-
-
-
+		return bishopHelper(move, board, row, col);
 	}
+	
+	private boolean bishopIsValidMove(Move move, ChessPiece[][] board){
+		
+	boolean valid = false;
+	int rowDiff = move.toRow - move.fromRow;
+	int colDiff = move.toColumn - move.fromColumn;
+	
+//checks to make sure bishop is moving diagonally
+if(abs(rowDiff) == abs(colDiff)){
+//checks each spot in bishops path
+
+}
 
 
-
-
-
-
-
-
+	return valid;	
+}
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 
 		// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below
