@@ -1,3 +1,4 @@
+import static java.lang.Math.abs;
 public class Knight extends ChessPiece {
 
 	public Knight(Player player) {
@@ -24,39 +25,25 @@ public class Knight extends ChessPiece {
 
 
 	private boolean knightIsValidMove(Move move, ChessPiece[][] board){
-
-		// creates variable set to the location the current player is trying to move to
-		ChessPiece toPosition = board[move.toRow][move.toColumn];
-
-		// set boolean variable for if the move is valid or not
-		boolean validMove = false;
-
-		// checks if the position the current player is trying to move to is valid for a "King" piece
-		// first checks space right 1 and up 1
-		if(toPosition == board[move.fromRow + 2][move.fromColumn + 3] || 
-			// checks the space left 1 and down 1
-			toPosition == board[move.fromRow + 2][move.fromColumn - 3] ||
-			// checks the space right 1 and down 1
-			toPosition == board[move.fromRow - 2][move.fromColumn + 3] ||
-			// checks the space left one and up 1
-			toPosition == board[move.fromRow - 2][move.fromColumn - 3] ||
-			// checks the space up 1
-			toPosition == board[move.fromRow + 3][move.fromColumn + 2] ||
-			//checks the space down 1
-			toPosition == board[move.fromRow + 3][move.fromColumn - 2] ||
-			// checks the space right 1
-			toPosition == board[move.fromRow - 3][move.fromColumn + 2] ||
-			// checks the space left 1
-			toPosition == board[move.fromRow - 3][move.fromColumn - 2])
-		{
-			// sets varibale to true if it is 1 space in any direction
-			validMove = true;
+		boolean valid = false;
+		int rowDiff = move.toRow - move.fromRow;
+		int colDiff = move.toColumn - move.fromColumn;
+		//makes sure knight is moving to new column and row
+		if((abs(rowDiff) > 0) && (abs(colDiff) > 0)){
+			//checks if knight is moving only one row
+			if(abs(rowDiff) == 1){
+				if(abs(colDiff) == 2){
+					valid = true;
+				}
+			}
+			//checks if knight is moving two rows
+			if(abs(rowDiff) == 2){
+				if(abs(colDiff) == 1){
+					valid = true;
+				}
+			}
 		}
-		else{/* it is not 1 space in any direction and therefore not a valid move for a king */}
-		
-		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
-		return validMove;
-
+		return valid;
 	}
 
 
