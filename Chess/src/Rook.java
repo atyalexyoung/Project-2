@@ -1,3 +1,4 @@
+import static java.lang.Math.abs;
 public class Rook extends ChessPiece {
 
 	public Rook(Player player) {
@@ -9,37 +10,73 @@ public class Rook extends ChessPiece {
 	}
 	
 	// determines if the move is valid for a rook piece
-	public boolean isValidMove(Move move, ChessPiece[][] board) {
-		// TODO:  implement this method
-
-		/*
-
-		if (super isValidMove == true)
-		{
-			if (move +n in NSEW directions)
-			{	
-				if( move has no allied players in the way)
-				{
-					if (no enemy players in the way)
-						return true
-					else (there are enemy players in the way)
-						take their place
+	private boolean isRookValidMove(Move move, ChessPiece[][] board){
+		boolean valid = false;
+		int rowDiff = move.toRow - move.fromRow;
+		int colDiff = move.toColumn - move.fromColumn;
+		int inc;
+		//checks if rook is moving up and down
+		if(abs(rowDiff) > 0){
+			//checks if rook is increasing or decreasing rows
+			if(rowDiff > 0){
+				inc = 1;
+			}else{
+				inc = -1;
+			}
+			for(int i = move.fromRow + inc; i != move.toRow; i += inc){
+				if(board[i][move.fromColumn] == null){
+					valid = true;
+				}
+				else{
+					valid = false;
+					break;
 				}
 			}
+			if (abs(rowDiff) == 1){
+				valid = true;
+			}
+			if(abs(colDiff) != 0){
+				valid = false;
+			}
 		}
-		else
+		//checks if rook is moving left to right
+		if(abs(colDiff) > 0){
+			//checks if rook is increasing or decreasing rows
+			if(colDiff > 0){
+				inc = 1;
+			}else{
+				inc = -1;
+			}
+			for(int i = move.fromColumn + inc; i != move.toColumn; i += inc){
+				if(board[move.fromRow][i] == null){
+					valid = true;
+				}
+				else{
+					valid = false;
+					break;
+				}
+			}
+			if (abs(colDiff) == 1){
+				valid = true;
+			}
+			if(abs(rowDiff) != 0){
+				valid = false;
+			}
+		}
+		return valid;
+	}
+	public boolean isValidMove(Move move, ChessPiece[][] board) {
+		if (super.isValidMove(move, board) == true){
+		if (isRookValidMove(move, board) == true){
+			return true;
+		}
+		else{
 			return false;
-		
-
-
-
-
-
-
-
-
-		*/
-		return true;	
+		}
+		}
+		else{
+			return false;
+		}	
 	}
 	
 }
