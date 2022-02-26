@@ -158,17 +158,6 @@ public class ChessTest {
 
     }
 
-    @Test
-    public void testBishop1() {
-        Bishop b = new Bishop(Player.WHITE);
-        Bishop b1 = new Bishop(Player.BLACK);
-        ChessPiece[][] cp = new ChessPiece[8][8];
-        cp[7][2] = b;
-        cp[0][2] = b1;
-        Move move = new Move(7, 2, 4, 5);
-        assertTrue(b.isValidMove(move, cp));
-    }
-
  
     // Tests if invalid pawn moves diagonal if no enemy piece there
     @Test
@@ -197,10 +186,11 @@ public class ChessTest {
 
 
     // ******************************************************************************
-    // */
+    
 
     // TESTING BLACK PAWN
     // VALID
+
 
     // *******************************************************************************
 
@@ -388,9 +378,9 @@ public class ChessTest {
     // ******************************************************************************************
 
 
-
+    // Tests if rook will move forward
     @Test
-    public void testRook3() {// testing rook moving right with no pieces in way
+    public void testRookForward() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -398,8 +388,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // Tests if rook will move backwards
     @Test
-    public void testRook4() {// testing rook moving left with no pieces in way
+    public void testRookBackwards() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[6][0] = r;
@@ -407,8 +399,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // Tests if rook will move right
     @Test
-    public void testRook5() { // testing rook moving forward with no pieces in way
+    public void testRookRight() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -416,8 +410,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // Tests if rook will move left
     @Test
-    public void testRook6() { // testing rook moving forward with no pieces in way
+    public void testRookLeft() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -425,8 +421,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // Tests if rook will move forward with no pieces in way
     @Test
-    public void testRook7() { // testing rook moving forward with no pieces in way
+    public void testRookForward2() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -434,8 +432,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // Tests if rook will move forward with no pieces in the way
     @Test
-    public void testRook8() { // testing rook moving forward with no pieces in way
+    public void testRookForward3() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -443,8 +443,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // testing Black rook taking opposing White piece
     @Test
-    public void testRook9() {// testing Black rook taking opposing White piece
+    public void testRookTakePiece() {
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -454,8 +456,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // testing rook moving forward with no pieces in way
     @Test
-    public void testRook17() { // testing rook moving forward with no pieces in way
+    public void testRook17() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -463,9 +467,11 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // rook taking opposing piece with opposing piece behind opposing piece being taken
     @Test
-    public void testRook18() {// rook taking opposing piece with opposing piece behind opposing piece being
-                              // taken
+    public void testRookTaken() {
+                              
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.WHITE);
         Rook r2 = new Rook(Player.WHITE);
@@ -477,8 +483,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // testing rook moving forward one place with no pieces in way
     @Test
-    public void testRook19() { // testing rook moving forward one place with no pieces in way
+    public void testRookForward4() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -486,8 +494,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // testing rook moving forward one place with no pieces in way
     @Test
-    public void testRook20() { // testing rook moving forward one place with no pieces in way
+    public void testRookForward5() {
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[5][5] = r;
@@ -495,8 +505,10 @@ public class ChessTest {
         assertTrue(r.isValidMove(move, cp));
     }
 
+
+    // testing White rook taking opposing Black piece
     @Test
-    public void testRook21() {// testing White rook taking opposing Black piece
+    public void testRookTakePiece2() {
         Rook r = new Rook(Player.WHITE);
         Rook r1 = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -547,7 +559,6 @@ public class ChessTest {
         Move move = new Move(0, 0, 8, 8);
         assertFalse(r.isValidMove(move, cp));
     }
-
 
     @Test
     public void testRook10() {// testing rook Invalid move blocked by friendly piece
@@ -652,6 +663,109 @@ public class ChessTest {
     // ******************************************************************************************
 
 
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingForward() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingRight() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingLeft() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingBack() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+        // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingForwardTakePiece() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+
+
+        // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingRightTakePiece() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+
+
+            // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingLeftTakePiece() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
+
+
+
+
+
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingBackTakePiece() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
 
 
     // ******************************************************************************************
@@ -662,6 +776,18 @@ public class ChessTest {
     // ******************************************************************************************
 
 
+
+
+        // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testKingMultiForward() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = p;
+        Move move = new Move(6, 0, 5, 0);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
 
 
 
@@ -687,6 +813,16 @@ public class ChessTest {
 
     // ******************************************************************************************
 
+    @Test
+    public void testBishop1() {
+        Bishop b = new Bishop(Player.WHITE);
+        Bishop b1 = new Bishop(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[7][2] = b;
+        cp[0][2] = b1;
+        Move move = new Move(7, 2, 4, 5);
+        assertTrue(b.isValidMove(move, cp));
+    }
 
 
     // ******************************************************************************************
