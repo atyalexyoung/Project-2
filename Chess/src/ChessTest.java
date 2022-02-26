@@ -449,6 +449,8 @@ public class ChessTest {
     //      VALID
 
     // ******************************************************************************************
+
+    // Move + 2 rows and + 2 columns
     @Test
     public void testBishop()
     { //basic forward move 2 spots
@@ -458,6 +460,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 4, 2);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move - 2 rows and -2 columns
     @Test
     public void testBishop0()
     { //basic backward move one spot
@@ -467,6 +471,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 2, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move -3 rows and -3 columns
     @Test
     public void testBishop2()
     { //basic backward move 2 spots
@@ -476,6 +482,9 @@ public class ChessTest {
         Move move = new Move(5, 3, 2, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+
+    // move -2 rows and -2 columns and take enemy piece
     @Test
     public void testBishop3()
     { //taking opposing piece
@@ -487,6 +496,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 2, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move +1 rows and +1 columns
     @Test
     public void testBishop4()
     { //moving single space
@@ -496,6 +507,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 3, 1);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move -1 rows and -1 columns
     @Test
     public void testBishop5()
     { //moving single space 
@@ -505,6 +518,8 @@ public class ChessTest {
         Move move = new Move(3, 1, 2, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move +5 rows and +5 columns
     @Test
     public void testBishop6()
     { //moves across board
@@ -514,6 +529,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 7, 5);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    
     @Test
     public void testBishop7()
     { //taking opposing piece with friendly piece one place away
@@ -527,6 +544,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 2, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move -2 rows and +2 columns
     @Test
     public void testBishop8()
     { //basic move 2 spots
@@ -536,6 +555,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 2, 4);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    // move +2 rows and -2 columns
     @Test
     public void testBishop9()
     { //basic move 2 spots up right
@@ -545,6 +566,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 6, 0);
         assertTrue(b.isValidMove(move, cp));
     }
+
+    
     @Test
     public void testBishop10()
     { //taking opposing piece with friendly piece one place past piece being taken
@@ -558,6 +581,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 4, 2);
         assertTrue(b.isValidMove(move, cp));
     }
+
+
     @Test
     public void testBishop11()
     { //moving to spot with friednly piece one place past
@@ -569,6 +594,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 4, 2);
         assertTrue(b.isValidMove(move, cp));
     }
+
+
     @Test
     public void testBishop12()
     { //moving to spot with friednly piece one place past
@@ -580,6 +607,7 @@ public class ChessTest {
         Move move = new Move(5, 3, 4, 2);
         assertTrue(b2.isValidMove(move, cp));
     }
+
     @Test
     public void testBishop13()
     { //moving to spot with friednly piece one place past
@@ -591,12 +619,18 @@ public class ChessTest {
         Move move = new Move(6, 0, 4, 2);
         assertTrue(b2.isValidMove(move, cp));
     }
+
+
+
     // ******************************************************************************************
 
     //      TEST BISHOP
     //      INVALID
 
     // ******************************************************************************************
+
+
+    // test invalid ally in way +rows +columns
     @Test
     public void testBishop01()
     { //move with friendly piece in way
@@ -608,6 +642,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 5, 3);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // test invalid enemy in way +rows +columns
     @Test
     public void testBishop02()
     { //move with enemy piece in way
@@ -619,6 +655,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 5, 3);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // test invalid horizontal move
     @Test
     public void testBishop03()
     { //Illegal move
@@ -630,6 +668,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 2, 1);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // test invalid move random +rows +columns
     @Test
     public void testBishop04()
     { //Illegal move
@@ -641,6 +681,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 6, 1);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // test invalid allied piece in the way 
     @Test
     public void testBishop05()
     { //taking opposing piece with opposing piece in the way
@@ -654,6 +696,8 @@ public class ChessTest {
         Move move = new Move(4, 2, 2, 0);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // test OOB
     @Test
     public void testBishop06()
     { //moves across board to OOB position
@@ -663,6 +707,8 @@ public class ChessTest {
         Move move = new Move(2, 0, 8, 6);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    // Test invalid vertical move
     @Test
     public void testBishop07()
     { //Illegal move
@@ -674,6 +720,21 @@ public class ChessTest {
         Move move = new Move(2, 0, 4, 0);
         assertFalse(b.isValidMove(move, cp));
     }
+
+    @Test
+    public void testBishop14()
+    { //moving to spot with friednly piece one place away
+        Bishop b = new Bishop(Player.WHITE);
+        Bishop b2 = new Bishop(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[3][1] = b;
+        cp[4][2] = b2;
+        Move move = new Move(3, 1, 6, 4);
+        assertFalse(b2.isValidMove(move, cp));
+    }
+
+
+    
 
 
     // **************************************************************************************************
