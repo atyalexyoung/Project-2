@@ -21,7 +21,7 @@ if(abs(rowDiff) == abs(colDiff)){
 if(rowDiff > 1){
 	if(colDiff > 0){
 		int j = move.fromColumn + 1;
-		for(int i = move.fromRow + 1; i != move.toRow; i++){
+		for(int i = move.fromRow + 1; i < move.toRow; i++){
 			
 			if(board[i][j] == null){
 				valid = true;
@@ -35,7 +35,7 @@ if(rowDiff > 1){
 	}
 	if(colDiff < 0){
 		int j = move.fromColumn - 1;
-		for(int i = move.fromRow + 1; i != move.toRow; i++){
+		for(int i = move.fromRow + 1; i < move.toRow; i++){
 			if(board[i][j] == null){
 				valid = true;
 				j--;
@@ -51,7 +51,7 @@ if(rowDiff > 1){
     if(rowDiff < -1){
 		if(colDiff < 0){
 			int j = move.fromColumn - 1;
-		for(int i = move.fromRow - 1; i != move.toRow; i--){
+		for(int i = move.fromRow - 1; i > move.toRow; i--){
 			if(board[i][j] == null){
 				valid = true;
 				j--;
@@ -64,7 +64,7 @@ if(rowDiff > 1){
 		}
 		if(colDiff > 0){
 			int j = move.fromColumn + 1;
-			for(int i = move.fromRow - 1; i != move.toRow; i--){
+			for(int i = move.fromRow - 1; i > move.toRow; i--){
 				
 				if(board[i][j] == null){
 					valid = true;
