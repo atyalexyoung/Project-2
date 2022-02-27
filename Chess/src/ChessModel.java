@@ -61,7 +61,7 @@ public class ChessModel {
 	}
 
 	public boolean isValidMove(Move move) {
-		// TODO:  implement this method
+		
 
 		return true;
 	}
@@ -75,8 +75,96 @@ public class ChessModel {
 	}
 
 	public boolean inCheck(Player p) {
-		// TODO:  implement this method
-		return false;
+		
+		// create boolean variable to return true if Player "p's" king is in check
+		// false otherwise
+		boolean isCheck = false;
+
+		// checks if the Player "p" is Black
+		if(p == Player.BLACK)
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
+					{
+						// if the piece at a space is a king, checks if it is black
+						if(pieceAt(r, c).player() == Player.BLACK)
+						{
+							// loops through all the rows
+							for (int row = 0; row < 8; row++)
+							{
+								// loops through all the columns
+								for (int col = 0; col < 8; col++)
+								{
+									// creates Move "m" from space checked from loop to King
+									Move m = new Move(row,col,r,c);
+
+									if(board[row][col] != null)
+									{
+										// checks if the piece in question can move to the location of the king
+										if(pieceAt(row, col).isValidMove(m, board))
+										{
+											isCheck = true;
+										}
+									}
+									else{/* the space at board[row][column] is null - do nothing*/}
+								}
+							}
+						}
+						else{/* the king at space (r,c) is not black */}
+					}
+					else{/* the piece at (r,c) is not of type King */}
+				} 
+			}
+		}
+		// the player is white
+		else
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
+					{
+						// if the piece at a space is a king, checks if it is black
+						if(pieceAt(r, c).player() == Player.WHITE)
+						{
+							// loops through all the rows
+							for (int row = 0; row < 8; row++)
+							{
+								// loops through all the columns
+								for (int col = 0; col < 8; col++)
+								{
+									// creates Move "m" from space checked from loop to King
+									Move m = new Move(row,col,r,c);
+
+									if(board[row][col] != null)
+									{
+										// checks if the piece in question can move to the location of the king
+										if(pieceAt(row, col).isValidMove(m, board))
+										{
+											isCheck = true;
+										}
+									}
+									else{/* the space at board[row][column] is null - do nothing*/}
+								}
+							}
+						}
+						else{/* the king at space (r,c) is not white */}
+					}
+					else{/* the piece at (r,c) is not of type King */}
+				} 
+			}
+		}
+		return isCheck;
 	}
 
 
