@@ -1,29 +1,31 @@
 import static java.lang.Math.abs;
 public class Knight extends ChessPiece {
 
+
+	
 	public Knight(Player player) {
 		super(player);
 	}
 
+
+	/********************************************************************************************************************************
+	 * Method that gets the type of the piece, "Knight"
+	 * @return String: "Knight"
+	*********************************************************************************************************************************/
 	public String type() {
 		return "Knight";
 	}
 
 
-
-
-
-
-
-	// **************************************************************************************************************************************************************
-
-	//    HELPER METHOD THAT CHECKS IF THE MOVE IS VALID FOR A "KING" PIECE
-	//    RETURNS A BOOLEAN
-	//    TAKES IN A MOVE AND BOARD AS PARAMETERS
-
-	// **************************************************************************************************************************************************************
-
-
+	/*********************************************************************************************************************************
+	 * Helper method that checks if the move is valid for a "knight" piece
+	 * @param move the move that is being attempted by player
+	 * move contains from location and to location
+	 * @param board takes in the current chess board
+	 * @return boolean
+	 * set to true if it is a valid move for knight
+	 * false otherwise
+	 *********************************************************************************************************************************/
 	private boolean knightIsValidMove(Move move, ChessPiece[][] board){
 		boolean valid = false;
 		int rowDiff = move.toRow - move.fromRow;
@@ -48,21 +50,16 @@ public class Knight extends ChessPiece {
 
 
 
-
-
-
-
-
-
-
-	// ****************************************************************************************************************************************************************
-
-	// METHOD THAT RETURNS A BOOLEAN IF THE MOVE IS VALID FOR A KING PIECE AND FOR ANY CHESS PIECE
-	// TAKES IN A MOVE AND BOARD AS PARAMETERS
-
-	// ****************************************************************************************************************************************************************
-
-
+	/*********************************************************************************************************************************
+	 * Method that checks if the move is valid for a "knight" piece
+	 * uses helper method "knightIsValidMove"
+	 * @param move the move that is being attempted by player
+	 * move contains from location and to location
+	 * @param board takes in the current chess board
+	 * @return boolean
+	 * set to true if it is a valid move for knight
+	 * false otherwise
+	 *********************************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board)
 	{
 		

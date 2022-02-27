@@ -39,6 +39,7 @@ public class ChessTest {
 
     }
 
+
     // tests if pawn can move forward 2 from starting position
     @Test
     public void testWhitePawnForward2() {
@@ -50,6 +51,7 @@ public class ChessTest {
 
     }
 
+
     // Tests pawn can move forward 1 from non-starting position
     @Test
     public void testWhitePawnForward() {
@@ -60,6 +62,7 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn can attack enemy player from diagonal
     @Test
@@ -73,6 +76,7 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn can attack enemy player from other diagonal
     @Test
@@ -109,6 +113,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if invalid pawn moves OOB
     @Test
     public void testInvalidWhitePawnOOB() {
@@ -120,6 +125,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if invalid pawn moves backwards
     @Test
     public void testInvalidWhitePawnBackwards() {
@@ -130,6 +136,7 @@ public class ChessTest {
         assertFalse(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn will move if in starting position move 2 and enemy piece
     // forward 1 (skip over piece)
@@ -145,6 +152,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if valid move will be false if pawn moves 1 forward and a piece is
     // there
     @Test
@@ -158,6 +166,8 @@ public class ChessTest {
         assertFalse(p.isValidMove(move, cp));
 
     }
+    
+    
     // Tests if invalid pawn moves diagonal if no enemy piece there
     @Test
     public void testInvalidWhitePawnDiagonal() {
@@ -168,6 +178,7 @@ public class ChessTest {
         assertFalse(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if invalid pawn moves diagonal if there is an allied piece there
     @Test
@@ -195,6 +206,7 @@ public class ChessTest {
 
 
 
+
     // Tests pawn can move forward 1 from starting position
     @Test
     public void testBlackPawnForward1() {
@@ -205,6 +217,7 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
 
     // tests if pawn can move forward 2 from starting position
     @Test
@@ -217,6 +230,7 @@ public class ChessTest {
 
     }
 
+
     // Tests pawn can move forward 1 from non-starting position
     @Test
     public void testBlackPawnForward() {
@@ -227,6 +241,7 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn can attack enemy player from diagonal
     @Test
@@ -240,6 +255,7 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn can attack enemy player from other diagonal
     @Test
@@ -276,6 +292,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if invalid pawn moves OOB
     @Test
     public void testInvalidBlackPawnOOB() {
@@ -287,6 +304,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if invalid pawn moves backwards
     @Test
     public void testInvalidBlackPawnBackwards() {
@@ -297,6 +315,7 @@ public class ChessTest {
         assertFalse(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if pawn will move if in starting position move 2 and enemy piece
     // forward 1 (skip over piece)
@@ -312,6 +331,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if valid move will be false if pawn moves 1 forward and a piece is
     // there
     @Test
@@ -326,6 +346,7 @@ public class ChessTest {
 
     }
 
+
     // Tests if invalid pawn moves diagonal if no enemy piece there
     @Test
     public void testInvalidBlackPawnDiagonal() {
@@ -336,6 +357,7 @@ public class ChessTest {
         assertFalse(p.isValidMove(move, cp));
 
     }
+
 
     // Tests if invalid pawn moves diagonal if there is an allied piece there
     @Test
@@ -354,51 +376,6 @@ public class ChessTest {
 
 
 
-    // **************************************************************************************************
-    // **************************************************************************************************
-
-
-    //                       KING
-
-
-    // **************************************************************************************************
-    // **************************************************************************************************
-
-
-    // ******************************************************************************************
-
-    //      TEST KING
-    //      VALID
-
-    // ******************************************************************************************
-
-
-
-
-
-
-
-    // ******************************************************************************************
-
-    //      TEST KING
-    //      INVALID
-
-    // ******************************************************************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // **************************************************************************************************
     // **************************************************************************************************
@@ -408,7 +385,11 @@ public class ChessTest {
 
 
     // **************************************************************************************************
-    // **************************************************************************************************
+    // *************************************************************************************************
+
+
+
+
 
     // ******************************************************************************************
 
@@ -417,9 +398,11 @@ public class ChessTest {
 
     // ******************************************************************************************
 
-    // Move + 2 rows and + 2 columns
+
+
+    // Tests Bishop Move + 2 rows and + 2 columns
     @Test
-    public void testBishop()
+    public void testBishopIncRowCol()
     { //basic forward move 2 spots
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -428,9 +411,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move - 2 rows and -2 columns
+
+    // Tests Bishop move -2 rows and -2 columns
     @Test
-    public void testBishop0()
+    public void testBishopDecRowCol()
     { //basic backward move one spot
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -439,9 +423,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -3 rows and -3 columns
+
+    // Tests Bishop move -3 rows and -3 columns
     @Test
-    public void testBishop2()
+    public void testBishopDecRowCol2()
     { //basic backward move 2 spots
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -451,9 +436,9 @@ public class ChessTest {
     }
 
 
-    // move -2 rows and -2 columns and take enemy piece
+    // Tests Bishop move -2 rows and -2 columns and take enemy piece
     @Test
-    public void testBishop3()
+    public void testBishopDecTake()
     { //taking opposing piece
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -464,9 +449,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +1 rows and +1 columns
+
+    // Tests Bishop move +1 rows and +1 columns
     @Test
-    public void testBishop4()
+    public void testBishopIncRowCol2()
     { //moving single space
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -475,9 +461,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -1 rows and -1 columns
+    
+    // Tests Bishop move -1 rows and -1 columns
     @Test
-    public void testBishop5()
+    public void testBishopDecRowCol3()
     { //moving single space 
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -486,9 +473,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +5 rows and +5 columns
+
+    // Tests Bishop move +5 rows and +5 columns
     @Test
-    public void testBishop6()
+    public void testBishopIncRowCol3()
     { //moves across board
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -497,9 +485,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    
+
+    // Tests Bishop allied piece block 
     @Test
-    public void testBishop7()
+    public void testBishopTake()
     { //taking opposing piece with friendly piece one place away
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -512,9 +501,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -2 rows and +2 columns
+
+    // Tests Bishop move -2 rows and +2 columns
     @Test
-    public void testBishop8()
+    public void testBishopDecRowIncCol()
     { //basic move 2 spots
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -523,9 +513,10 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +2 rows and -2 columns
+
+    // Tests Bishop move +2 rows and -2 columns
     @Test
-    public void testBishop9()
+    public void testBishopIncRowDecCol()
     { //basic move 2 spots up right
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -535,8 +526,9 @@ public class ChessTest {
     }
 
     
+    // Tests Bishop taking opposing piece with allied piece one place past
     @Test
-    public void testBishop10()
+    public void testBishopTake2()
     { //taking opposing piece with friendly piece one place past piece being taken
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -550,8 +542,9 @@ public class ChessTest {
     }
 
 
+    // Tests Bishop moving to spot with allied piece one place past
     @Test
-    public void testBishop11()
+    public void testBishop()
     { //moving to spot with friednly piece one place past
         Bishop b = new Bishop(Player.BLACK);
         Bishop b2 = new Bishop(Player.BLACK);
@@ -563,8 +556,9 @@ public class ChessTest {
     }
 
 
+    // Tests Bishop moving to spot with allied piece one place past
     @Test
-    public void testBishop12()
+    public void testBishop2()
     { //moving to spot with friednly piece one place past
         Bishop b = new Bishop(Player.BLACK);
         Bishop b2 = new Bishop(Player.BLACK);
@@ -575,8 +569,11 @@ public class ChessTest {
         assertTrue(b2.isValidMove(move, cp));
     }
 
+
+    // Tests Bishop moving to spot with friednly piece one place past
+
     @Test
-    public void testBishop13()
+    public void testBishop3()
     { //moving to spot with friednly piece one place past
         Bishop b = new Bishop(Player.WHITE);
         Bishop b2 = new Bishop(Player.WHITE);
@@ -597,9 +594,9 @@ public class ChessTest {
     // ******************************************************************************************
 
 
-    // test invalid ally in way +rows +columns
+    // tests bishop invalid ally in way +rows +columns
     @Test
-    public void testBishop01()
+    public void testBishopInvalidBlock()
     { //move with friendly piece in way
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.BLACK);
@@ -610,9 +607,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // test invalid enemy in way +rows +columns
+
+    // tests bishop invalid enemy in way +rows +columns
     @Test
-    public void testBishop02()
+    public void testBishopInvalidBlock2()
     { //move with enemy piece in way
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -623,9 +621,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // test invalid horizontal move
+
+    // tests bishop invalid horizontal move
     @Test
-    public void testBishop03()
+    public void testBishopInvalidHorizontal()
     { //Illegal move
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -636,9 +635,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // test invalid move random +rows +columns
+
+    // tests bishop invalid move random +rows +columns
     @Test
-    public void testBishop04()
+    public void testBishopInvalid()
     { //Illegal move
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -649,9 +649,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // test invalid allied piece in the way 
+
+    // tests bishop invalid allied piece in the way 
     @Test
-    public void testBishop05()
+    public void testBishopInvalidBlock3()
     { //taking opposing piece with opposing piece in the way
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -664,9 +665,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // test OOB
+
+    // tests bishop move OOB
     @Test
-    public void testBishop06()
+    public void testBishopInvalidOOB()
     { //moves across board to OOB position
         Bishop b = new Bishop(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -675,9 +677,10 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
-    // Test invalid vertical move
+
+    // Tests bishop invalid vertical move
     @Test
-    public void testBishop07()
+    public void testBishopInvalidVertical()
     { //Illegal move
         Bishop b = new Bishop(Player.BLACK);
         Bishop b1 = new Bishop(Player.WHITE);
@@ -688,9 +691,11 @@ public class ChessTest {
         assertFalse(b.isValidMove(move, cp));
     }
 
+
+    // Tests bishop moving to spot with friendly piece one place away
     @Test
-    public void testBishop14()
-    { //moving to spot with friednly piece one place away
+    public void testBishopInvalidBlock4()
+    {
         Bishop b = new Bishop(Player.WHITE);
         Bishop b2 = new Bishop(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -866,9 +871,9 @@ public class ChessTest {
     // ******************************************************************************************
 
 
-
+    // testing rook moving out of bounds
     @Test
-    public void testRook() {// testing rook moving out of bounds
+    public void testRookInvalidOOB() {// testing rook moving out of bounds
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -876,8 +881,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook moving out of bounds
     @Test
-    public void testRook1() {// testing rook moving out of bounds
+    public void testRookInvalidOOB2() {// testing rook moving out of bounds
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -885,8 +892,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook moving out of bounds and illegal move
     @Test
-    public void testRook2() {// testing rook moving out of bounds and illegal move
+    public void testRookInvalidOOB3() {// testing rook moving out of bounds and illegal move
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -894,8 +903,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook Invalid move blocked by friendly piece
     @Test
-    public void testRook10() {// testing rook Invalid move blocked by friendly piece
+    public void testRookInvalidBlock() {// testing rook Invalid move blocked by friendly piece
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -905,8 +916,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook Invalid move blocked by opposing piece
     @Test
-    public void testRook11() {// testing rook Invalid move blocked by opposing piece
+    public void testRookInvalidBlock2() {// testing rook Invalid move blocked by opposing piece
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -916,8 +929,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook Invalid move blocked by friendly piece at end position
     @Test
-    public void testRook12() {// testing rook Invalid move blocked by friendly piece at end position
+    public void testRookInvalidBlock3() {// testing rook Invalid move blocked by friendly piece at end position
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -927,8 +942,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook Invalid move blocked by friendly piece and opposing piece
     @Test
-    public void testRook13() {// testing rook Invalid move blocked by friendly piece and opposing piece
+    public void testRookInvalidBlock4() {// testing rook Invalid move blocked by friendly piece and opposing piece
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.BLACK);
         Rook r2 = new Rook(Player.WHITE);
@@ -940,8 +957,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // testing rook making Invalid move
     @Test
-    public void testRook14() {// testing rook making Invalid move
+    public void testRookInvalid() {// testing rook making Invalid move
         Rook r = new Rook(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[0][0] = r;
@@ -949,8 +968,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // rook taking opposing piece with friendly piece in the way
     @Test
-    public void testRook15() {// rook taking opposing piece with friendly piece in the way
+    public void testRookInvalidBlock5() {// rook taking opposing piece with friendly piece in the way
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.BLACK);
         Rook r2 = new Rook(Player.WHITE);
@@ -962,8 +983,10 @@ public class ChessTest {
         assertFalse(r.isValidMove(move, cp));
     }
 
+
+    // rook taking opposing piece with opposing piece in the way
     @Test
-    public void testRook16() {// rook taking opposing piece with opposing piece in the way
+    public void testRookInvalidBlock6() {// rook taking opposing piece with opposing piece in the way
         Rook r = new Rook(Player.BLACK);
         Rook r1 = new Rook(Player.WHITE);
         Rook r2 = new Rook(Player.WHITE);
@@ -1008,6 +1031,7 @@ public class ChessTest {
 
     }
 
+
     // Tests King can move columns +1
     @Test
     public void testKingRight() {
@@ -1030,7 +1054,6 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
-
 
 
     // Tests King can move columns -1
@@ -1065,6 +1088,7 @@ public class ChessTest {
 
     }
 
+
     // Tests King can move rows-1 columns+1
     public void testKingDiagDecRowsIncCols() {
         King p = new King(Player.WHITE);
@@ -1074,7 +1098,6 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
-
 
 
     // Tests King can move rows-1 columns-1
@@ -1091,53 +1114,11 @@ public class ChessTest {
     // Tests pawn can move forward 1 from starting position
     @Test
     public void testKingForwardTakePiece() {
-        Pawn p = new Pawn(Player.WHITE);
+        King p = new King(Player.WHITE);
+        Pawn p1 = new Pawn(Player.BLACK);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[6][0] = p;
-        Move move = new Move(6, 0, 5, 0);
-        assertTrue(p.isValidMove(move, cp));
-
-    }
-
-
-
-
-        // Tests pawn can move forward 1 from starting position
-    @Test
-    public void testKingRightTakePiece() {
-        Pawn p = new Pawn(Player.WHITE);
-        ChessPiece[][] cp = new ChessPiece[8][8];
-        cp[6][0] = p;
-        Move move = new Move(6, 0, 5, 0);
-        assertTrue(p.isValidMove(move, cp));
-
-    }
-
-
-
-
-            // Tests pawn can move forward 1 from starting position
-    @Test
-    public void testKingLeftTakePiece() {
-        Pawn p = new Pawn(Player.WHITE);
-        ChessPiece[][] cp = new ChessPiece[8][8];
-        cp[6][0] = p;
-        Move move = new Move(6, 0, 5, 0);
-        assertTrue(p.isValidMove(move, cp));
-
-    }
-
-
-
-
-
-
-    // Tests pawn can move forward 1 from starting position
-    @Test
-    public void testKingBackTakePiece() {
-        Pawn p = new Pawn(Player.WHITE);
-        ChessPiece[][] cp = new ChessPiece[8][8];
-        cp[6][0] = p;
+        cp[5][0] = p1;
         Move move = new Move(6, 0, 5, 0);
         assertTrue(p.isValidMove(move, cp));
 
@@ -1155,14 +1136,38 @@ public class ChessTest {
 
 
 
-        // Tests pawn can move forward 1 from starting position
+    // Tests King invalid moving multiple spaces in row
     @Test
-    public void testKingMultiForward() {
-        Pawn p = new Pawn(Player.WHITE);
+    public void testKingMultiRow() {
+        King p = new King(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[6][0] = p;
-        Move move = new Move(6, 0, 5, 0);
-        assertTrue(p.isValidMove(move, cp));
+        Move move = new Move(6, 0, 4, 0);
+        assertFalse(p.isValidMove(move, cp));
+
+    }
+
+
+    // Tests King invalid moving multiple spaces diagonally
+    @Test
+    public void testKingMultiDiag() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][6] = p;
+        Move move = new Move(6, 6, 4, 4);
+        assertFalse(p.isValidMove(move, cp));
+
+    }
+
+
+    // Tests King invalid moving multiple spaces in column
+    @Test
+    public void testKingMultiCol() {
+        King p = new King(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][6] = p;
+        Move move = new Move(6, 6, 6, 3);
+        assertFalse(p.isValidMove(move, cp));
 
     }
 
@@ -1190,6 +1195,7 @@ public class ChessTest {
     // ******************************************************************************************
 
 
+    // testing knight -1 row -2 column
     @Test
     public void testKnight() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1199,6 +1205,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight -2 row -1 column
     @Test
     public void testKnight1() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1208,6 +1216,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight -2 row +1 column
     @Test
     public void testKnight2() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1217,6 +1227,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight -1 row +2 column
     @Test
     public void testKnight3() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1226,6 +1238,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight +1 row +2 column
     @Test
     public void testKnight4() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1235,6 +1249,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight +2 row +1 column
     @Test
     public void testKnight5() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1244,6 +1260,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight +2 row -1 column
     @Test
     public void testKnight6() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1253,6 +1271,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight +1 row -2 column
     @Test
     public void testKnight7() {// testing knight basic moves
         Knight k = new Knight(Player.WHITE);
@@ -1262,6 +1282,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight +1 row -2 column
     @Test
     public void testKnight11() {// testing knight taking opposing piece
         Knight k = new Knight(Player.WHITE);
@@ -1273,6 +1295,8 @@ public class ChessTest {
         assertTrue(k.isValidMove(move, cp));
     }
 
+
+    // testing knight moving over pieces
     @Test
     public void testKnight13() {// testing knight moving over pieces
         Knight k = new Knight(Player.WHITE);
@@ -1300,9 +1324,9 @@ public class ChessTest {
 
 
 
-
+    // testing knight Invalid move
     @Test
-    public void testKnight8() {// testing knight Invalid move
+    public void testKnightInvalid() {// testing knight Invalid move
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[3][3] = k;
@@ -1310,8 +1334,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight Invalid move
     @Test
-    public void testKnight9() {// testing knight Invalid move
+    public void testKnightInvalid2() {// testing knight Invalid move
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[3][3] = k;
@@ -1319,8 +1345,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight Invalid move
     @Test
-    public void testKnight10() {// testing knight Invalid move
+    public void testKnightInvalid3() {// testing knight Invalid move
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[3][3] = k;
@@ -1328,8 +1356,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight Invalid move Out of Bounds
     @Test
-    public void testKnight14() {// testing knight Invalid move Out of Bounds
+    public void testKnightInvalidOOB() {// testing knight Invalid move Out of Bounds
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[3][3] = k;
@@ -1337,8 +1367,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight Invalid move Out of Bounds
     @Test
-    public void testKnight15() {// testing knight Invalid move Out of Bounds
+    public void testKnightInvalidOOB2() {// testing knight Invalid move Out of Bounds
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[3][3] = k;
@@ -1346,8 +1378,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight invalid move Out of Bounds
     @Test
-    public void testKnight16() {// testing knight valid knight move Out of Bounds
+    public void testKnightInvalidOOB3() {// testing knight valid knight move Out of Bounds
         Knight k = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
         cp[7][1] = k;
@@ -1355,8 +1389,10 @@ public class ChessTest {
         assertFalse(k.isValidMove(move, cp));
     }
 
+
+    // testing knight moving to spot with friendly piece
     @Test
-    public void testKnight12() {// testing knight moving to spot with friendly piece
+    public void testKnightInvalidBlock() {// testing knight moving to spot with friendly piece
         Knight k = new Knight(Player.WHITE);
         Knight k1 = new Knight(Player.WHITE);
         ChessPiece[][] cp = new ChessPiece[8][8];
@@ -1392,7 +1428,7 @@ public class ChessTest {
 
 
 
-    // Move + 2 rows and + 2 columns
+    // Tests Queen Move + 2 rows and + 2 columns
     @Test
     public void testQueenDiagIncRowsCols()
     { //basic forward move 2 spots
@@ -1403,7 +1439,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move - 2 rows and -2 columns
+    
+    // Tests Queen move - 2 rows and -2 columns
     @Test
     public void testQueenDiagDecRowsCols()
     { //basic backward move one spot
@@ -1414,7 +1451,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -3 rows and -3 columns
+
+    // Tests Queen move -3 rows and -3 columns
     @Test
     public void testQueenDiagDecRowsCols2()
     { //basic backward move 2 spots
@@ -1426,7 +1464,7 @@ public class ChessTest {
     }
 
 
-    // move -2 rows and -2 columns and take enemy piece
+    // Tests queen move -2 rows and -2 columns and take enemy piece
     @Test
     public void testQueenDiagDecRowsColsTakePiece()
     { //taking opposing piece
@@ -1439,7 +1477,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +1 rows and +1 columns
+
+    // Tests Queen move +1 rows and +1 columns
     @Test
     public void testQueenDiagIncRowsCols2()
     { //moving single space
@@ -1450,7 +1489,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -1 rows and -1 columns
+
+    // Tests Queen move -1 rows and -1 columns
     @Test
     public void testQueenDiagDecRowsCols3()
     { //moving single space 
@@ -1461,7 +1501,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +5 rows and +5 columns
+
+    // Tests Queen move +5 rows and +5 columns
     @Test
     public void testQueenDiagIncRowsCols3()
     { //moves across board
@@ -1472,7 +1513,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    
+
+    // Test Queen take piece with allied 1 position away
     @Test
     public void testQueenDiagTakePiece()
     { //taking opposing piece with friendly piece one place away
@@ -1487,7 +1529,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move -2 rows and +2 columns
+
+    // Tests Queen move -2 rows and +2 columns
     @Test
     public void testQueenDiagDecRowsIncCols()
     { //basic move 2 spots
@@ -1498,7 +1541,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    // move +2 rows and -2 columns
+
+    // Tests Queen move +2 rows and -2 columns
     @Test
     public void testQueenDiagIncRowsDecCols()
     { //basic move 2 spots up right
@@ -1509,7 +1553,8 @@ public class ChessTest {
         assertTrue(b.isValidMove(move, cp));
     }
 
-    
+
+    // Tests Queen take Piece with allied piece 1 position away
     @Test
     public void testQueenDiag()
     { //taking opposing piece with friendly piece one place past piece being taken
@@ -1525,6 +1570,7 @@ public class ChessTest {
     }
 
 
+    // Tests Queen Move with allied piece 1 position away
     @Test
     public void testQueenDiag2()
     { //moving to spot with friednly piece one place past
@@ -1538,6 +1584,7 @@ public class ChessTest {
     }
 
 
+    // Tests Queen move with allied piece 1 position away
     @Test
     public void testQueenDiag3()
     { //moving to spot with friednly piece one place past
@@ -1550,6 +1597,8 @@ public class ChessTest {
         assertTrue(b2.isValidMove(move, cp));
     }
 
+
+    // Tests Queen move with allied piece 1 postion away
     @Test
     public void testQueenDiag4()
     { //moving to spot with friednly piece one place past
@@ -1562,6 +1611,138 @@ public class ChessTest {
         assertTrue(b2.isValidMove(move, cp));
     }
 
+
+    // Tests if queen will move backwards
+    @Test
+    public void testQueenBackwards() {
+        Queen b = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[6][0] = b;
+        Move move = new Move(6, 0, 0, 0);
+        assertTrue(b.isValidMove(move, cp));
+    }
+
+
+    // Tests if queen will move right
+    @Test
+    public void testQueenRight() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        Move move = new Move(0, 0, 0, 6);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // Tests if queen will move left
+    @Test
+    public void testQueenLeft() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 5, 1);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // Tests if queen will move forward with no pieces in way
+    @Test
+    public void testQueenForward2() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 0, 5);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // Tests if queen will move forward with no pieces in the way
+    @Test
+    public void testQueenForward3() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 1, 5);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // testing Black queen taking opposing White piece
+    @Test
+    public void testQueenTakePiece() {
+        Queen r = new Queen(Player.BLACK);
+        Queen r1 = new Queen(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][6] = r1;
+        Move move = new Move(0, 0, 0, 6);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen moving forward with no pieces in way
+    @Test
+    public void testQueen() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 5, 1);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // tests queen taking opposing piece with opposing piece behind opposing piece being taken
+    @Test
+    public void testQueenTaken() {
+                              
+        Queen r = new Queen(Player.BLACK);
+        Queen r1 = new Queen(Player.WHITE);
+        Queen r2 = new Queen(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][2] = r1;
+        cp[0][3] = r2;
+        Move move = new Move(0, 0, 0, 2);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen moving forward one place with no pieces in way
+    @Test
+    public void testQueenForward() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 5, 6);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen moving forward one place with no pieces in way
+    @Test
+    public void testQueenForward4() {
+        Queen r = new Queen(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[5][5] = r;
+        Move move = new Move(5, 5, 6, 5);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+    // testing White queen taking opposing Black piece
+    @Test
+    public void testQueenTakePiece2() {
+        Queen r = new Queen(Player.BLACK);
+        Queen r1 = new Queen(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][6] = r1;
+        Move move = new Move(0, 0, 0, 6);
+        assertTrue(r.isValidMove(move, cp));
+    }
+
+
+
     // ******************************************************************************************
 
     // TEST QUEEN
@@ -1573,7 +1754,7 @@ public class ChessTest {
 
 
 
-     // test invalid ally in way +rows +columns
+     // test queen invalid ally in way +rows +columns
      @Test
      public void testQueenInvalidObstacle()
      { //move with friendly piece in way
@@ -1586,7 +1767,8 @@ public class ChessTest {
          assertFalse(b.isValidMove(move, cp));
      }
  
-     // test invalid enemy in way +rows +columns
+
+     // test queen invalid enemy in way +rows +columns
      @Test
      public void testQueenInvalidObstacle2()
      { //move with enemy piece in way
@@ -1600,7 +1782,7 @@ public class ChessTest {
      }
  
  
-     // test invalid move random +rows +columns
+     // test queen invalid move random +rows +columns
      @Test
      public void testQueenInvalidMove()
      { //Illegal move
@@ -1613,7 +1795,8 @@ public class ChessTest {
          assertFalse(b.isValidMove(move, cp));
      }
  
-     // test invalid allied piece in the way 
+
+     // test queen invalid allied piece in the way 
      @Test
      public void testQueenInvalidObstacle3()
      { //taking opposing piece with opposing piece in the way
@@ -1627,8 +1810,9 @@ public class ChessTest {
          Move move = new Move(4, 2, 2, 0);
          assertFalse(b.isValidMove(move, cp));
      }
- 
-     // test OOB
+
+
+     // test queen OOB
      @Test
      public void testQueenOOB()
      { //moves across board to OOB position
@@ -1639,22 +1823,147 @@ public class ChessTest {
          assertFalse(b.isValidMove(move, cp));
      }
  
-     @Test
-     public void testQueenInvalid()
-     { //moving to spot with friednly piece one place away
+
+     // Tests queen invalid move
+    @Test
+    public void testQueenInvalid()
+    { //moving to spot with friednly piece one place away
         Queen b = new Queen(Player.BLACK);
         Queen b2 = new Queen(Player.WHITE);
-         ChessPiece[][] cp = new ChessPiece[8][8];
-         cp[3][1] = b;
-         cp[4][2] = b2;
-         Move move = new Move(3, 1, 6, 4);
-         assertFalse(b2.isValidMove(move, cp));
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[3][1] = b;
+        cp[4][2] = b2;
+        Move move = new Move(3, 1, 6, 4);
+        assertFalse(b2.isValidMove(move, cp));
     }
  
 
+    // testing queen moving out of bounds
+    @Test
+    public void testQueeninvalidOOB() {// testing queen moving out of bounds
+        Rook r = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        Move move = new Move(0, 0, 9, 0);
+        assertFalse(r.isValidMove(move, cp));
+    }
 
 
+    // testing queen moving out of bounds
+    @Test
+    public void testQueenInvalidOOB2() {// testing queen moving out of bounds
+        Rook r = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        Move move = new Move(0, 0, 0, 9);
+        assertFalse(r.isValidMove(move, cp));
+    }
 
+
+    // testing queen moving out of bounds and illegal move
+    @Test
+    public void testQueenInvalidOOB3() {// testing queen moving out of bounds and illegal move
+        Rook r = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        Move move = new Move(0, 0, 8, 8);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen Invalid move blocked by friendly piece
+    @Test
+    public void testQueenInvalidBlock() {// testing queen Invalid move blocked by friendly piece
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][4] = r1;
+        Move move = new Move(0, 0, 0, 6);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen Invalid move blocked by opposing piece
+    @Test
+    public void testQueenInvalidBlock2() {// testing queen Invalid move blocked by opposing piece
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][4] = r1;
+        Move move = new Move(0, 0, 0, 6);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen Invalid move blocked by friendly piece at end position
+    @Test
+    public void testQueenInvalidBlock3() {// testing queen Invalid move blocked by friendly piece at end position
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][6] = r1;
+        Move move = new Move(0, 0, 0, 6);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen Invalid move blocked by friendly piece and opposing piece
+    @Test
+    public void testQueenInvalidBlock4() {// testing queen Invalid move blocked by friendly piece and opposing piece
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.BLACK);
+        Rook r2 = new Rook(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][4] = r1;
+        cp[0][2] = r2;
+        Move move = new Move(0, 0, 0, 6);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // testing queen making Invalid move
+    @Test
+    public void testQueenInvalid2() {// testing queen making Invalid move
+        Rook r = new Rook(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        Move move = new Move(0, 0, 3, 6);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // queen taking opposing piece with friendly piece in the way
+    @Test
+    public void testQueenInvalidBlock5() {// queen taking opposing piece with friendly piece in the way
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.BLACK);
+        Rook r2 = new Rook(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][2] = r1;
+        cp[0][5] = r2;
+        Move move = new Move(0, 0, 0, 5);
+        assertFalse(r.isValidMove(move, cp));
+    }
+
+
+    // queen taking opposing piece with opposing piece in the way
+    @Test
+    public void testQueenInvalidBlock6() {// queen taking opposing piece with opposing piece in the way
+        Rook r = new Rook(Player.BLACK);
+        Rook r1 = new Rook(Player.WHITE);
+        Rook r2 = new Rook(Player.WHITE);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[0][0] = r;
+        cp[0][2] = r1;
+        cp[0][5] = r2;
+        Move move = new Move(0, 0, 0, 5);
+        assertFalse(r.isValidMove(move, cp));
+    }
 
 
 
@@ -1689,7 +1998,7 @@ public class ChessTest {
     //****************************************************************************************************************************
     
 
-
+    // Tests if White king is in check
     @Test
     public void testinCheckfromPawnWK()
     { //moving to spot with friednly piece one place away
@@ -1703,7 +2012,7 @@ public class ChessTest {
     }
 
 
-
+    // Tests if black King is in check
     @Test
     public void testinCheckfromPawnBK()
     { //moving to spot with friednly piece one place away
@@ -1801,6 +2110,68 @@ public class ChessTest {
 
 
 */
+
+
+
+
+    // ***************************************************************************************************************************
+
+
+    //       isComplete TESTS
+    //       VALID
+
+
+    //****************************************************************************************************************************
+
+
+    // Tests if White king is in check
+    @Test
+    public void testIsComplete()
+    { //moving to spot with friednly piece one place away
+        King k = new King(Player.WHITE);
+        Bishop br = new Bishop(Player.BLACK);
+        Pawn wp = new Pawn(Player.WHITE);
+        Pawn wp2 = new Pawn(Player.WHITE);
+        Pawn wp3 = new Pawn(Player.WHITE);
+        Bishop wp4 = new Bishop(Player.WHITE);
+        ChessModel model = new ChessModel();
+        Player p = Player.WHITE;
+        model.setPiece(4, 0, k);
+        model.setPiece(5, 0, wp);
+        model.setPiece(3, 0, wp2);
+        model.setPiece(5, 1, wp3);
+        model.setPiece(4, 1, wp4);
+        model.setPiece(2, 2, br);
+
+
+        
+        assertTrue(model.isComplete());
+    }
+
+
+        // Tests if White king is in check
+        @Test
+        public void testIsComplete2()
+        { //moving to spot with friednly piece one place away
+            Pawn k = new Pawn(Player.WHITE);
+            Rook br = new Rook(Player.WHITE);
+            Queen bq = new Queen(Player.WHITE);
+            Rook br2 = new Rook(Player.WHITE);
+            
+            
+            ChessModel model = new ChessModel();
+            model.setNextPlayer();
+            model.setPiece(0, 4, k);
+            model.setPiece(4,0,bq);
+            model.setPiece(3, 0, br);
+            model.setPiece(5, 0, br2);
+    
+            assertTrue(model.isComplete());
+        }
+
+
+        
+    
 
 
 

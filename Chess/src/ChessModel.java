@@ -55,8 +55,23 @@ public class ChessModel {
 
 	}
 
-	public boolean isComplete() {
 
+
+
+
+
+
+
+
+	/*********************************************************************************************************************************
+	 * Method that checks if the king has any available moves
+	 * to get out of check, or to get out of checkmate
+	 * @return boolean
+	 * set to true if the king has no moves available
+	 * to stay out of check,
+	 * false otherwise
+	 *********************************************************************************************************************************/
+	private boolean kingNoMoves() {
 		boolean complete = true;
 
 		if(currentPlayer() == Player.BLACK)
@@ -83,25 +98,16 @@ public class ChessModel {
 										Move m = new Move(r,c,row,col);
 
 										// checks if the move is valid for a king
-										if(board[row][col].isValidMove(m, board))
+										if(board[r][c].isValidMove(m, board))
 										{
 											// sets king in location to be checked for checkmate
-											//
-
-											setPiece(r,c, pieceAt(row, col));
-
-
-											// finish move to complete ??????? 
-
-
-
-
-											//
+											setPiece(row, col, pieceAt(r, c));
 											
 											// 
 											if(inCheck(currentPlayer()))
 											{
 												complete = true;
+												board[row][col] = null;
 											}
 											else
 											{
@@ -109,13 +115,11 @@ public class ChessModel {
 												break;
 											}
 										}
-										else{/* the space is not a valid move for a king */}
+										else{/* the space at board[row][column] is null - do nothing*/}
 									}
 								}
 						}
-						else{/* the king does not belong to black */}
 					}
-					else{/* the piece is not a king or there is no piece in that location */}
 				}
 			}
 		}
@@ -144,7 +148,7 @@ public class ChessModel {
 										Move m = new Move(r,c,row,col);
 
 										// checks if the move is valid for a king
-										if(board[row][col].isValidMove(m, board))
+										if(board[r][c].isValidMove(m, board))
 										{
 											// sets king in location to be checked for checkmate
 											setPiece(row, col, pieceAt(r, c));
@@ -153,6 +157,7 @@ public class ChessModel {
 											if(inCheck(currentPlayer()))
 											{
 												complete = true;
+												board[row][col] = null;
 											}
 											else
 											{
@@ -172,6 +177,216 @@ public class ChessModel {
 
 
 
+		
+		return complete;
+	}
+
+
+	/*********************************************************************************************************************************
+	 * Method that checks if there is a move available
+	 * if player cannot move without invoking check,
+	 * then it is checkmate
+	 * @return boolean
+	 * set to true if there is no move available for a piece
+	 * to get out of check,
+	 * false otherwise
+	 *********************************************************************************************************************************/
+	private boolean noOtherMoves() {
+		
+		boolean complete = false;
+		
+		
+		if(currentPlayer() == Player.BLACK)
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null)
+					{
+						// if the piece at a space is black
+						if(pieceAt(r, c).player() == Player.BLACK)
+						{
+								// loops through all the rows
+								for (int row = 0; row < 8; row++)
+								{
+									// loops through all the columns
+									for (int col = 0; col < 8; col++)
+									{
+										// creates Move "m" from king location to location being checked
+										Move m = new Move(r,c,row,col);
+
+										// checks if the move is valid for a piece
+										if(board[r][c].isValidMove(m, board))
+										{
+											// sets piece in location to be checked for checkmate
+											setPiece(row, col, pieceAt(r, c));
+											
+											// 
+											if(inCheck(currentPlayer()))
+											{
+												complete = true;
+												board[row][col] = null;
+											}
+											else
+											{
+												complete = false;
+												break;
+											}
+										}
+										else{/* the space at board[row][column] is null - do nothing*/}
+									}
+								}
+						}
+					}
+				}
+			}
+		}
+		// current player is white
+		else
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null)
+					{
+						// if the piece at a space is black
+						if(pieceAt(r, c).player() == Player.WHITE)
+						{
+								// loops through all the rows
+								for (int row = 0; row < 8; row++)
+								{
+									// loops through all the columns
+									for (int col = 0; col < 8; col++)
+									{
+										// creates Move "m" from piece location to location being checked
+										Move m = new Move(r,c,row,col);
+
+										// checks if the move is valid for a piece
+										if(board[r][c].isValidMove(m, board))
+										{
+											// sets piece in location to be checked for checkmate
+											setPiece(row, col, pieceAt(r, c));
+											
+											// 
+											if(inCheck(currentPlayer()))
+											{
+												complete = true;
+												board[row][col] = null;
+											}
+											else
+											{
+												complete = false;
+												break;
+											}
+										}
+										else{/* the space at board[row][column] is null - do nothing*/}
+									}
+								}
+						}
+					}
+				}
+			}
+		}
+
+
+
+
+		
+		return complete;
+
+
+	}
+
+
+	/*********************************************************************************************************************************
+	 * Method that checks if the king was taken
+	 * @return boolean
+	 * set to true if there is no king for current player
+	 * false otherwise
+	 *********************************************************************************************************************************/
+	private boolean isNoKing(){
+		
+		boolean complete = true;
+		
+		if(currentPlayer() == Player.BLACK)
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
+					{
+						// if the piece at a space is a king, checks if it is black
+						if(pieceAt(r, c).player() == Player.BLACK)
+						{
+							complete = false;
+						}
+					}
+				}
+			}
+		}
+		// The current player is white
+		else
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
+					{
+						// if the piece at a space is a king, checks if it is black
+						if(pieceAt(r, c).player() == Player.BLACK)
+						{
+							complete = false;
+						}
+					}
+				}
+			}
+		}
+		return complete;
+	}
+
+
+	/*********************************************************************************************************************************
+	 * Method that checks if the game is over
+	 * by checkmate, or king taken
+	 * @return boolean
+	 * set to true if the game is complete
+	 * false otherwise
+	 *********************************************************************************************************************************/
+	public boolean isComplete() {
+
+		boolean complete = false;
+		
+		if(isNoKing())
+		{
+
+			complete = true;
+		}
+		else
+		{
+			if(noOtherMoves())
+			{
+				if(kingNoMoves())
+				{
+					complete = true;
+				}
+			}
+		}
 		
 		return complete;
 	}

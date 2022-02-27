@@ -1,15 +1,39 @@
 import static java.lang.Math.abs;
+
+
+
+
 public class Rook extends ChessPiece {
+
+
+
 
 	public Rook(Player player) {
 		super(player);
 	}
 
+
+
+
 	public String type() {
 		return "Rook";
 	}
 	
-	// determines if the move is valid for a rook piece
+
+
+
+	/***************************************************************************************************************
+
+		* This method is a helper method to use for checking a valid move
+		* used to check if the move in question
+		* is valid for the chess piece type "Rook"
+		* @param move the position the rook is starting 
+		* and the postion it is attempting to move to
+		* @param board the current board of chess pieces
+		* @return boolean, true if it is a valid move for a rook
+		* false otherwise
+
+	***************************************************************************************************************/
 	private boolean isRookValidMove(Move move, ChessPiece[][] board){
 		boolean valid = false;
 		int rowDiff = move.toRow - move.fromRow;
@@ -65,6 +89,22 @@ public class Rook extends ChessPiece {
 		}
 		return valid;
 	}
+
+
+
+
+	/***************************************************************************************************************
+
+		* This method is used to check if the move in question
+		* is valid for the chess piece by using the super class isValidMove method
+		* and the helper isRookValidMove method
+		* @param move the position the rook is starting 
+		* and the postion it is attempting to move to
+		* @param board the current board of chess pieces
+		* @return boolean, true if it is a valid move for a rook
+		* false otherwise
+
+	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		if (super.isValidMove(move, board) == true){
 		if (isRookValidMove(move, board) == true){
@@ -78,5 +118,4 @@ public class Rook extends ChessPiece {
 			return false;
 		}	
 	}
-	
 }

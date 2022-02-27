@@ -239,7 +239,7 @@ public class Pawn extends ChessPiece {
 	}
 
 
-		public boolean isValidMove(Move move, ChessPiece[][] board)
+	public boolean isValidMove(Move move, ChessPiece[][] board)
 		{
 			
 			boolean isValidMove = false;
