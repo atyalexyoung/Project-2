@@ -1,34 +1,53 @@
+/********************************************************************************************************************* 
+ * 
+ * Class King: object that contains all attributes for a 
+ * piece of type "King," including what a valid move for a
+ * "King" is, it's type ("King"), and what player owns it.
+ * Inherits from super class "ChessPiece."
+ * 
+ * 
+ * @author Alex Young
+ * @version Winter 2022
+ * 
+*********************************************************************************************************************/
 public class King extends ChessPiece {
 
 
-
-
-
-	
+	/****************************************************************************************************************
+	 * 
+	 * Constructor for a "King Piece"
+	 * @param player that attributes the piece to a player.
+	 * black or white.
+	 * 
+	 ****************************************************************************************************************/
 	public King(Player player) {
 		super(player);
 	}
 
+
+	/****************************************************************************************************************
+	 * 
+	 * Method that that gets the type of the piece.
+	 * @return String, "King"
+	 * 
+	 ***************************************************************************************************************/
 	public String type() {
 		return "King";
 	}
 
 
+	/***************************************************************************************************************
 
+	* This method is a helper method for isValidMove and is
+	* used to check if the move in question
+	* is valid for the chess piece type "King"
+	* @param move the position the king is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a King,
+	* false otherwise
 
-
-
-
-
-
-	// **************************************************************************************************************************************************************
-
-	//    HELPER METHOD THAT CHECKS IF THE MOVE IS VALID FOR A "KING" PIECE
-	//    RETURNS A BOOLEAN
-	//    TAKES IN A MOVE AND BOARD AS PARAMETERS
-
-	// **************************************************************************************************************************************************************
-
+	***************************************************************************************************************/
 	private boolean kingIsValidMove(Move move, ChessPiece[][] board){
 
 		// creates variable set to the location the current player is trying to move to
@@ -60,53 +79,22 @@ public class King extends ChessPiece {
 				}
 			}
 		}
-
-
-
-
-		/*
-		if(toPosition == board[move.fromRow + 1][move.fromColumn + 1] || 
-			// checks the space left 1 and down 1
-			toPosition == board[move.fromRow - 1][move.fromColumn - 1] ||
-			// checks the space right 1 and down 1
-			toPosition == board[move.fromRow + 1][move.fromColumn - 1] ||
-			// checks the space left one and up 1
-			toPosition == board[move.fromRow - 1][move.fromColumn + 1] ||
-			// checks the space up 1
-			toPosition == board[move.fromRow][move.fromColumn + 1] ||
-			//checks the space down 1
-			toPosition == board[move.fromRow][move.fromColumn - 1] ||
-			// checks the space right 1
-			toPosition == board[move.fromRow + 1][move.fromColumn] ||
-			// checks the space left 1
-			toPosition == board[move.fromRow - 1][move.fromColumn])
-		{
-			// sets varibale to true if it is 1 space in any direction
-			validMove = true;
-		}
-		else{/* it is not 1 space in any direction and therefore not a valid move for a king */
-		
-		// returns that the valid move is false unless it meets the criteria provided in above "if-statements"
 		return validMove;
-
 	}
 
 
+	/***************************************************************************************************************
 
+	* This method is used to check if the move in question is valid
+	* for the chess piece by using the super class isValidMove() method
+	* and the helper kingIsValidMove() method.
+	* @param move the position the King is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a King,
+	* false otherwise
 
-
-
-
-
-
-	// ****************************************************************************************************************************************************************
-
-	// METHOD THAT RETURNS A BOOLEAN IF THE MOVE IS VALID FOR A KING PIECE AND FOR ANY CHESS PIECE
-	// TAKES IN A MOVE AND BOARD AS PARAMETERS
-
-	// ****************************************************************************************************************************************************************
-
-
+	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 
 		// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below

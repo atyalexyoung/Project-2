@@ -1,37 +1,51 @@
 import static java.lang.Math.abs;
 
-
-
-
+/********************************************************************************************************************* 
+ * 
+ * Class Rook: object that contains all attributes for a 
+ * piece of type "Rook," including what a valid move for a
+ * "Rook" is, it's type ("Rook"), and what player owns it.
+ * Inherits from super class "ChessPiece."
+ * 
+ * 
+ * @author Owen Wheeler
+ * @version Winter 2022
+ * 
+*********************************************************************************************************************/
 public class Rook extends ChessPiece {
 
 
-
-
+	/****************************************************************************************************************
+	 * 
+	 * Constructor for a "Rook Piece"
+	 * @param player that attributes the piece to a player.
+	 * black or white.
+	 * 
+	 ****************************************************************************************************************/
 	public Rook(Player player) {
 		super(player);
 	}
 
 
-
-
+	/********************************************************************************************************************************
+	 * Method that gets the type of the piece, "Rook"
+	 * @return String: "Rook"
+	*********************************************************************************************************************************/
 	public String type() {
 		return "Rook";
 	}
 	
 
-
-
 	/***************************************************************************************************************
 
-		* This method is a helper method to use for checking a valid move
-		* used to check if the move in question
-		* is valid for the chess piece type "Rook"
-		* @param move the position the rook is starting 
-		* and the postion it is attempting to move to
-		* @param board the current board of chess pieces
-		* @return boolean, true if it is a valid move for a rook
-		* false otherwise
+	* This method is a helper method to use for checking a valid move
+	* used to check if the move in question
+	* is valid for the chess piece type "Rook"
+	* @param move the position the rook is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a rook
+	* false otherwise
 
 	***************************************************************************************************************/
 	private boolean isRookValidMove(Move move, ChessPiece[][] board){
@@ -91,18 +105,16 @@ public class Rook extends ChessPiece {
 	}
 
 
-
-
 	/***************************************************************************************************************
 
-		* This method is used to check if the move in question
-		* is valid for the chess piece by using the super class isValidMove method
-		* and the helper isRookValidMove method
-		* @param move the position the rook is starting 
-		* and the postion it is attempting to move to
-		* @param board the current board of chess pieces
-		* @return boolean, true if it is a valid move for a rook
-		* false otherwise
+	* This method is used to check if the move in question
+	* is valid for the chess piece by using the super class isValidMove method
+	* and the helper isRookValidMove method
+	* @param move the position the rook is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a rook
+	* false otherwise
 
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {

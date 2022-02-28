@@ -1,16 +1,58 @@
 import static java.lang.Math.abs;
 
+/********************************************************************************************************************* 
+ * 
+ * Class Queen: object that contains all attributes for a 
+ * piece of type "Queen," including what a valid move for a
+ * "Queen" is, it's type ("Queen"), and what player owns it.
+ * Inherits from super class "ChessPiece."
+ * 
+ * 
+ * @author Alex Young
+ * @version Winter 2022
+ * 
+*********************************************************************************************************************/
 public class Queen extends ChessPiece {
 
+
+	/****************************************************************************************************************
+	 * 
+	 * Constructor for a "Queen Piece"
+	 * @param player that attributes the piece to a player.
+	 * black or white.
+	 * 
+	 ****************************************************************************************************************/
 	public Queen(Player player) {
 		super(player);
 	}
 
+
+	/********************************************************************************************************************************
+	 * 
+	 * Method that gets the type of the piece, "Queen"
+	 * @return String: "Queen"
+	 * 
+	*********************************************************************************************************************************/
 	public String type() {
 		return "Queen";
 	}
 
 
+
+	/***************************************************************************************************************
+
+	* Helper method for isQueenValidMove and is used to check
+	* if the move in question is valid for the chess piece of type "Rook"
+	* The "Queen" piece has the movement of both a "Rook" and "Bishop"
+	* and this helper method checks half of the valid moves available
+	* for a "Queen."
+	* @param move the position the Queen is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a Rook,
+	* false otherwise
+
+	***************************************************************************************************************/
 	private boolean rookIsValidMove(Move move, ChessPiece[][] board)
 	{
 		boolean valid = false;
@@ -71,6 +113,20 @@ public class Queen extends ChessPiece {
 	}
 
 
+	/***************************************************************************************************************
+
+	* Helper method for isQueenValidMove and is used to check
+	* if the move in question is valid for the chess piece of type "Bishop"
+	* The "Queen" piece has the movement of both a "Rook" and "Bishop"
+	* and this helper method checks half of the valid moves available
+	* for a "Queen."
+	* @param move the position the Queen is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a Bishop,
+	* false otherwise
+
+	***************************************************************************************************************/
 	private boolean bishopIsValidMove(Move move, ChessPiece[][] board)
 	{
 				
@@ -169,6 +225,20 @@ public class Queen extends ChessPiece {
 	}
 
 	
+	/***************************************************************************************************************
+
+	* Helper method for "isValidMove()" and is used to check
+	* if the move in question is valid for the chess piece of type "Queen"
+	* Uses helper methods "rookIsValidMove()" and "bishopIsValidMove()"
+	* to get the valid move for a "Queen," which has the movement
+	* capabilities of both a "Rook" and a "Bishop."
+	* @param move the position the Quen is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a Queen,
+	* false otherwise
+
+	***************************************************************************************************************/
 	private boolean isQueenValidMove(Move move, ChessPiece[][] board)
 	{
 		boolean validMove = false;
@@ -182,7 +252,17 @@ public class Queen extends ChessPiece {
 	}
 
 
-
+	/*********************************************************************************************************************************
+	 * Method that checks if the move is valid for a "Queen" piece.
+	 * Uses helper method "rookIsValidMove()," "bishopIsValidMove(),"
+	 * and the super class "isValidMove()" method.
+	 * @param move the move that is being attempted by player
+	 * move contains from location and to location of the piece
+	 * @param board takes in the current chess board
+	 * @return boolean
+	 * set to true if it is a valid move for a "Queen",
+	 * false otherwise
+	 *********************************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board)
 	{
 		boolean validMove = false;

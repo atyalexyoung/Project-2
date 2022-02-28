@@ -1,16 +1,37 @@
 import static java.lang.Math.abs;
+/********************************************************************************************************************* 
+ * 
+ * Class Knight: object that contains all attributes for a 
+ * piece of type "Knight," including what a valid move for a
+ * "Knight" is, it's type ("Knight"), and what player owns it.
+ * Inherits from super class "ChessPiece."
+ * 
+ * 
+ * @author Owen Wheeler
+ * @author Alex Young
+ * @version Winter 2022
+ * 
+*********************************************************************************************************************/
 public class Knight extends ChessPiece {
 
 
-	
+	/****************************************************************************************************************
+	 * 
+	 * Constructor for a "Knight Piece"
+	 * @param player that attributes the piece to a player.
+	 * black or white.
+	 * 
+	 ****************************************************************************************************************/
 	public Knight(Player player) {
 		super(player);
 	}
 
 
 	/********************************************************************************************************************************
+	 * 
 	 * Method that gets the type of the piece, "Knight"
 	 * @return String: "Knight"
+	 * 
 	*********************************************************************************************************************************/
 	public String type() {
 		return "Knight";
@@ -18,13 +39,15 @@ public class Knight extends ChessPiece {
 
 
 	/*********************************************************************************************************************************
-	 * Helper method that checks if the move is valid for a "knight" piece
+	 * 
+	 * Helper method that checks if the move is valid for a "Knight" piece
 	 * @param move the move that is being attempted by player
 	 * move contains from location and to location
 	 * @param board takes in the current chess board
 	 * @return boolean
 	 * set to true if it is a valid move for knight
 	 * false otherwise
+	 * 
 	 *********************************************************************************************************************************/
 	private boolean knightIsValidMove(Move move, ChessPiece[][] board){
 		boolean valid = false;
@@ -51,7 +74,8 @@ public class Knight extends ChessPiece {
 
 
 	/*********************************************************************************************************************************
-	 * Method that checks if the move is valid for a "knight" piece
+	 * 
+	 * Method that checks if the move is valid for a "Knight" piece
 	 * uses helper method "knightIsValidMove"
 	 * @param move the move that is being attempted by player
 	 * move contains from location and to location
@@ -59,6 +83,7 @@ public class Knight extends ChessPiece {
 	 * @return boolean
 	 * set to true if it is a valid move for knight
 	 * false otherwise
+	 * 
 	 *********************************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board)
 	{

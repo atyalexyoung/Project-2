@@ -1,27 +1,54 @@
-import static java.lang.Math.abs;
+
+/********************************************************************************************************************* 
+ * 
+ * Class Bishop: object that contains all attributes for a 
+ * piece of type "Bishop," including what a valid move for a
+ * "Bishop" is, it's type ("Bishop"), and what player owns it.
+ * Inherits from super class "ChessPiece."
+ * 
+ * 
+ * @author Alex Young
+ * @author Owen Wheeler
+ * @version Winter 2022
+ * 
+*********************************************************************************************************************/
 public class Bishop extends ChessPiece {
 
+
+
+	/****************************************************************************************************************
+	 * 
+	 * Constructor for a "Bishop Piece"
+	 * @param player that attributes the piece to a player.
+	 * black or white.
+	 * 
+	 ****************************************************************************************************************/
 	public Bishop(Player player) {
 		super(player);
 	}
 
+
+	/****************************************************************************************************************
+	 * 
+	 * Method that that gets the type of the piece.
+	 * @return String, "Bishop"
+	 * 
+	 ***************************************************************************************************************/
 	public String type() {
 		return "Bishop";
 	}
 
 
-
-
 	/***************************************************************************************************************
 
-		* This method is a helper method to use for checking a valid move
-		* used to check if the move in question
-		* is valid for the chess piece type "Bishop"
-		* @param move the position the bishop is starting 
-		* and the postion it is attempting to move to
-		* @param board the current board of chess pieces
-		* @return boolean, true if it is a valid move for a bishop
-		* false otherwise
+	* This method is a helper method to use for checking a valid move
+	* used to check if the move in question
+	* is valid for the chess piece type "Bishop"
+	* @param move the position the bishop is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a bishop
+	* false otherwise
 
 	***************************************************************************************************************/
 	private boolean bishopIsValidMove(Move move, ChessPiece[][] board){
@@ -219,18 +246,16 @@ public class Bishop extends ChessPiece {
 	}
 
 
-
-
 	/***************************************************************************************************************
 
-		* This method is used to check if the move in question
-		* is valid for the chess piece by using the super class isValidMove method
-		* and the helper bishopIsValidMove method
-		* @param move the position the bishop is starting 
-		* and the postion it is attempting to move to
-		* @param board the current board of chess pieces
-		* @return boolean, true if it is a valid move for a bishop
-		* false otherwise
+	* This method is used to check if the move in question
+	* is valid for the chess piece by using the super class isValidMove method
+	* and the helper bishopIsValidMove method
+	* @param move the position the bishop is starting 
+	* and the postion it is attempting to move to
+	* @param board the current board of chess pieces
+	* @return boolean, true if it is a valid move for a bishop
+	* false otherwise
 
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
