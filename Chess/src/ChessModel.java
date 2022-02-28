@@ -64,7 +64,8 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Method that checks if the king has any available moves
+	 * Helper method for isComplete(),
+	 * checks if the king has any available moves
 	 * to get out of check, or to get out of checkmate
 	 * @return boolean
 	 * set to true if the king has no moves available
@@ -183,7 +184,8 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Method that checks if there is a move available
+	 * Helper method for isComplete(), 
+	 * checks if there is a move available
 	 * if player cannot move without invoking check,
 	 * then it is checkmate
 	 * @return boolean
@@ -307,7 +309,8 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Method that checks if the king was taken
+	 * Helper method for isComplete(), 
+	 * that checks if the king was taken
 	 * @return boolean
 	 * set to true if there is no king for current player
 	 * false otherwise
@@ -364,6 +367,7 @@ public class ChessModel {
 	/*********************************************************************************************************************************
 	 * Method that checks if the game is over
 	 * by checkmate, or king taken
+	 * Uses helper methods kingNoMoves(), noOtherMoves(), and isNoKing()
 	 * @return boolean
 	 * set to true if the game is complete
 	 * false otherwise
@@ -391,6 +395,8 @@ public class ChessModel {
 		return complete;
 	}
 
+
+	
 	public boolean isValidMove(Move move) {
 		// TODO:  implement this method
 		
