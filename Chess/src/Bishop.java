@@ -260,18 +260,22 @@ public class Bishop extends ChessPiece {
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 
-		// checks if the move passes the parent ChessPiece class's isValidMove function
+		/**  checks if the move passes the parent 
+		 * ChessPiece class's isValidMove function
+		*/ 
 		if (super.isValidMove(move, board))
 		{
+			/** checks if the helper method "bishopIsValidMove()" passes */
 			if(bishopIsValidMove(move, board))
 			{
+				// returns true if move is valid
 				return true;
 			}
-			else{
+			else{/** the bishopIsValidMove() helper method is false */
 				return false;
 			}
 		}
-		else{
+		else{/** the super.isValidMove() is false */
 			return false;
 		}
 	}

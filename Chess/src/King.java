@@ -50,35 +50,52 @@ public class King extends ChessPiece {
 	***************************************************************************************************************/
 	private boolean kingIsValidMove(Move move, ChessPiece[][] board){
 
-		// creates variable set to the location the current player is trying to move to
-		
 
 		// set boolean variable for if the move is valid or not
 		boolean validMove = false;
 
-
+		/** integer variable to hold the difference of the row the
+		 * piece is moving to and the row the piece is moving from
+		 */
 		int rowDiff = move.toRow - move.fromRow;
-		int colDiff = move.toColumn - move.fromColumn;
 
-		// checks if the position the current player is trying to move to is valid for a "King" piece
-		// first checks space right 1 and up 1
+		/** integer variable to hold the difference of the column the
+		 * piece is moving to and the column the piece is moving from
+		 */
+		int colDiff = move.toColumn - move.fromColumn;
 
 
 		// checks if the move is 1 space in any direction
 		if(Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1)
 		{
+			// checks if the location the piece is moving to has a piece there
 			if(board[move.toRow][move.toColumn] == null)
 			{
+				/** sets boolean to true if the King is moving 1 space
+				 * and there is no piece there
+				 */
 				validMove = true;
 			}
 			else
-			{
+			{ /** the location the king is attempting to move has a player there */
+
+				/** checks if the location the king is attempting to move to
+				 * has an enemy pice there
+				 */
 				if(board[move.toRow][move.toColumn].player() == player().next())
 				{
+					/** boolean to true if the location the king is moving to
+					 * has an enemy piece and not an allied piece
+					 */
 					validMove = true;
 				}
 			}
 		}
+
+		/** returns the validMove boolean,
+		 * true if it is a valid move for a king
+		 * false otherwise
+		 */
 		return validMove;
 	}
 
@@ -97,14 +114,24 @@ public class King extends ChessPiece {
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 
-		// boolean variable for if it is a valid move, initialized to false unless it meets the criteria provided below
+		/** boolean variable for if it is a valid move, 
+		 * initialized to false unless it meets the criteria provided below
+		 * */
 		boolean validMove = false;
 
-		// checks if the move passes the parent ChessPiece class's isValidMove function
+		/**checks if the move passes the parent 
+		 * ChessPiece class's isValidMove function
+		 * */
 		if (super.isValidMove(move, board))
 		{
+			/** checks if the move is valid for a King by using the 
+			 * kingIsValid() helper method
+			 */
 			if(kingIsValidMove(move, board))
 			{
+				/** returns true if move is valid for a general chess piece
+				 * and for a King piece
+				 */
 				return true;
 			}
 			else{/* the place the current player is trying to move is not one space away from the king */}
