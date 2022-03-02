@@ -1,6 +1,8 @@
 public abstract class ChessPiece {
 
+
 	private Player owner;
+
 
 	protected ChessPiece(Player player) {
 		this.owner = player;
@@ -8,10 +10,25 @@ public abstract class ChessPiece {
 
 	public abstract String type();
 
+
 	public Player player() {
 		return owner;
 	}
 
+
+	/*********************************************************************************************************************************
+	 * Method that checks if the move is valid for any chess piece.
+	 * Checks for general move requirements such as 
+	 * out of bounds, that a player is moving a piece to another location,
+	 * and that a player is not moving their piece to the location
+	 * of another piece owned by them.
+	 * @param move the move that is being attempted by player
+	 * move contains from location and to location
+	 * @param board takes in the current chess board
+	 * @return boolean,
+	 * set to true if it is a valid move for a chess piece
+	 * false otherwise
+	 *********************************************************************************************************************************/
 	public boolean isValidMove(Move move, ChessPiece[][] board) {
 		
 

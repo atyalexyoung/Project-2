@@ -1,5 +1,5 @@
 public class ChessModel {	 
-    private ChessPiece[][] board;
+    public ChessPiece[][] board;
 	private Player player;
 	
 
@@ -405,33 +405,98 @@ public class ChessModel {
 		 * false otherwise
 		 */
 		boolean validMove = false;
-
-
-		/** checks if attempted move is valid for the piece */
-		if(pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board))
+		if(board[move.fromRow][move.fromColumn] != null)
 		{
-
-			/** sets the piece to the move if valid */
-			setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
-
-			/** checks if that move would cause the player to be in check */
-			if(!(inCheck(currentPlayer())))
+			/** checks if attempted move is valid for the piece */
+			if(pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board))
 			{
-				validMove = true;
+
+				/** sets the piece to the move if valid */
+				setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
+				/** checks if that move would cause the player to be in check */
+				if(!(inCheck(currentPlayer())))
+				{
+					validMove = true;
+					board[move.toRow][move.toColumn] = null;
+				}
+				else
+				{/** the move would cause the player to be in check */
+					board[move.toRow][move.toColumn] = null;
+				}
+
 			}
-			else{/** the move would cause the player to be in check */}
-
+			else
+			{/** the move is not valid for that piece */
+				board[move.toRow][move.toColumn] = null;
+			}
 		}
-		else{/** the move is not valid for that piece */}
-
-
 		return validMove;
 	}
 
 	public void move(Move move) {
 		// TODO:  implement this method
+		
+			/** checks if the move is valid for the chess piece */
+			if(isValidMove(move))
+			{
 
+				/** checks if the piece is a pawn */
+				if(pieceAt(move.fromRow, move.fromColumn).type().equals("Pawn"))
+				{
+					/** checks if the piece is black */
+					if(currentPlayer() == Player.BLACK)
+					{
+						/** checks if the pawn is moving to the last row */
+						if(move.toRow == 7){
 
+							/** places a new queen where the pawn was moving to */
+							board[move.toRow][move.toColumn] = new Queen(Player.BLACK);
+
+							/** erases the pawn from it's original position */
+							board[move.fromRow][move.fromColumn] = null;
+						}
+						/** the pawn is not moving to the end of the board */
+						else
+						{
+							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+							board[move.fromRow][move.fromColumn] = null;
+						}
+					}
+					/** the piece is not black */
+					else
+					{
+						/** checks if the pawn is moving to the last row */
+						if(move.toRow == 0){
+
+							/** places a new queen where the pawn was moving to */
+							board[move.toRow][move.toColumn] = new Queen(Player.WHITE);
+
+							/** erases the pawn from it's original position */
+							board[move.fromRow][move.fromColumn] = null;
+						}
+						/** the pawn is not moving to the end of the board */
+						else
+						{
+							// sets the piece to the location it's moving to
+							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
+							// erases the piece from it's original location
+							board[move.fromRow][move.fromColumn] = null;
+						}
+					}
+				}
+				else
+				{
+					/** sets the piece to the location it's is moving to */
+					setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
+					// erases the piece from its original location
+					board[move.fromRow][move.fromColumn] = null;
+				}
+			}
+			else
+			{/** the move is not valid and cannot be carried out */	}
 
 
 
@@ -543,10 +608,10 @@ public class ChessModel {
 	}
 
 
-	/**  
+	/****************************************************************
 	 * method to get the current player
 	 * @return player whose turn it is
-	*/
+	*****************************************************************/
 	public Player currentPlayer() {
 		return player;
 	}
@@ -605,10 +670,14 @@ public class ChessModel {
 		board[row][column] = piece;
 	}
 
+
+
 	public void undo() {
 		// TODO: implement this method
 		// undo the last move that has not yet been undone (should handle mutliple undos)
 	}
+
+
 
 	public void AI() {
 		/* TODO: implement this method (manually graded)
