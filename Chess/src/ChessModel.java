@@ -98,7 +98,7 @@ public class ChessModel {
 										// creates Move "m" from king location to location being checked
 										Move m = new Move(r,c,row,col);
 
-										// checks if the move is valid for a king
+										// checks if the move is valid for a chess piece
 										if(board[r][c].isValidMove(m, board))
 										{
 											// sets king in location to be checked for checkmate
@@ -309,11 +309,13 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Helper method for isComplete(), 
-	 * that checks if the king was taken
-	 * @return boolean
-	 * set to true if there is no king for current player
-	 * false otherwise
+	 * 
+		* Helper method for isComplete(), 
+		* that checks if the king was taken
+		* @return boolean
+		* set to true if there is no king for current player
+		* false otherwise
+	 * 
 	 *********************************************************************************************************************************/
 	private boolean isNoKing(){
 		
@@ -365,12 +367,14 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Method that checks if the game is over
-	 * by checkmate, or king taken
-	 * Uses helper methods kingNoMoves(), noOtherMoves(), and isNoKing()
-	 * @return boolean
-	 * set to true if the game is complete
-	 * false otherwise
+	 * 
+		* Method that checks if the game is over
+		* by checkmate, or king taken
+		* Uses helper methods kingNoMoves(), noOtherMoves(), and isNoKing()
+		* @return boolean
+		* set to true if the game is complete
+		* false otherwise
+	 * 
 	 *********************************************************************************************************************************/
 	public boolean isComplete() {
 
@@ -396,7 +400,17 @@ public class ChessModel {
 	}
 
 
-	
+	/***************************************************************************************************************
+
+		* This method is used to check if a move is valid at a whole game level
+		* Checks if the move is valid for a general chess piece, 
+		* a specific chess piece,
+		* and also makes sure the move does not put the player into check
+		* @param move A move object is passed in, which contains a from location
+		* in rows and columns, and a to location also in rows and columns.
+		* @return boolean: true if move is valid, false otherwise
+
+	***************************************************************************************************************/
 	public boolean isValidMove(Move move) {
 		// TODO:  implement this method
 		
@@ -405,34 +419,35 @@ public class ChessModel {
 		 * false otherwise
 		 */
 		boolean validMove = false;
+
+		/** checks if the starting location in move has a piece there */
 		if(board[move.fromRow][move.fromColumn] != null)
 		{
-			/** checks if attempted move is valid for the piece */
+
+			/** checks if the move is valid for a general chess piece */
 			if(pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board))
 			{
-
-				/** sets the piece to the move if valid */
-				setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
-
-				/** checks if that move would cause the player to be in check */
-				if(!(inCheck(currentPlayer())))
-				{
-					validMove = true;
-					board[move.toRow][move.toColumn] = null;
-				}
-				else
-				{/** the move would cause the player to be in check */
-					board[move.toRow][move.toColumn] = null;
-				}
-
-			}
-			else
-			{/** the move is not valid for that piece */
-				board[move.toRow][move.toColumn] = null;
+						ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
+						setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+						board[move.fromRow][move.fromColumn] = null;
+						if(!(inCheck(currentPlayer())))
+						{
+							validMove = true;
+							board[move.fromRow][move.fromColumn] = piece;
+						}
+						else
+						{
+							board[move.fromRow][move.fromColumn] = piece;
+							board[move.toRow][move.toColumn] = null;
+						}
 			}
 		}
 		return validMove;
 	}
+
+
+
+
 
 	public void move(Move move) {
 		// TODO:  implement this method
