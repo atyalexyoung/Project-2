@@ -224,7 +224,7 @@ public class ChessPanel extends JPanel {
 			tempMove = new Move(fromRow, fromColumn, toRow, toColumn);
 			if (model.isValidMove(tempMove)) {
 				model.move(tempMove);
-				model.setNextPlayer(); 
+				
 
 				if (model.inCheck(model.currentPlayer())) {
 					messageCode = GUIcodes.inCheck;

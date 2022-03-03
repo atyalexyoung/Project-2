@@ -40,6 +40,17 @@ public class ChessTest {
 
     }
 
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testWhitePawnForward4() {
+        Pawn p = new Pawn(Player.BLACK);
+        ChessPiece[][] cp = new ChessPiece[8][8];
+        cp[4][6] = p;
+        Move move = new Move(4, 6, 5, 6);
+        assertTrue(p.isValidMove(move, cp));
+
+    }
+
 
     // tests if pawn can move forward 2 from starting position
     @Test
@@ -91,6 +102,24 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+        // Tests if pawn can attack enemy player from other diagonal
+        @Test
+        public void testWhitePawnDiagonal3() {
+            ChessModel model = new ChessModel();
+            Pawn p = new Pawn(Player.WHITE);
+            Pawn p1 = new Pawn(Player.BLACK);
+            model.board[4][4] = p;
+            model.board[3][3] = p1;
+            Move move = new Move(4, 4, 3, 3);
+            assertTrue(model.isValidMove(move));
+            assertTrue(model.isValidMove(move));
+            model.move(move);
+            
+            
+            assertEquals(p,model.pieceAt(3, 3) );
+            
+    
+        }
 
 
 
@@ -2169,7 +2198,7 @@ public class ChessTest {
     
             assertTrue(model.isComplete());
         }
-
+/*
         // Tests if White king is in check
         @Test
         public void testIsComplete3()
@@ -2195,7 +2224,7 @@ public class ChessTest {
             assertTrue(model.isComplete());
         }
 
-
+*/
     // ***************************************************************************************************************************
 
 
@@ -2233,6 +2262,38 @@ public class ChessTest {
 
 
 
+    // check if is complete is false but pieces are in the wrong location
+
+
+        // Tests pawn can move forward 1 from starting position
+        @Test
+        public void testWhitePawnForward1000() {
+            ChessModel model = new ChessModel();
+            Pawn p = new Pawn(Player.BLACK);
+            Move move = new Move(6, 0, 5, 0);
+            model.move(move);
+            assertEquals(model.pieceAt(5,0).type(), p.type());
+            assertEquals(model.currentPlayer(),Player.BLACK);
+    
+        }
+
+
+            // check if is complete is false but pieces are in the wrong location
+
+
+        // Tests pawn can move forward 1 from starting position
+        @Test
+        public void testWhitePawnForward10001() {
+            ChessModel model = new ChessModel();
+            Pawn p = new Pawn(Player.WHITE);
+            Move move = new Move(6, 4, 4, 4);
+            model.move(move);
+            assertEquals(model.pieceAt(4,4).type(), p.type());
+            assertEquals(model.currentPlayer(), Player.BLACK);
+    
+        }
+
+
 
 
 
@@ -2268,14 +2329,17 @@ public class ChessTest {
                     }
                 }
                 Pawn pawn = new Pawn(Player.WHITE);
+                Pawn bp = new Pawn(Player.BLACK);
                 Queen queen = new Queen(Player.WHITE);
-                model.setPiece(1, 0, pawn);
+                model.setPiece(1, 1, pawn);
+                model.setPiece(0, 0, bp);
 
 
-                Move move = new Move(1,0,0,0);
+                Move move = new Move(1,1,0,0);
                 model.move(move);
                 assertEquals(model.pieceAt(0, 0).type(), queen.type());
                 assertEquals(model.pieceAt(0, 0).player(), queen.player());
+                assertEquals(model.currentPlayer(), Player.BLACK);
 
             } 
 
@@ -2320,6 +2384,114 @@ public class ChessTest {
                 assertEquals(model.pieceAt(5, 0).type(), p.type());;
             } 
 
+
+            // Tests rook move is updated
+            @Test
+            public void testMove4()
+            { //moving to spot with friednly piece one place away
+                
+                ChessModel model = new ChessModel();
+
+                for(int x = 0; x<8;x++){
+                    for(int y = 0; y<8; y++){
+                        if(model.pieceAt(x,y) != null){
+                           model.board[x][y] = null;
+                        }
+                    }
+                }
+                Rook rook = new Rook(Player.BLACK);
+                model.setPiece(6, 0, rook);
+                model.setNextPlayer();
+
+                Move move = new Move(6,0,3,0);
+                model.move(move);
+                assertEquals(model.pieceAt(3, 0).type(), rook.type());
+                assertEquals(model.pieceAt(3, 0).player(), rook.player());
+                assertEquals(rook, model.pieceAt(3,0));
+
+            } 
+            @Test
+            public void testMove5()
+            { //moving to spot with friednly piece one place away
+                
+                ChessModel model = new ChessModel();
+
+
+                //white move
+                Move move = new Move(6,5,4,5);
+                model.move(move);
+                assertEquals(model.currentPlayer(),Player.BLACK);
+
+
+                // black
+                Move m1 = new Move(1,6,3,6);
+                model.move(m1);
+                assertEquals(model.currentPlayer(),Player.WHITE);
+
+
+                // white move
+                Move move2 = new Move(3,6,4,6);
+                model.move(move2);
+                assertEquals(model.currentPlayer(),Player.BLACK);
+
+                // black move
+                Move m3 = new Move(0,1,2,0);
+                model.move(m3);
+                assertEquals(model.currentPlayer(),Player.WHITE);
+
+
+                //white move
+                Move move4 = new Move(4,6,5,6);
+                model.move(move4);
+                assertEquals(model.currentPlayer(),Player.BLACK);
+  
+
+            } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+        // Tests pawn does not become queen after move
+            @Test
+            public void testMove5()
+            { //moving to spot with friednly piece one place away
+                
+                ChessModel model = new ChessModel();
+
+                for(int x = 0; x<8;x++){
+                    for(int y = 0; y<8; y++){
+                        if(model.pieceAt(x,y) != null){
+                           model.board[x][y] = null;
+                        }
+                    }
+                }
+                Pawn pawn = new Pawn(Player.WHITE);
+                Queen queen = new Queen(Player.WHITE);
+                model.setPiece(2, 0, pawn);
+
+
+                Move move = new Move(2,0,1,0);
+                model.move(move);
+                assertEquals(model.pieceAt(1, 0).type(), pawn.type());
+                assertEquals(model.pieceAt(1, 0).player(), pawn.player());
+
+            
+
+
+
+
+            */
 
 
 

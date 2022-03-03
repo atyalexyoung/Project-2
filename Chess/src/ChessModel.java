@@ -1,15 +1,38 @@
 public class ChessModel {	 
-    public ChessPiece[][] board;
+    private ChessPiece[][] board;
 	private Player player;
 	
 
 	// declare other instance variables as needed
 
+
+	/***************************************************************************************************
+		 * 
+		 * Constructor for a chess model that creates a board,
+		 * full with the pieces in their staring location,
+		 * and also sets the current player to white.
+		 * 
+	 ***************************************************************************************************/
 	public ChessModel() {
+
+		/** sets the board variable to a new board that has
+		 * 8 rows and 8 columns
+		 */
 		board = new ChessPiece[8][8];
+
+		/** sets the player variable to White for the start
+		 * of the game
+		 */
 		player = Player.WHITE;
 
-		/********* ALL PAWNS *****************/	
+
+		/** 
+		 * The next section of the constructor sets all the piece
+		 * to their correct starting location
+		 */
+
+
+		/************* PAWNS **************************/	
 		board[6][0] = new Pawn(Player.WHITE);
 		board[6][1] = new Pawn(Player.WHITE);
 		board[6][2] = new Pawn(Player.WHITE);
@@ -26,69 +49,71 @@ public class ChessModel {
 		board[1][5] = new Pawn(Player.BLACK);
 		board[1][6] = new Pawn(Player.BLACK);
 		board[1][7] = new Pawn(Player.BLACK);
-		/***********************************/
-		/************ knights **************/
+		/***********************************************/
+
+
+		/*********** Knights ***************************/
 		board[7][1] = new Knight(Player.WHITE);
 		board[7][6] = new Knight(Player.WHITE);
 		board[0][1] = new Knight(Player.BLACK);
 		board[0][6] = new Knight(Player.BLACK);
-		/***********************************/
-		/****************bishops ***********/
+		/**********************************************/
+
+
+		/*********** Bishops **************************/
 		board[7][2] = new Bishop(Player.WHITE);
 		board[7][5] = new Bishop(Player.WHITE);
 		board[0][2] = new Bishop(Player.BLACK);
 		board[0][5] = new Bishop(Player.BLACK);
-		/************************************/
-		/************** Rooks ***************/
+		/**********************************************/
+
+
+		/************ Rooks ***************************/
 		board[0][0] = new Rook(Player.BLACK);
 		board[0][7] = new Rook(Player.BLACK);
 		board[7][0] = new Rook(Player.WHITE);
 		board[7][7] = new Rook(Player.WHITE);
-		/************** Kings & Queens ******/
+		/**********************************************/
+
+
+		/******** Kings & Queens **********************/
 		board[0][3] = new Queen(Player.BLACK);
 		board[0][4] = new King(Player.BLACK);
         board[7][3] = new Queen(Player.WHITE);
 		board[7][4] = new King(Player.WHITE);
-
-		//TODO: finish this method
-	
-
 	}
 
 
-
-
-
-
-
-
-
 	/*********************************************************************************************************************************
-	 * Helper method for isComplete(),
-	 * checks if the king has any available moves
-	 * to get out of check, or to get out of checkmate
-	 * @return boolean
-	 * set to true if the king has no moves available
-	 * to stay out of check,
-	 * false otherwise
+		
+		 * Helper method for isComplete(),
+		 * checks if the king has any available moves
+		 * to get out of check, or to get out of checkmate
+		 * @return boolean
+		 * set to true if the king has no moves available
+		 * to stay out of check,
+		 * false otherwise
+		
 	 *********************************************************************************************************************************/
 	private boolean kingNoMoves() {
-		boolean complete = true;
+		
+		boolean complete = true;;
 
 		if(currentPlayer() == Player.BLACK)
 		{
 			// loops through all the rows in the chess board
-			for (int r = 0; r < 8; r++)
+			for (int kingRow = 0; kingRow < 8; kingRow++)
 			{
 				// loops through all the columns in the chess board
-				for (int c = 0; c < 8; c++)
+				for (int kingCol = 0; kingCol < 8; kingCol++)
 				{
 					// checks if the piece at each space is a king
-					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
+					if(pieceAt(kingRow, kingCol) != null && pieceAt(kingRow, kingCol).type().equals("King"))
 					{
 						// if the piece at a space is a king, checks if it is black
-						if(pieceAt(r, c).player() == Player.BLACK)
+						if(pieceAt(kingRow, kingCol).player() == Player.BLACK)
 						{
+							ChessPiece k = board[kingRow][kingCol];
 								// loops through all the rows
 								for (int row = 0; row < 8; row++)
 								{
@@ -96,25 +121,12 @@ public class ChessModel {
 									for (int col = 0; col < 8; col++)
 									{
 										// creates Move "m" from king location to location being checked
-										Move m = new Move(r,c,row,col);
+										Move m = new Move(kingRow,kingCol,row,col);
 
 										// checks if the move is valid for a chess piece
-										if(board[r][c].isValidMove(m, board))
+										if(isValidMove(m))
 										{
-											// sets king in location to be checked for checkmate
-											setPiece(row, col, pieceAt(r, c));
-											
-											// 
-											if(inCheck(currentPlayer()))
-											{
-												complete = true;
-												board[row][col] = null;
-											}
-											else
-											{
-												complete = false;
-												break;
-											}
+											return false;
 										}
 										else{/* the space at board[row][column] is null - do nothing*/}
 									}
@@ -149,22 +161,9 @@ public class ChessModel {
 										Move m = new Move(r,c,row,col);
 
 										// checks if the move is valid for a king
-										if(board[r][c].isValidMove(m, board))
+										if(isValidMove(m))
 										{
-											// sets king in location to be checked for checkmate
-											setPiece(row, col, pieceAt(r, c));
-											
-											// 
-											if(inCheck(currentPlayer()))
-											{
-												complete = true;
-												board[row][col] = null;
-											}
-											else
-											{
-												complete = false;
-												break;
-											}
+											return false;
 										}
 										else{/* the space at board[row][column] is null - do nothing*/}
 									}
@@ -184,20 +183,26 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * Helper method for isComplete(), 
-	 * checks if there is a move available
-	 * if player cannot move without invoking check,
-	 * then it is checkmate
-	 * @return boolean
-	 * set to true if there is no move available for a piece
-	 * to get out of check,
-	 * false otherwise
+	 
+		* Helper method for isComplete(), 
+		* checks if there is a move available
+		* if player cannot move without invoking check,
+		* then it is checkmate
+		* @return boolean
+		* set to true if there is no move available for a piece
+		* to get out of check,
+		* false otherwise
+	 
 	 *********************************************************************************************************************************/
 	private boolean noOtherMoves() {
 		
-		boolean complete = false;
+		/** creating a boolean variable to hold
+		 * whether any piece has a move that will
+		 * get the current player out of check
+		 */
+		boolean complete = true;
 		
-		
+		/** checks if the current player is black */
 		if(currentPlayer() == Player.BLACK)
 		{
 			// loops through all the rows in the chess board
@@ -212,32 +217,24 @@ public class ChessModel {
 						// if the piece at a space is black
 						if(pieceAt(r, c).player() == Player.BLACK)
 						{
+
+							/** creating a new reference to the piece in question */
+							ChessPiece piece = board[r][c];
+							
 								// loops through all the rows
 								for (int row = 0; row < 8; row++)
 								{
 									// loops through all the columns
 									for (int col = 0; col < 8; col++)
 									{
-										// creates Move "m" from king location to location being checked
+
+										// creates Move "m" from piece's location to location being checked
 										Move m = new Move(r,c,row,col);
 
 										// checks if the move is valid for a piece
-										if(board[r][c].isValidMove(m, board))
+										if(isValidMove(m))
 										{
-											// sets piece in location to be checked for checkmate
-											setPiece(row, col, pieceAt(r, c));
-											
-											// 
-											if(inCheck(currentPlayer()))
-											{
-												complete = true;
-												board[row][col] = null;
-											}
-											else
-											{
-												complete = false;
-												break;
-											}
+											return false;
 										}
 										else{/* the space at board[row][column] is null - do nothing*/}
 									}
@@ -259,49 +256,32 @@ public class ChessModel {
 					// checks if the piece at each space is a king
 					if(pieceAt(r, c) != null)
 					{
-						// if the piece at a space is black
+						// if the piece at a space is white
 						if(pieceAt(r, c).player() == Player.WHITE)
 						{
+							ChessPiece piece = board[r][c];
 								// loops through all the rows
-								for (int row = 0; row < 8; row++)
+							for (int row = 0; row < 8; row++)
+							{
+								// loops through all the columns
+								for (int col = 0; col < 8; col++)
 								{
-									// loops through all the columns
-									for (int col = 0; col < 8; col++)
+									// creates Move "m" from piece location to location being checked
+									Move m = new Move(r,c,row,col);
+
+									// checks if the move is valid for a piece
+									if(isValidMove(m))
 									{
-										// creates Move "m" from piece location to location being checked
-										Move m = new Move(r,c,row,col);
-
-										// checks if the move is valid for a piece
-										if(board[r][c].isValidMove(m, board))
-										{
-											// sets piece in location to be checked for checkmate
-											setPiece(row, col, pieceAt(r, c));
-											
-											// 
-											if(inCheck(currentPlayer()))
-											{
-												complete = true;
-												board[row][col] = null;
-											}
-											else
-											{
-												complete = false;
-												break;
-											}
-										}
-										else{/* the space at board[row][column] is null - do nothing*/}
+										return false;
 									}
+									else{/* the space at board[row][column] is null - do nothing*/}
 								}
+							}
 						}
 					}
 				}
 			}
 		}
-
-
-
-
-		
 		return complete;
 
 
@@ -309,92 +289,29 @@ public class ChessModel {
 
 
 	/*********************************************************************************************************************************
-	 * 
-		* Helper method for isComplete(), 
-		* that checks if the king was taken
-		* @return boolean
-		* set to true if there is no king for current player
-		* false otherwise
-	 * 
-	 *********************************************************************************************************************************/
-	private boolean isNoKing(){
-		
-		boolean complete = true;
-		
-		if(currentPlayer() == Player.BLACK)
-		{
-			// loops through all the rows in the chess board
-			for (int r = 0; r < 8; r++)
-			{
-				// loops through all the columns in the chess board
-				for (int c = 0; c < 8; c++)
-				{
-					// checks if the piece at each space is a king
-					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
-					{
-						// if the piece at a space is a king, checks if it is black
-						if(pieceAt(r, c).player() == Player.BLACK)
-						{
-							complete = false;
-						}
-					}
-				}
-			}
-		}
-		// The current player is white
-		else
-		{
-			// loops through all the rows in the chess board
-			for (int r = 0; r < 8; r++)
-			{
-				// loops through all the columns in the chess board
-				for (int c = 0; c < 8; c++)
-				{
-					// checks if the piece at each space is a king
-					if(pieceAt(r, c) != null && pieceAt(r, c).type().equals("King"))
-					{
-						// if the piece at a space is a king, checks if it is black
-						if(pieceAt(r, c).player() == Player.BLACK)
-						{
-							complete = false;
-						}
-					}
-				}
-			}
-		}
-		return complete;
-	}
-
-
-	/*********************************************************************************************************************************
-	 * 
+	
 		* Method that checks if the game is over
 		* by checkmate, or king taken
 		* Uses helper methods kingNoMoves(), noOtherMoves(), and isNoKing()
 		* @return boolean
 		* set to true if the game is complete
 		* false otherwise
-	 * 
+	
 	 *********************************************************************************************************************************/
 	public boolean isComplete() {
 
 		boolean complete = false;
 		
-		if(isNoKing())
-		{
 
-			complete = true;
-		}
-		else
-		{
-			if(noOtherMoves())
+			if(kingNoMoves())
 			{
-				if(kingNoMoves())
+				if(noOtherMoves())
 				{
 					complete = true;
 				}
 			}
-		}
+		
+		
 		
 		return complete;
 	}
@@ -412,7 +329,6 @@ public class ChessModel {
 
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move) {
-		// TODO:  implement this method
 		
 		/** create boolean variable 
 		 * set to true if move is valid
@@ -428,17 +344,22 @@ public class ChessModel {
 			if(pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board))
 			{
 						ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
+						ChessPiece other = pieceAt(move.toRow,move.toColumn);
+
 						setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
 						board[move.fromRow][move.fromColumn] = null;
+
 						if(!(inCheck(currentPlayer())))
 						{
 							validMove = true;
 							board[move.fromRow][move.fromColumn] = piece;
+							board[move.toRow][move.toColumn] = other;
 						}
 						else
 						{
 							board[move.fromRow][move.fromColumn] = piece;
-							board[move.toRow][move.toColumn] = null;
+							board[move.toRow][move.toColumn] = other;
 						}
 			}
 		}
@@ -448,20 +369,30 @@ public class ChessModel {
 
 
 
+	/***************************************************************************************************************
 
+		* This method is used to carry out the move stored in move on
+		* the game board. Updates players position and board accordingly
+		* and also promotes a pawn if they have reached the end of the board
+		* @param move the current move object that has a from location in
+		* rows and columns, and a to location also in rows and columns
+
+	***************************************************************************************************************/
 	public void move(Move move) {
-		// TODO:  implement this method
 		
 			/** checks if the move is valid for the chess piece */
 			if(isValidMove(move))
 			{
-
+				
 				/** checks if the piece is a pawn */
 				if(pieceAt(move.fromRow, move.fromColumn).type().equals("Pawn"))
 				{
+
 					/** checks if the piece is black */
 					if(currentPlayer() == Player.BLACK)
 					{
+						setNextPlayer();
+
 						/** checks if the pawn is moving to the last row */
 						if(move.toRow == 7){
 
@@ -470,44 +401,57 @@ public class ChessModel {
 
 							/** erases the pawn from it's original position */
 							board[move.fromRow][move.fromColumn] = null;
+							
+
+					
 						}
 						/** the pawn is not moving to the end of the board */
 						else
 						{
 							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
 							board[move.fromRow][move.fromColumn] = null;
+
+						
 						}
 					}
 					/** the piece is not black */
 					else
 					{
+						setNextPlayer();
 						/** checks if the pawn is moving to the last row */
 						if(move.toRow == 0){
 
-							/** places a new queen where the pawn was moving to */
 							board[move.toRow][move.toColumn] = new Queen(Player.WHITE);
 
 							/** erases the pawn from it's original position */
 							board[move.fromRow][move.fromColumn] = null;
+
+						
 						}
 						/** the pawn is not moving to the end of the board */
 						else
 						{
+							
 							// sets the piece to the location it's moving to
 							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
 							// erases the piece from it's original location
 							board[move.fromRow][move.fromColumn] = null;
+
+						
 						}
 					}
 				}
 				else
 				{
+					setNextPlayer();
 					/** sets the piece to the location it's is moving to */
 					setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
 					// erases the piece from its original location
 					board[move.fromRow][move.fromColumn] = null;
+
 				}
 			}
 			else
@@ -562,9 +506,9 @@ public class ChessModel {
 									if(board[row][col] != null)
 									{
 										// checks if the piece in question can move to the location of the king
-										if(pieceAt(row, col).isValidMove(m, board))
+										if(isValidMove(m))
 										{
-											isCheck = true;
+											return true;
 										}
 									}
 									else{/* the space at board[row][column] is null - do nothing*/}
@@ -604,9 +548,9 @@ public class ChessModel {
 									if(board[row][col] != null)
 									{
 										// checks if the piece in question can move to the location of the king
-										if(pieceAt(row, col).isValidMove(m, board))
+										if(isValidMove(m))
 										{
-											isCheck = true;
+											return true;
 										}
 									}
 									else{/* the space at board[row][column] is null - do nothing*/}
@@ -623,28 +567,34 @@ public class ChessModel {
 	}
 
 
-	/****************************************************************
-	 * method to get the current player
-	 * @return player whose turn it is
-	*****************************************************************/
+	/************************************************************************************************************
+	 
+		* method to get the current player
+		* @return player whose turn it is
+	
+	*************************************************************************************************************/
 	public Player currentPlayer() {
 		return player;
 	}
 
 
-	/**  
-	 * method to get the number of rows
-	 * @return int 8, number of rows on chessboard
-	*/
+	/*************************************************************************************************************
+	 
+		* method to get the number of rows
+		* @return int 8, number of rows on chessboard
+	
+	*************************************************************************************************************/
 	public int numRows() {
 		return 8;
 	}
 
 
-	/**  
-	 * method to get the number of columns
-	 * @return int 8, number of columns on chessboard
-	*/
+	/************************************************************************************************************
+	
+		* method to get the number of columns
+		* @return int 8, number of columns on chessboard
+	
+	**************************************************************************************************************/
 	public int numColumns() {
 		return 8;
 	}
@@ -690,6 +640,9 @@ public class ChessModel {
 	public void undo() {
 		// TODO: implement this method
 		// undo the last move that has not yet been undone (should handle mutliple undos)
+
+
+
 	}
 
 
