@@ -113,7 +113,7 @@ public class ChessModel {
 						// if the piece at a space is a king, checks if it is black
 						if(pieceAt(kingRow, kingCol).player() == Player.BLACK)
 						{
-							ChessPiece k = board[kingRow][kingCol];
+							
 								// loops through all the rows
 								for (int row = 0; row < 8; row++)
 								{
@@ -217,10 +217,6 @@ public class ChessModel {
 						// if the piece at a space is black
 						if(pieceAt(r, c).player() == Player.BLACK)
 						{
-
-							/** creating a new reference to the piece in question */
-							ChessPiece piece = board[r][c];
-							
 								// loops through all the rows
 								for (int row = 0; row < 8; row++)
 								{
@@ -259,8 +255,8 @@ public class ChessModel {
 						// if the piece at a space is white
 						if(pieceAt(r, c).player() == Player.WHITE)
 						{
-							ChessPiece piece = board[r][c];
-								// loops through all the rows
+							
+							// loops through all the rows
 							for (int row = 0; row < 8; row++)
 							{
 								// loops through all the columns
@@ -365,8 +361,6 @@ public class ChessModel {
 		}
 		return validMove;
 	}
-
-
 
 
 	/***************************************************************************************************************
@@ -642,6 +636,14 @@ public class ChessModel {
 		// undo the last move that has not yet been undone (should handle mutliple undos)
 
 
+
+		// create an arrayList of moves
+		// create an arrayList of pieces that the the player has moved to, stores a piece or null if the space was open
+
+		// add move to arrayList once it's been made
+		// add piece to arrayList if another piece moves there, adds null if there was no piece there
+
+		// if undo is called, does reverse move, and resets piece if applicable
 
 	}
 
