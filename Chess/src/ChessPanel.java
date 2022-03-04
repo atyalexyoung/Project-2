@@ -272,6 +272,18 @@ public class ChessPanel extends JPanel {
 				JOptionPane.showConfirmDialog(null, "It is not your turn.", 
 						"Warning", JOptionPane.CLOSED_OPTION);
 			}
+			if (model.inCheck(Player.BLACK) == true){
+				JOptionPane.showConfirmDialog(null, "black in check", "warning", JOptionPane.CLOSED_OPTION);
+			}
+			if (model.inCheck(Player.WHITE) == true){
+				JOptionPane.showConfirmDialog(null, "white in check", "warning", JOptionPane.CLOSED_OPTION);
+			}
+			
+			 if (model.isValidMove(tempMove) == false){
+				JOptionPane.showConfirmDialog(null, "Invalid move", "warning", JOptionPane.CLOSED_OPTION);
+			 }
+
+			
             // TODO:  add other code here to display other dialogs
 
 		}
