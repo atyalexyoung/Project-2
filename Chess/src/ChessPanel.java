@@ -290,6 +290,9 @@ public class ChessPanel extends JPanel {
 			 if (model.isValidMove(tempMove) == true){
 				JOptionPane.showConfirmDialog(null, "Invalid move", "Warning", JOptionPane.CLOSED_OPTION);
 			 }
+			 if(model.isComplete())
+			 {
+				 JOptionPane.showConfirmDialog(null, "The Game is Over, " + model.currentPlayer().next() + " won", "WINNER WINNER CHICKEN DINNER", JOptionPane.CLOSED_OPTION);			 }
 
 			
             // TODO:  add other code here to display other dialogs
