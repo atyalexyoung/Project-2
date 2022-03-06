@@ -287,7 +287,7 @@ public class ChessPanel extends JPanel {
 				JOptionPane.showConfirmDialog(null, "White in check", "warning", JOptionPane.CLOSED_OPTION);
 			}
 			
-			 if (model.isValidMove(tempMove) == true){
+			 if (model.isValidMove(tempMove) == false){
 				JOptionPane.showConfirmDialog(null, "Invalid move", "Warning", JOptionPane.CLOSED_OPTION);
 			 }
 			 if(model.isComplete())
