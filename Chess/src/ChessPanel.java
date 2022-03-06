@@ -24,7 +24,7 @@ public class ChessPanel extends JPanel {
 	private ImageIcon wKnight;
 	private GUIcodes messageCode;
 	// you can declare other instance variables as needed
-
+	private JButton undo;
 	private listener listener;
 
 	public ChessPanel() {
@@ -32,6 +32,9 @@ public class ChessPanel extends JPanel {
 		model = new ChessModel();
 		board = new JButton[model.numRows()][model.numColumns()];
 		listener = new listener();
+		undo = new JButton("undo");
+		undo.setSize(1000,1000);
+		
 		createIcons();
 
 		JPanel boardpanel = new JPanel();
@@ -51,6 +54,7 @@ public class ChessPanel extends JPanel {
 				boardpanel.add(board[r][c]);
 			}
 		}
+		add(undo);
 		add(boardpanel, BorderLayout.WEST);
 		boardpanel.setPreferredSize(new Dimension(600, 600));
 	}
@@ -196,6 +200,7 @@ public class ChessPanel extends JPanel {
 		Color tempColor;
 
 		public void actionPerformed(ActionEvent event) {
+
 			for (int r = 0; r < model.numRows(); r++) {
 				for (int c = 0; c < model.numColumns(); c++) {
 					if (board[r][c] == event.getSource()) {
@@ -215,6 +220,9 @@ public class ChessPanel extends JPanel {
 					}
                 }
             }
+		
+
+			
 		}
 
 		private void tryMoveTo(int r, int c) {
@@ -273,14 +281,14 @@ public class ChessPanel extends JPanel {
 						"Warning", JOptionPane.CLOSED_OPTION);
 			}
 			if (model.inCheck(Player.BLACK) == true){
-				JOptionPane.showConfirmDialog(null, "black in check", "warning", JOptionPane.CLOSED_OPTION);
+				JOptionPane.showConfirmDialog(null, "Black in check", "Warning", JOptionPane.CLOSED_OPTION);
 			}
 			if (model.inCheck(Player.WHITE) == true){
-				JOptionPane.showConfirmDialog(null, "white in check", "warning", JOptionPane.CLOSED_OPTION);
+				JOptionPane.showConfirmDialog(null, "White in check", "warning", JOptionPane.CLOSED_OPTION);
 			}
 			
-			 if (model.isValidMove(tempMove) == false){
-				JOptionPane.showConfirmDialog(null, "Invalid move", "warning", JOptionPane.CLOSED_OPTION);
+			 if (model.isValidMove(tempMove) == true){
+				JOptionPane.showConfirmDialog(null, "Invalid move", "Warning", JOptionPane.CLOSED_OPTION);
 			 }
 
 			

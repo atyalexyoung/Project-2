@@ -1,6 +1,12 @@
+import java.util.ArrayList;
+
 public class ChessModel {	 
     private ChessPiece[][] board;
 	private Player player;
+	private ArrayList <Move> moves = new ArrayList<>();
+	private ArrayList <ChessPiece> undoLocation = new ArrayList<>();
+	private ArrayList <Integer> promotions = new ArrayList<>();
+
 	
 
 	// declare other instance variables as needed
@@ -390,6 +396,12 @@ public class ChessModel {
 						/** checks if the pawn is moving to the last row */
 						if(move.toRow == 7){
 
+							moves.add(move);
+
+							undoLocation.add(board[move.toRow][move.toColumn]);
+
+							promotions.add(1);
+
 							/** places a new queen where the pawn was moving to */
 							board[move.toRow][move.toColumn] = new Queen(Player.BLACK);
 
@@ -402,6 +414,13 @@ public class ChessModel {
 						/** the pawn is not moving to the end of the board */
 						else
 						{
+
+							moves.add(move);
+
+							undoLocation.add(board[move.toRow][move.toColumn]);
+
+							promotions.add(0);
+
 							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
 							board[move.fromRow][move.fromColumn] = null;
@@ -416,6 +435,14 @@ public class ChessModel {
 						/** checks if the pawn is moving to the last row */
 						if(move.toRow == 0){
 
+
+							moves.add(move);
+
+							undoLocation.add(board[move.toRow][move.toColumn]);
+
+							promotions.add(1);
+
+
 							board[move.toRow][move.toColumn] = new Queen(Player.WHITE);
 
 							/** erases the pawn from it's original position */
@@ -426,7 +453,13 @@ public class ChessModel {
 						/** the pawn is not moving to the end of the board */
 						else
 						{
-							
+							moves.add(move);
+
+							undoLocation.add(board[move.toRow][move.toColumn]);
+
+							promotions.add(0);
+
+
 							// sets the piece to the location it's moving to
 							setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
@@ -440,6 +473,14 @@ public class ChessModel {
 				else
 				{
 					setNextPlayer();
+
+					moves.add(move);
+
+					undoLocation.add(board[move.toRow][move.toColumn]);
+
+					promotions.add(0);
+
+
 					/** sets the piece to the location it's is moving to */
 					setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
@@ -632,18 +673,78 @@ public class ChessModel {
 
 
 	public void undo() {
-		// TODO: implement this method
-		// undo the last move that has not yet been undone (should handle mutliple undos)
+	
+		/** new reference for the last element in moves ArrayList
+		 * this is the move that was last made
+		 */
+		Move undoMove = moves.get(moves.size()-1);
+
+		/** new reference for the last element in undoLocation ArrayList
+		 * this is the piece that was at a move's to location
+		 */
+		ChessPiece undoPiece = undoLocation.get(undoLocation.size()-1);
+
+		Integer promotion = promotions.get(promotions.size()-1);
+
+		/** creates new reference for the undo move
+		 * switches the "from row" and "from column" to 
+		 * the "to row" and "to column", and switches the 
+		 * "to row" and "to column" to the new "from row"
+		 * and "from column"
+		 */
+		int undoFromRow = undoMove.toRow;
+		int undoFromColumn = undoMove.toColumn;
+		int undoToRow = undoMove.fromRow;
+		int undoToColumn = undoMove.fromColumn;
+
+		if(promotion == 1)
+		{
+			/** sets the piece that was moved to it's precious location */
+			board[undoToRow][undoToColumn] = new Pawn(player.next());
+		
+			/** sets the piece that was in the spot before the move
+			 * back into it's place. Can be null
+			 */
+			setPiece(undoFromRow, undoFromColumn, undoPiece);
 
 
 
-		// create an arrayList of moves
-		// create an arrayList of pieces that the the player has moved to, stores a piece or null if the space was open
+			/** removes the undo move from the moves ArrayList */
+			moves.remove(moves.size()-1);
 
-		// add move to arrayList once it's been made
-		// add piece to arrayList if another piece moves there, adds null if there was no piece there
+			/** removes the piece replaced by the undo from the
+			 * undoLocation ArrayList
+			 */
+			undoLocation.remove(undoLocation.size()-1);
 
-		// if undo is called, does reverse move, and resets piece if applicable
+			/** removes the last moves promotion */
+			promotions.remove(promotions.size()-1);
+		}
+		/** the move was not a promotion (0) */
+		else
+		{
+
+			/** sets the piece that was moved to it's precious location */
+			setPiece(undoToRow, undoToColumn, pieceAt(undoFromRow, undoFromColumn));
+		
+			/** sets the piece that was in the spot before the move
+			 * back into it's place. Can be null
+			 */
+			setPiece(undoFromRow, undoFromColumn, undoPiece);
+
+
+
+			/** removes the undo move from the moves ArrayList */
+			moves.remove(moves.size()-1);
+
+			/** removes the piece replaced by the undo from the
+			 * undoLocation ArrayList
+			 */
+			undoLocation.remove(undoLocation.size()-1);
+
+			/** removes the last moves promotion */
+			promotions.remove(promotions.size()-1);
+		}
 
 	}
 

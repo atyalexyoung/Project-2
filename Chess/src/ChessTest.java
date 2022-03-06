@@ -1,6 +1,5 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -102,14 +101,16 @@ public class ChessTest {
         assertTrue(p.isValidMove(move, cp));
 
     }
+
+    /*
         // Tests if pawn can attack enemy player from other diagonal
         @Test
         public void testWhitePawnDiagonal3() {
             ChessModel model = new ChessModel();
             Pawn p = new Pawn(Player.WHITE);
             Pawn p1 = new Pawn(Player.BLACK);
-            model.board[4][4] = p;
-            model.board[3][3] = p1;
+            board[4][4] = p;
+            board[3][3] = p1;
             Move move = new Move(4, 4, 3, 3);
             assertTrue(model.isValidMove(move));
             assertTrue(model.isValidMove(move));
@@ -121,7 +122,7 @@ public class ChessTest {
     
         }
 
-
+*/
 
     // ************************************************************************
 
@@ -2165,7 +2166,7 @@ public class ChessTest {
         Pawn wp3 = new Pawn(Player.WHITE);
         Bishop wp4 = new Bishop(Player.WHITE);
         ChessModel model = new ChessModel();
-        Player p = Player.WHITE;
+
         model.setPiece(4, 0, k);
         model.setPiece(5, 0, wp);
         model.setPiece(3, 0, wp2);
@@ -2246,7 +2247,6 @@ public class ChessTest {
         Pawn wp3 = new Pawn(Player.WHITE);
         Pawn wp4 = new Pawn(Player.WHITE);
         ChessModel model = new ChessModel();
-        Player p = Player.WHITE;
         model.setPiece(4, 0, k);
         model.setPiece(5, 0, wp);
         model.setPiece(3, 0, wp2);
@@ -2311,7 +2311,7 @@ public class ChessTest {
 
     //****************************************************************************************************************************
 
-
+/*
 
 
             // Tests pawn move to end and become a
@@ -2384,7 +2384,7 @@ public class ChessTest {
                 assertEquals(model.pieceAt(5, 0).type(), p.type());;
             } 
 
-
+/*
             // Tests rook move is updated
             @Test
             public void testMove4()
@@ -2497,9 +2497,358 @@ public class ChessTest {
 
 
         
+            /********************************************************************************************************************
+             * 
+             * 
+             *              UNDO TESTS
+             * 
+             * 
+             ********************************************************************************************************************/
+
+
+
+    // Tests pawn can move forward 1 from starting position
+    @Test
+    public void testUndoPawnNullMove() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessModel model = new ChessModel();
+        Move move = new Move(6, 0, 5, 0);
+        model.move(move);
+        assertEquals(model.pieceAt(5, 0).type(), p.type());
+        assertEquals(model.pieceAt(6, 0), null);
+        model.undo();
+        assertEquals(model.pieceAt(5, 0), null);
+        assertEquals(model.pieceAt(6, 0).type(),p.type());
+    }
+    
+    // Tests if pawn can attack enemy player from other diagonal
+    @Test
+    public void testUndoPawnTakePiece() {
+        Pawn p = new Pawn(Player.WHITE);
+        ChessModel model = new ChessModel();
+        
+        Move move1 = new Move(6, 1, 4, 1);
+        model.move(move1);
+
+        Move move2 = new Move(1, 0, 3, 0);
+        model.move(move2);
+
+        Move move3 = new Move(4,1,3,0);
+        model.move(move3);
+
+        assertEquals(model.pieceAt(3, 0).type(), p.type());
+        assertEquals(model.pieceAt(3, 0).player(), Player.WHITE);
+        assertEquals(model.pieceAt(4,1),null);
+
+        model.undo();
+
+        assertEquals(model.pieceAt(3, 0).type(), p.type());
+        assertEquals(model.pieceAt(3, 0).player(), Player.BLACK);
+        assertEquals(model.pieceAt(4,1).type(),p.type());
+        assertEquals(model.pieceAt(4,1).player(), Player.WHITE);
+
+        model.undo();
+
+        assertEquals(model.pieceAt(3, 0), null);
+        assertEquals(model.pieceAt(1, 0).type(), p.type());
+        assertEquals(model.pieceAt(1, 0).player(), Player.BLACK);
+        assertEquals(model.pieceAt(4,1).type(),p.type());
+        assertEquals(model.pieceAt(4,1).player(), Player.WHITE);
+
+        model.undo();
+
+        assertEquals(model.pieceAt(3, 0), null);
+        assertEquals(model.pieceAt(1, 0).type(), p.type());
+        assertEquals(model.pieceAt(1, 0).player(), Player.BLACK);
+        assertEquals(model.pieceAt(4,1) , null);
+        assertEquals(model.pieceAt(6,1).player(), Player.WHITE);
+        assertEquals(model.pieceAt(6, 1).type(),p.type());
+
+    }
     
 
+        // Tests if pawn can attack enemy player from other diagonal
+        @Test
+        public void testUndoManyMoves() {
+            Pawn p = new Pawn(Player.WHITE);
+            ChessModel model = new ChessModel();
+            
+            // white pawn at (6,1) moves forward 2 (4,1)
+            Move move1 = new Move(6, 1, 4, 1);
+            model.move(move1);
+    
+            // black pawn at (1,0) moves forward 2 (3,0)
+            Move move2 = new Move(1, 0, 3, 0);
+            model.move(move2);
+    
+            // white pawn at (4,1) takes black pawn at (3,0)
+            Move move3 = new Move(4,1,3,0);
+            model.move(move3);
+    
+            // black rook take white pawn at (3, 0)
+            Move move4 = new Move(0,0,3,0);
+            assertTrue(model.isValidMove(move4));
+            model.move(move4);
+            
+            // white knight moves from (7,2) to (5, 0)
+            Move move5 = new Move(7,1,5,0);
+            assertTrue(model.isValidMove(move5));
+            model.move(move5);
 
+
+            // black rook at 3,0 take white knight at (5, 0)
+            Move move6 = new Move(3,0,5,0);
+            assertTrue(model.isValidMove(move6));
+            model.move(move6);
+
+
+            // white bishop at (7,2) takes black rook at (5, 0)
+            Move move7 = new Move(7,2,5,0);
+            assertTrue(model.isValidMove(move7));
+            model.move(move7);
+
+
+            // black pawn at (1,4) to (2,4)
+            Move move8 = new Move(1,4,2,4);
+            assertTrue(model.isValidMove(move8));
+            model.move(move8);
+
+
+            // white bishop at (5,0) take bishop at (0,5)
+            Move move9 = new Move(5,0,0,5);
+            assertTrue(model.isValidMove(move9));
+            model.move(move9);
+
+
+            // black king at (0,4) takes white bishop at (0,5)
+            Move move11 = new Move(0,4,0,5);
+            assertTrue(model.isValidMove(move11));
+            model.move(move11);
+
+
+            // white pawn at 6,0 to 4.0
+            Move move12 = new Move(6,0,4,0);
+            assertTrue(model.isValidMove(move12));
+            model.move(move12);
+
+
+            // black pawn at 2,4 to 3,4
+            Move move13 = new Move(2,4,3,4);
+            assertTrue(model.isValidMove(move13));
+            model.move(move13);
+
+
+            // white pawn at 4,0 to 3,0
+            Move move14 = new Move(4,0,3,0);
+            assertTrue(model.isValidMove(move14));
+            model.move(move14);
+
+
+           // black pawn at 3,4 to 4,4
+           Move move15 = new Move(3,4,4,4);
+           assertTrue(model.isValidMove(move15));
+           model.move(move15);
+
+
+           // white pawn at 3,0 to 2,0
+           Move move16 = new Move(3,0,2,0);
+           assertTrue(model.isValidMove(move16));
+           model.move(move16);
+
+
+            // black pawn at 4,4 to 5,4
+           Move move17 = new Move(4,4,5,4);
+           assertTrue(model.isValidMove(move17));
+           model.move(move17);
+
+
+           // white pawn at 2,0 to 1,0
+           Move move18 = new Move(2,0,1,0);
+           assertTrue(model.isValidMove(move18));
+           model.move(move18);
+
+
+            // black pawn at 5,4 to 6,5
+           Move move19 = new Move(5,4,6,5);
+           assertTrue(model.isValidMove(move19));
+           model.move(move19);
+
+
+           // white King take black pawn
+           Move move20 = new Move(7,4,6,5);
+           assertTrue(model.isValidMove(move20));
+           model.move(move20);
+
+
+            // black pawn at 1,7 to 2,7
+           Move move21 = new Move(1,7,2,7);
+           assertTrue(model.isValidMove(move21));
+           model.move(move21);
+
+
+           // white pawn to end of board (1,0 to 0,0)
+           Move move22 = new Move(1,0,0,0);
+           assertTrue(model.isValidMove(move22));
+           model.move(move22);
+
+
+            // black pawn at 2,7 to 3,7
+           Move move23 = new Move(2,7,3,7);
+           assertTrue(model.isValidMove(move23));
+           model.move(move23);
+
+
+           // whtie queen at 0,0 to 5,0 for check
+           Move move24 = new Move(0,0,5,0);
+           assertTrue(model.isValidMove(move24));
+           model.move(move24); 
+
+
+
+        // undo 1
+        model.undo();
+        
+        // undo 2
+        model.undo();
+
+        // undo 3
+        model.undo();
+
+        // undo 4
+        model.undo();
+
+        // undo 5
+        model.undo();
+
+        // undo 6
+        model.undo();
+
+        // undo 7
+        model.undo();
+
+        // undo 8
+        model.undo();
+
+        // undo 9
+        model.undo();
+
+        // undo 10
+        model.undo();
+
+        // undo 11
+        model.undo();
+
+        // undo 12
+        model.undo();
+
+        // undo 13
+        model.undo();
+
+        // undo 14
+        model.undo();
+
+        // undo 15
+        model.undo();
+
+        // undo 16
+        model.undo();
+
+        // undo 17
+        model.undo();
+
+        // undo 18
+        model.undo();
+
+        // undo 19
+        model.undo();
+
+        // undo 20
+        model.undo();
+
+       // undo 21
+       model.undo();
+
+       // undo 22
+       model.undo();
+
+       // undo 23
+       model.undo();
+       
+
+
+    for(int i = 2; i<6; i++)
+    {
+        for(int j = 0; j<8; j++)
+        {
+            assertEquals(model.pieceAt(i, j),null);
+        }
+    }
+
+    for(int x = 0; x<8; x++)
+    {
+        assertEquals(model.pieceAt(1, x).type(),p.type());
+        assertEquals(model.pieceAt(1, x).player(), Player.BLACK);
+
+        assertEquals(model.pieceAt(6, x).type(),p.type());
+        assertEquals(model.pieceAt(6, x).player(), Player.WHITE);
+
+    }
+
+    /** Black pieces are in their original spot */
+       assertEquals(model.pieceAt(0, 0).type(), "Rook");
+       assertEquals(model.pieceAt(0, 0).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 1).type(), "Knight");
+       assertEquals(model.pieceAt(0, 1).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 2).type(), "Bishop");
+       assertEquals(model.pieceAt(0, 3).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 3).type(), "Queen");
+       assertEquals(model.pieceAt(0, 3).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 4).type(), "King");
+       assertEquals(model.pieceAt(0, 4).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 5).type(), "Bishop");
+       assertEquals(model.pieceAt(0, 5).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 6).type(), "Knight");
+       assertEquals(model.pieceAt(0, 6).player(), Player.BLACK);
+
+       assertEquals(model.pieceAt(0, 7).type(), "Rook");
+       assertEquals(model.pieceAt(0, 7).player(), Player.BLACK);
+
+
+
+        /** White pieces are in their original spot */
+
+       assertEquals(model.pieceAt(7, 0).type(), "Rook");
+       assertEquals(model.pieceAt(7, 0).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 1).type(), "Knight");
+       assertEquals(model.pieceAt(7, 1).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 2).type(), "Bishop");
+       assertEquals(model.pieceAt(7, 3).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 3).type(), "Queen");
+       assertEquals(model.pieceAt(7, 3).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 4).type(), "King");
+       assertEquals(model.pieceAt(7, 4).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 5).type(), "Bishop");
+       assertEquals(model.pieceAt(7, 5).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 6).type(), "Knight");
+       assertEquals(model.pieceAt(7, 6).player(), Player.WHITE);
+
+       assertEquals(model.pieceAt(7, 7).type(), "Rook");
+       assertEquals(model.pieceAt(7, 7).player(), Player.WHITE);
+
+    
+    }
 
 
 }
