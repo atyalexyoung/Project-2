@@ -6,6 +6,9 @@ public class ChessModel {
 	private ArrayList <Move> moves = new ArrayList<>();
 	private ArrayList <ChessPiece> undoLocation = new ArrayList<>();
 	private ArrayList <Integer> promotions = new ArrayList<>();
+	private Move escapeDanger;
+	private Move protectMove;
+	private ChessPiece pieceInCheck;
 
 	
 
@@ -671,7 +674,6 @@ public class ChessModel {
 	}
 
 
-
 	public void undo(){
 	
 		/** new reference for the last element in moves ArrayList
@@ -755,19 +757,357 @@ public class ChessModel {
 
 
 
-	public void AI() {
+
+
+
+
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to check if a piece at
+		* a location is in danger of being attacked
+		* @param row the row of the piece to be checked if in danger
+		* @param column the column of the piece to be checked if in danger
+
+	***************************************************************************************************************/
+	public boolean inDanger(int row, int col)
+	{
+
+		boolean inDanger = false;
+
+		// loop through every space on board
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 0; y < 8; y++)
+			{
+				if(pieceAt(x, y) != null)
+				{
+					// checks if the piece at location being checked is white
+					if(pieceAt(x, y).player() == Player.WHITE)
+					{
+						Move attack = new Move(x, y, row, col);
+						
+						if(isValidMove(attack))
+						{
+							return true;
+						}
+						else
+						{/** the move is not valid for piece attacking queen */}
+					}
+				}
+			}
+		}
+		return inDanger;
+	}
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to check if a piece at
+		* a location can escape from being in danger
+		* @param row the row of the piece to be checked
+		* @param column the column of the piece to be checked
+
+	***************************************************************************************************************/
+	public boolean escapeDanger(int fromRow, int fromCol)
+	{
+
+		boolean canEscape = false;
+
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 0; y < 8; y++)
+			{
+				// creates Move "m" from piece's location to location being checked
+				Move escape = new Move(fromRow,fromCol,x,y);
+
+				// checks if the move is valid for a piece
+				if(isValidMove(escape))
+				{
+					
+					setPiece(x, y, pieceAt(fromRow, fromCol));
+
+					board[fromRow][fromCol] = null;
+
+					if(inDanger(x, y))
+					{
+						setPiece(fromRow, fromCol, pieceAt(x, y));
+
+						board[x][y] = null;
+
+
+					}
+					else
+					{
+						setPiece(fromRow, fromCol, pieceAt(x, y));
+
+						board[x][y] = null;
+
+						escapeDanger = escape;
+
+						return true;
+					}
+				}
+			}
+		}
+
+		return canEscape;
+
+				
+	}
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to check if a piece at
+		* a location can be protected from danger
+		* @param row the row of the piece to be checked
+		* @param column the column of the piece to be checked
+		* @return boolean, true if the piece can be protected,
+		* false otherwise
+
+	***************************************************************************************************************/
+	public boolean protectPiece(int row, int col)
+	{
+		//check for sacrifice for queen
+
+		boolean canProtect = false;
+
+		// loops through all the rows in the chess board
+		for (int x = 0; x < 8; x++)
+		{
+			// loops through all the columns in the chess board
+			for (int y = 0; y < 8; y++)
+			{
+				// checks if the piece at each space is a king
+				if(pieceAt(x, y) != null)
+				{
+					// if the piece at a space is black
+					if(pieceAt(x, y).player() == Player.BLACK)
+					{
+							// loops through all the rows
+							for (int rows = 0; rows < 8; rows++)
+							{
+								// loops through all the columns
+								for (int columns = 0; columns < 8; columns++)
+								{
+
+									// creates Move "m" from piece's location to location being checked
+									Move helpPiece = new Move(x,y,rows,columns);
+
+									if(isValidMove(helpPiece))
+									{
+
+										setPiece(rows, columns, pieceAt(x, y));
+
+										board[x][y] = null;
+
+
+										// checks if the move is valid for a piece
+										if(inDanger(row, col))
+										{
+
+											setPiece(x, y, pieceAt(rows, columns));
+
+											board[rows][columns] = null;
+
+										}
+										else
+										{
+
+											setPiece(x, y, pieceAt(rows, columns));
+
+											board[rows][columns] = null;
+
+											protectMove = helpPiece;
+
+											return true;
+										}
+									}
+								}
+							}
+					}
+				}
+			}
+		}
+		return canProtect;
+	}
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to check if a piece at
+		* a location is in danger, and if a move can be made to
+		* avoid the danger. Uses helper methods inDanger(),
+		* escapeDanger(), and protectPiece()
+		* @param type The type of piece to be checked
+		* @return boolean, true if the piece can escape danger,
+		* false otherwise
+
+	***************************************************************************************************************/
+	public boolean checkPiece(String type)
+	{
+
+		boolean check = false;
+
+		// loops through all the rows in the chess board
+		for (int r = 0; r < 8; r++)
+		{
+			// loops through all the columns in the chess board
+			for (int c = 0; c < 8; c++)
+			{
+				// checks if the piece at each space is a king
+				if(pieceAt(r, c) != null)
+				{
+					// if the piece at a space is black
+					if(pieceAt(r, c).player() == Player.BLACK)
+					{
+						// checks if queen is in danger
+						if(pieceAt(r, c).type() == type)
+						{
+							if(inDanger(r, c))
+							{
+								if(escapeDanger(r,c))
+								{
+									pieceInCheck = pieceAt(r, c);
+									return true;
+								}
+								else if(protectPiece(r, c))
+								{
+									pieceInCheck = pieceAt(r, c);
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return check;
+	}
+	
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to check if a piece in danger
+		* would put another piece in danger if it escaped from danger
+		* @param type The type of piece to be checked
+		* @return boolean, true if the move to protect a piece
+		* would result in another piece being in danger,
+		* false otherwise
 		
-		Move move = new Move();
+	***************************************************************************************************************/
+	public boolean otherPieceInDanger(String type)
+	{
+
+		boolean check = false;
+
+		setPiece(escapeDanger.toRow, escapeDanger.toColumn, pieceInCheck);
+		board[escapeDanger.fromRow][escapeDanger.fromColumn] = null;
+
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 0; y < 8; y++)
+			{
+				if(pieceAt(x, y) != null && pieceAt(x, x).type() == type)
+				{
+					if(inDanger(x, y))
+					{
+						return true;
+					}
+					else
+					{/** nothing */}
+				}
+			}
+		}
+		setPiece(escapeDanger.fromRow, escapeDanger.fromColumn, pieceInCheck);
+		board[escapeDanger.toRow][escapeDanger.toColumn] = null;
 
 
-		/*******************************************************************************************
-		 * 
-		 *  Checking if the AI is in check
-		 * 	and if they are, make move to get out of check
-		 * 
-		 *******************************************************************************************/
 
-		if(inCheck(currentPlayer()))
+
+
+		setPiece(protectMove.toRow, protectMove.toColumn, pieceInCheck);
+		board[protectMove.fromRow][protectMove.fromColumn] = null;
+
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 0; y < 8; y++)
+			{
+				if(pieceAt(x, y) != null && pieceAt(x, x).type() == type)
+				{
+					if(inDanger(x, y))
+					{
+						return true;
+					}
+					else
+					{/** nothing */}
+				}
+			}
+		}
+
+		setPiece(protectMove.fromRow, protectMove.fromColumn, pieceInCheck);
+		board[protectMove.toRow][protectMove.toColumn] = null;
+
+		
+		return check;
+	}
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, to protect a piece from danger
+		* by moving it or using another piece to protect it
+		* @param type The type of piece to be checked
+		
+	***************************************************************************************************************/
+	public void moveToProtect(String type)
+	{
+		// loops through all the rows in the chess board
+		for (int r = 0; r < 8; r++)
+		{
+			// loops through all the columns in the chess board
+			for (int c = 0; c < 8; c++)
+			{
+				// checks if the piece at each space is a king
+				if(pieceAt(r, c) != null)
+				{
+					// if the piece at a space is black
+					if(pieceAt(r, c).player() == Player.BLACK)
+					{
+						// checks if queen is in danger
+						if(pieceAt(r, c).type() == type)
+						{
+							if(inDanger(r, c))
+							{
+								if(escapeDanger(r,c))
+								{
+									
+									move(escapeDanger);
+								}
+								else if(protectPiece(r, c))
+								{
+									move(protectMove);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	/***************************************************************************************************************
+
+		* This is a helper method for AI, if AI is in check,
+		* move to escape being in check, or move to protect the king
+		
+	***************************************************************************************************************/
+	public void avoidCheck()
+	{
+		if(inCheck(Player.BLACK))
 		{
 			// loops through all the rows in the chess board
 			for (int r = 0; r < 8; r++)
@@ -805,15 +1145,18 @@ public class ChessModel {
 				}
 			}
 		}
+	}
 
 
-		/************************************************************************************** 
-		 * 
-		 *  Checking if AI can put the player in check
-		 * 
-		****************************************************************************************/
+	/***************************************************************************************************************
 
-
+		* This is a helper method for the AI, attempts to
+		* put the other player in check if it is possible
+		
+	***************************************************************************************************************/
+	public void putInCheck()
+	{
+		
 		// loops through all the rows in the chess board
 		for (int r = 0; r < 8; r++)
 		{
@@ -834,10 +1177,10 @@ public class ChessModel {
 							{
 
 								// creates Move "m" from piece's location to location being checked
-								Move m = new Move(r,c,row,col);
+								Move move = new Move(r,c,row,col);
 
 								// checks if the move is valid for a piece
-								if(isValidMove(m))
+								if(isValidMove(move))
 								{
 									
 									ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
@@ -847,12 +1190,18 @@ public class ChessModel {
 
 									board[move.fromRow][move.fromColumn] = null;
 
-									if((inCheck(player.next())))
+									if(isComplete())
+									{
+										board[move.fromRow][move.fromColumn] = piece;
+										board[move.toRow][move.toColumn] = other;
+										move(move);
+									}
+									else if((inCheck(player.next())))
 									{
 										
 										board[move.fromRow][move.fromColumn] = piece;
 										board[move.toRow][move.toColumn] = other;
-										move(m);
+										move(move);
 									}
 									else
 									{
@@ -871,6 +1220,145 @@ public class ChessModel {
 				else{/** there is no piece in the location being checked */}
 			}
 		}
+	}
+
+	
+	public void AI() {
+		
+
+		/*******************************************************************************************
+		 * 
+		 *  Checking if the AI is in check
+		 * 	and if they are, make move to get out of check
+		 * 
+		 *******************************************************************************************/
+
+		avoidCheck();
+
+
+		/************************************************************************************** 
+		 * 
+		 *  Checking if AI can put the player in check
+		 * 
+		****************************************************************************************/
+
+		putInCheck();
+
+		/************************************************************************************************************
+		 * 
+		 * 			Checking if AI piece is in danger
+		 * 			Prioritize important pieces
+		 * 
+		 ***********************************************************************************************************/
+
+
+		/** 
+		 * checks if the queen is in danger
+		 * if true, move to protect queen
+		 */
+		if(checkPiece("Queen"))
+		{
+			if(!(otherPieceInDanger("King")))
+			{
+				moveToProtect("Queen");
+			}
+		}
+		
+
+		/** 
+		 * checks if the bishop is in danger
+		 * if true, checks if the move would put
+		 * the queen in danger. If it would not,
+		 * move to protect bishop
+		 */
+		if(checkPiece("Bishop"))
+		{
+			if(!(otherPieceInDanger("King")))
+			{
+				if(!(otherPieceInDanger("Queen")))
+				{
+					moveToProtect("Bishop");
+				}
+			}
+		}
+
+
+		/** 
+		 * checks if rook is in danger
+		 * if true, checks if the move would put
+		 * the queen in danger or bishop in
+		 * danger. If it would not,
+		 * move to protect rook
+		 */
+		if(checkPiece("Rook"))
+		{
+			if(!otherPieceInDanger("King"))
+			{
+				if(!(otherPieceInDanger("Queen")))
+				{
+					if(!(otherPieceInDanger("Bishop")))
+					{
+						moveToProtect("Rook");
+					}
+				}
+			}
+		}
+
+
+		/** 
+		 * checks if knight is in danger
+		 * if true, checks if the move would put
+		 * the queen,bishop or rook in
+		 * danger. If it would not,
+		 * move to protect knight
+		 */
+		if(checkPiece("Knight"))
+		{
+			if(!(otherPieceInDanger("King")))
+			{
+				if(!(otherPieceInDanger("Queen")))
+				{
+					if(!(otherPieceInDanger("Bishop")))
+					{
+						if(!(otherPieceInDanger("Rook")))
+						{
+							moveToProtect("Knight");
+						}
+					}
+				}
+			}
+		}
+
+
+
+		/** 
+		 * checks if pawn is in danger
+		 * if true, checks if the move would put
+		 * the queen,bishop, rook, or knight in
+		 * danger. If it would not,
+		 * move to protect pawn
+		 */
+		if(checkPiece("Pawn"))
+		{
+			if(!(otherPieceInDanger("King")))
+			{
+				if(!(otherPieceInDanger("Queen")))
+				{
+					if(!(otherPieceInDanger("Bishop")))
+					{
+						if(!(otherPieceInDanger("Rook")))
+						{
+							if(!(otherPieceInDanger("Knight")))
+							{
+								moveToProtect("Pawn");
+							}
+						}
+					}
+				}	
+			}
+		}
+	
+
 		
 
 
@@ -897,6 +1385,8 @@ public class ChessModel {
 		 *c. Determine if any of your pieces are in danger, 
 		 *		i. Move them if you can. 
 		 *		ii. Attempt to protect that piece. 
+
+		 		Done
 		 *
 		 *d. Move a piece (pawns first) forward toward opponent king 
 		 *		i. check to see if that piece is in danger of being removed, if so, move a different piece.
