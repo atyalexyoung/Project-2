@@ -2581,8 +2581,62 @@ public class ChessTest {
         // Tests if pawn can attack enemy player from other diagonal
         @Test
         public void testUndoManyMoves() {
+
             Pawn p = new Pawn(Player.WHITE);
+
             ChessModel model = new ChessModel();
+
+            ChessPiece bp0 = model.pieceAt(1, 0);
+            ChessPiece bp1 = model.pieceAt(1, 1);
+            ChessPiece bp2 = model.pieceAt(1, 2);
+            ChessPiece bp3 = model.pieceAt(1, 3);
+            ChessPiece bp4 = model.pieceAt(1, 4);
+            ChessPiece bp5 = model.pieceAt(1, 5);
+            ChessPiece bp6 = model.pieceAt(1, 6);
+            ChessPiece bp7 = model.pieceAt(1, 7);
+
+            ChessPiece wp0 = model.pieceAt(6, 0);
+            ChessPiece wp1 = model.pieceAt(6, 1);
+            ChessPiece wp2 = model.pieceAt(6, 2);
+            ChessPiece wp3 = model.pieceAt(6, 3);
+            ChessPiece wp4 = model.pieceAt(6, 4);
+            ChessPiece wp5 = model.pieceAt(6, 5);
+            ChessPiece wp6 = model.pieceAt(6, 6);
+            ChessPiece wp7 = model.pieceAt(6, 7);
+
+
+            ChessPiece brook1 = model.pieceAt(0, 0);
+            ChessPiece brook2 = model.pieceAt(0, 7);
+
+            ChessPiece wrook1 = model.pieceAt(7, 0);
+            ChessPiece wrook2 = model.pieceAt(7, 7);
+
+
+
+            ChessPiece bknight1 = model.pieceAt(0, 1);
+            ChessPiece bknight2 = model.pieceAt(0, 6);
+
+            ChessPiece wknight1 = model.pieceAt(7, 1);
+            ChessPiece wknight2 = model.pieceAt(7, 6);
+
+
+
+            ChessPiece bbishop1 = model.pieceAt(0, 2);
+            ChessPiece bbishop2 = model.pieceAt(0, 5);
+
+            ChessPiece wbishop1 = model.pieceAt(7, 2);
+            ChessPiece wbishop2 = model.pieceAt(7, 5);
+
+
+
+            ChessPiece bqueen = model.pieceAt(0, 3);
+            ChessPiece bking = model.pieceAt(0, 4);
+
+            ChessPiece wqueen = model.pieceAt(7, 3);
+            ChessPiece wking = model.pieceAt(7, 4);
+
+
+
             
             // white pawn at (6,1) moves forward 2 (4,1)
             Move move1 = new Move(6, 1, 4, 1);
@@ -2824,58 +2878,64 @@ public class ChessTest {
 
     }
 
+
+
+
+    /** Black pawns are in their original spot */
+    assertEquals(model.pieceAt(1, 0), bp0);
+    assertEquals(model.pieceAt(1, 1), bp1);
+    assertEquals(model.pieceAt(1, 2), bp2);
+    assertEquals(model.pieceAt(1, 3), bp3);
+    assertEquals(model.pieceAt(1, 4), bp4);
+    assertEquals(model.pieceAt(1, 5), bp5);
+    assertEquals(model.pieceAt(1, 6), bp6);
+    assertEquals(model.pieceAt(1, 7), bp7);
+
+    /** White pawns are in their original spot */
+    assertEquals(model.pieceAt(6, 1), wp1);
+    assertEquals(model.pieceAt(6, 2), wp2);
+    assertEquals(model.pieceAt(6, 3), wp3);
+    assertEquals(model.pieceAt(6, 4), wp4);
+    assertEquals(model.pieceAt(6, 5), wp5);
+    assertEquals(model.pieceAt(6, 6), wp6);
+    assertEquals(model.pieceAt(6, 7), wp7);
+
+
     /** Black pieces are in their original spot */
-       assertEquals(model.pieceAt(0, 0).type(), "Rook");
-       assertEquals(model.pieceAt(0, 0).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 0), brook1);
 
-       assertEquals(model.pieceAt(0, 1).type(), "Knight");
-       assertEquals(model.pieceAt(0, 1).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 1), bknight1);
 
-       assertEquals(model.pieceAt(0, 2).type(), "Bishop");
-       assertEquals(model.pieceAt(0, 3).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 2), bbishop1);
 
-       assertEquals(model.pieceAt(0, 3).type(), "Queen");
-       assertEquals(model.pieceAt(0, 3).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 3), bqueen);
 
-       assertEquals(model.pieceAt(0, 4).type(), "King");
-       assertEquals(model.pieceAt(0, 4).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 4), bking);
 
-       assertEquals(model.pieceAt(0, 5).type(), "Bishop");
-       assertEquals(model.pieceAt(0, 5).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 5), bbishop2);
 
-       assertEquals(model.pieceAt(0, 6).type(), "Knight");
-       assertEquals(model.pieceAt(0, 6).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 6), bknight2);
 
-       assertEquals(model.pieceAt(0, 7).type(), "Rook");
-       assertEquals(model.pieceAt(0, 7).player(), Player.BLACK);
+       assertEquals(model.pieceAt(0, 7), brook2);
 
 
 
         /** White pieces are in their original spot */
+       assertEquals(model.pieceAt(7, 0), wrook1);
 
-       assertEquals(model.pieceAt(7, 0).type(), "Rook");
-       assertEquals(model.pieceAt(7, 0).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 1), wknight1);
 
-       assertEquals(model.pieceAt(7, 1).type(), "Knight");
-       assertEquals(model.pieceAt(7, 1).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 2), wbishop1);
 
-       assertEquals(model.pieceAt(7, 2).type(), "Bishop");
-       assertEquals(model.pieceAt(7, 3).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 3), wqueen);
 
-       assertEquals(model.pieceAt(7, 3).type(), "Queen");
-       assertEquals(model.pieceAt(7, 3).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 4), wking);
 
-       assertEquals(model.pieceAt(7, 4).type(), "King");
-       assertEquals(model.pieceAt(7, 4).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 5), wbishop2);
 
-       assertEquals(model.pieceAt(7, 5).type(), "Bishop");
-       assertEquals(model.pieceAt(7, 5).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 6), wknight2);
 
-       assertEquals(model.pieceAt(7, 6).type(), "Knight");
-       assertEquals(model.pieceAt(7, 6).player(), Player.WHITE);
-
-       assertEquals(model.pieceAt(7, 7).type(), "Rook");
-       assertEquals(model.pieceAt(7, 7).player(), Player.WHITE);
+       assertEquals(model.pieceAt(7, 7), wrook2);
 
     
     }
