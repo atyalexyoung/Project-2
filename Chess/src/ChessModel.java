@@ -672,7 +672,7 @@ public class ChessModel {
 
 
 
-	public void undo() {
+	public void undo(){
 	
 		/** new reference for the last element in moves ArrayList
 		 * this is the move that was last made
@@ -719,6 +719,8 @@ public class ChessModel {
 
 			/** removes the last moves promotion */
 			promotions.remove(promotions.size()-1);
+
+			setNextPlayer();
 		}
 		/** the move was not a promotion (0) */
 		else
@@ -744,20 +746,152 @@ public class ChessModel {
 
 			/** removes the last moves promotion */
 			promotions.remove(promotions.size()-1);
+			
+			setNextPlayer();
 		}
 
 	}
 
 
 
+
 	public void AI() {
+		
+		Move move = new Move();
+
+
+		/*******************************************************************************************
+		 * 
+		 *  Checking if the AI is in check
+		 * 	and if they are, make move to get out of check
+		 * 
+		 *******************************************************************************************/
+
+		if(inCheck(currentPlayer()))
+		{
+			// loops through all the rows in the chess board
+			for (int r = 0; r < 8; r++)
+			{
+				// loops through all the columns in the chess board
+				for (int c = 0; c < 8; c++)
+				{
+					// checks if the piece at each space is a king
+					if(pieceAt(r, c) != null)
+					{
+						// if the piece at a space is black
+						if(pieceAt(r, c).player() == Player.BLACK)
+						{
+							// loops through all the rows
+							for (int row = 0; row < 8; row++)
+							{
+								// loops through all the columns
+								for (int col = 0; col < 8; col++)
+								{
+
+									// creates Move "m" from piece's location to location being checked
+									Move m = new Move(r,c,row,col);
+
+									// checks if the move is valid for a piece
+									if(isValidMove(m))
+									{
+										move(m);
+									}
+									else{/* the space at board[row][column] is null - do nothing*/}	
+								}
+						
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		/************************************************************************************** 
+		 * 
+		 *  Checking if AI can put the player in check
+		 * 
+		****************************************************************************************/
+
+
+		// loops through all the rows in the chess board
+		for (int r = 0; r < 8; r++)
+		{
+			// loops through all the columns in the chess board
+			for (int c = 0; c < 8; c++)
+			{
+				// checks if the piece at each space is a king
+				if(pieceAt(r, c) != null)
+				{
+					// if the piece at a space is black
+					if(pieceAt(r, c).player() == Player.BLACK)
+					{
+						// loops through all the rows
+						for (int row = 0; row < 8; row++)
+						{
+							// loops through all the columns
+							for (int col = 0; col < 8; col++)
+							{
+
+								// creates Move "m" from piece's location to location being checked
+								Move m = new Move(r,c,row,col);
+
+								// checks if the move is valid for a piece
+								if(isValidMove(m))
+								{
+									
+									ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
+									ChessPiece other = pieceAt(move.toRow,move.toColumn);
+
+									setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
+
+									board[move.fromRow][move.fromColumn] = null;
+
+									if((inCheck(player.next())))
+									{
+										
+										board[move.fromRow][move.fromColumn] = piece;
+										board[move.toRow][move.toColumn] = other;
+										move(m);
+									}
+									else
+									{
+										board[move.fromRow][move.fromColumn] = piece;
+										board[move.toRow][move.toColumn] = other;
+									}
+								}
+								else
+								{/** the move is not valid and should not be carried out */}
+							}
+							
+						}
+					}
+					else{/** the piece does not belong to the AI */}
+				}
+				else{/** there is no piece in the location being checked */}
+			}
+		}
+		
+
+
+		
+		
+		
+		
 		/* TODO: implement this method (manually graded)
+
 		 * Write a simple AI set of rules in the following order. 
 		 * a. Check to see if you are in check.
 		 * 		i. If so, get out of check by moving the king or placing a piece to block the check 
 		 * 
+		 * DONE
+		 * 
 		 * b. Attempt to put opponent into check (or checkmate). 
 		 * 		i. Attempt to put opponent into check without losing your piece
+		 * 
+		 * 		DONE
+		 * 
+		 * 
 		 *		ii. Perhaps you have won the game. 
 		 *
 		 *c. Determine if any of your pieces are in danger, 
@@ -770,3 +904,4 @@ public class ChessModel {
 
 	}
 }
+					

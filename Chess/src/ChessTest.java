@@ -2507,7 +2507,7 @@ public class ChessTest {
 
 
 
-    // Tests pawn can move forward 1 from starting position
+    // 
     @Test
     public void testUndoPawnNullMove() {
         Pawn p = new Pawn(Player.WHITE);
@@ -2519,6 +2519,7 @@ public class ChessTest {
         model.undo();
         assertEquals(model.pieceAt(5, 0), null);
         assertEquals(model.pieceAt(6, 0).type(),p.type());
+        assertTrue(model.currentPlayer() == Player.WHITE);
     }
     
     // Tests if pawn can attack enemy player from other diagonal
@@ -2527,18 +2528,22 @@ public class ChessTest {
         Pawn p = new Pawn(Player.WHITE);
         ChessModel model = new ChessModel();
         
+        // white pawn move
         Move move1 = new Move(6, 1, 4, 1);
         model.move(move1);
 
+        // black pawn move
         Move move2 = new Move(1, 0, 3, 0);
         model.move(move2);
 
+        // white pawn move
         Move move3 = new Move(4,1,3,0);
         model.move(move3);
 
         assertEquals(model.pieceAt(3, 0).type(), p.type());
         assertEquals(model.pieceAt(3, 0).player(), Player.WHITE);
         assertEquals(model.pieceAt(4,1),null);
+        assertTrue(model.currentPlayer() == Player.BLACK);
 
         model.undo();
 
@@ -2546,6 +2551,8 @@ public class ChessTest {
         assertEquals(model.pieceAt(3, 0).player(), Player.BLACK);
         assertEquals(model.pieceAt(4,1).type(),p.type());
         assertEquals(model.pieceAt(4,1).player(), Player.WHITE);
+        assertTrue(model.currentPlayer() == Player.WHITE);
+
 
         model.undo();
 
@@ -2554,6 +2561,8 @@ public class ChessTest {
         assertEquals(model.pieceAt(1, 0).player(), Player.BLACK);
         assertEquals(model.pieceAt(4,1).type(),p.type());
         assertEquals(model.pieceAt(4,1).player(), Player.WHITE);
+        assertTrue(model.currentPlayer() == Player.BLACK);
+
 
         model.undo();
 
@@ -2563,6 +2572,8 @@ public class ChessTest {
         assertEquals(model.pieceAt(4,1) , null);
         assertEquals(model.pieceAt(6,1).player(), Player.WHITE);
         assertEquals(model.pieceAt(6, 1).type(),p.type());
+        assertTrue(model.currentPlayer() == Player.WHITE);
+
 
     }
     
@@ -2698,7 +2709,7 @@ public class ChessTest {
            model.move(move23);
 
 
-           // whtie queen at 0,0 to 5,0 for check
+           // white queen at 0,0 to 5,0 for check
            Move move24 = new Move(0,0,5,0);
            assertTrue(model.isValidMove(move24));
            model.move(move24); 
@@ -2707,12 +2718,26 @@ public class ChessTest {
 
         // undo 1
         model.undo();
-        
+        // white queen at 0,0 to 5,0 for check
+        assertEquals(model.pieceAt(0,0).type(), "Queen");
+        assertEquals(model.pieceAt(0,0).player(), Player.WHITE);
+        assertEquals(model.pieceAt(5,0), null);
+
         // undo 2
         model.undo();
+         // black pawn at 2,7 to 3,7
+         assertEquals(model.pieceAt(2,7).type(), "Pawn");
+         assertEquals(model.pieceAt(2,7).player(), Player.BLACK);
+         assertEquals(model.pieceAt(3,7), null);
+
 
         // undo 3
         model.undo();
+        // white pawn to end of board (1,0 to 0,0)
+        assertEquals(model.pieceAt(1,0).type(), "Pawn");
+        assertEquals(model.pieceAt(1,0).player(), Player.WHITE);
+        assertEquals(model.pieceAt(0,0), null);
+        
 
         // undo 4
         model.undo();
@@ -2768,11 +2793,16 @@ public class ChessTest {
        // undo 21
        model.undo();
 
+       
+
        // undo 22
        model.undo();
+       
+
 
        // undo 23
        model.undo();
+       
        
 
 
