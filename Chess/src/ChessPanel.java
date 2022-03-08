@@ -245,7 +245,7 @@ public class ChessPanel extends JPanel {
 			displayMessage();
 
 			// After implementing AI method in ChessModel.java, uncomment to turn on AI
-            //AITurn();
+            AITurn();
 		}
 		
         public void AITurn() {
@@ -287,7 +287,7 @@ public class ChessPanel extends JPanel {
 				JOptionPane.showConfirmDialog(null, "White in check", "warning", JOptionPane.CLOSED_OPTION);
 			}
 			
-			 if (model.isValidMove(tempMove) == false){
+			 if (model.isValidMove(tempMove) == true){
 				JOptionPane.showConfirmDialog(null, "Invalid move", "Warning", JOptionPane.CLOSED_OPTION);
 			 }
 			 if(model.isComplete())
