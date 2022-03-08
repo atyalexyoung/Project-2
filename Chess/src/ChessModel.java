@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 public class ChessModel {	 
     private ChessPiece[][] board;
@@ -9,6 +12,9 @@ public class ChessModel {
 	private Move escapeDanger;
 	private Move protectMove;
 	private ChessPiece pieceInCheck;
+	private int turnCounter;
+	private int protect;
+
 
 	
 
@@ -510,7 +516,7 @@ public class ChessModel {
 
 		* This method is used to check if a player is in check from their opponent
 		* If the King does not move, it can be taken and the game is over
-		* @param p The player whose check is in question is passed in
+		* @param Player The player whose check is in question is passed in
 		* @return boolean: true if player is in check, false otherwise
 
 	***************************************************************************************************************/
@@ -774,7 +780,7 @@ public class ChessModel {
 		* @param column the column of the piece to be checked if in danger
 
 	***************************************************************************************************************/
-	public boolean inDanger(int row, int col)
+	private boolean inDanger(int row, int col)
 	{
 
 		boolean inDanger = false;
@@ -813,7 +819,7 @@ public class ChessModel {
 		* @param column the column of the piece to be checked
 
 	***************************************************************************************************************/
-	public boolean escapeDanger(int fromRow, int fromCol)
+	private boolean escapeDanger(int fromRow, int fromCol)
 	{
 
 		boolean canEscape = false;
@@ -829,23 +835,25 @@ public class ChessModel {
 				if(isValidMove(escape))
 				{
 					
-					setPiece(x, y, pieceAt(fromRow, fromCol));
+					ChessPiece piece = board[fromRow][fromCol];
+					ChessPiece other = board[x][y];
+
+					setPiece(x, y, piece);
 
 					board[fromRow][fromCol] = null;
 
 					if(inDanger(x, y))
 					{
-						setPiece(fromRow, fromCol, pieceAt(x, y));
+						setPiece(fromRow, fromCol, piece);
 
-						board[x][y] = null;
-
+						board[x][y] = other;
 
 					}
 					else
 					{
-						setPiece(fromRow, fromCol, pieceAt(x, y));
+						setPiece(fromRow, fromCol, piece);
 
-						board[x][y] = null;
+						board[x][y] = other;
 
 						escapeDanger = escape;
 
@@ -871,7 +879,7 @@ public class ChessModel {
 		* false otherwise
 
 	***************************************************************************************************************/
-	public boolean protectPiece(int row, int col)
+	private boolean protectPiece(int row, int col)
 	{
 		//check for sacrifice for queen
 
@@ -902,7 +910,10 @@ public class ChessModel {
 									if(isValidMove(helpPiece))
 									{
 
-										setPiece(rows, columns, pieceAt(x, y));
+										ChessPiece piece = board[x][y];
+										ChessPiece other = board[rows][columns];
+					
+										setPiece(rows, columns, piece);
 
 										board[x][y] = null;
 
@@ -911,17 +922,16 @@ public class ChessModel {
 										if(inDanger(row, col))
 										{
 
-											setPiece(x, y, pieceAt(rows, columns));
+											setPiece(x, y, piece);
 
-											board[rows][columns] = null;
+											board[rows][columns] = other;
 
 										}
 										else
 										{
+											setPiece(x, y, piece);
 
-											setPiece(x, y, pieceAt(rows, columns));
-
-											board[rows][columns] = null;
+											board[rows][columns] = other;
 
 											protectMove = helpPiece;
 
@@ -949,7 +959,7 @@ public class ChessModel {
 		* false otherwise
 
 	***************************************************************************************************************/
-	public boolean checkPiece(String type)
+	private boolean checkPiece(String type)
 	{
 
 		boolean check = false;
@@ -1001,10 +1011,17 @@ public class ChessModel {
 		* false otherwise
 		
 	***************************************************************************************************************/
-	public boolean otherPieceInDanger(String type)
+	private boolean otherPieceInDanger(String type)
 	{
 
+		if(escapeDanger == null)
+		{
+			return false;
+		}
+
 		boolean check = false;
+
+		ChessPiece escapeLocation = board[escapeDanger.toRow][escapeDanger.toColumn];
 
 		setPiece(escapeDanger.toRow, escapeDanger.toColumn, pieceInCheck);
 		board[escapeDanger.fromRow][escapeDanger.fromColumn] = null;
@@ -1013,7 +1030,7 @@ public class ChessModel {
 		{
 			for(int y = 0; y < 8; y++)
 			{
-				if(pieceAt(x, y) != null && pieceAt(x, x).type() == type)
+				if(pieceAt(x, y) != null && pieceAt(x, y).type() == type)
 				{
 					if(inDanger(x, y))
 					{
@@ -1024,12 +1041,16 @@ public class ChessModel {
 				}
 			}
 		}
+
 		setPiece(escapeDanger.fromRow, escapeDanger.fromColumn, pieceInCheck);
-		board[escapeDanger.toRow][escapeDanger.toColumn] = null;
+		board[escapeDanger.toRow][escapeDanger.toColumn] = escapeLocation;
 
+		if(protectMove == null)
+		{
+			return false;
+		}
 
-
-
+		ChessPiece protectLocation = board[protectMove.toRow][protectMove.toColumn];
 
 		setPiece(protectMove.toRow, protectMove.toColumn, pieceInCheck);
 		board[protectMove.fromRow][protectMove.fromColumn] = null;
@@ -1038,7 +1059,7 @@ public class ChessModel {
 		{
 			for(int y = 0; y < 8; y++)
 			{
-				if(pieceAt(x, y) != null && pieceAt(x, x).type() == type)
+				if(pieceAt(x, y) != null && pieceAt(x, y).type() == type)
 				{
 					if(inDanger(x, y))
 					{
@@ -1051,7 +1072,7 @@ public class ChessModel {
 		}
 
 		setPiece(protectMove.fromRow, protectMove.fromColumn, pieceInCheck);
-		board[protectMove.toRow][protectMove.toColumn] = null;
+		board[protectMove.toRow][protectMove.toColumn] = protectLocation;
 
 		
 		return check;
@@ -1065,40 +1086,25 @@ public class ChessModel {
 		* @param type The type of piece to be checked
 		
 	***************************************************************************************************************/
-	public void moveToProtect(String type)
+	private void moveToProtect(String type)
 	{
-		// loops through all the rows in the chess board
-		for (int r = 0; r < 8; r++)
+
+							
+		if(escapeDanger != null)
 		{
-			// loops through all the columns in the chess board
-			for (int c = 0; c < 8; c++)
+			if(isValidMove(escapeDanger))
 			{
-				// checks if the piece at each space is a king
-				if(pieceAt(r, c) != null)
-				{
-					// if the piece at a space is black
-					if(pieceAt(r, c).player() == Player.BLACK)
-					{
-						// checks if queen is in danger
-						if(pieceAt(r, c).type() == type)
-						{
-							if(inDanger(r, c))
-							{
-								if(escapeDanger(r,c))
-								{
-									
-									move(escapeDanger);
-								}
-								else if(protectPiece(r, c))
-								{
-									move(protectMove);
-								}
-							}
-						}
-					}
-				}
+				move(escapeDanger);
 			}
 		}
+		else if(protectMove != null)
+		{
+			if(isValidMove(protectMove))
+			{
+				move(protectMove);
+			}
+		}
+							
 	}
 
 
@@ -1108,7 +1114,7 @@ public class ChessModel {
 		* move to escape being in check, or move to protect the king
 		
 	***************************************************************************************************************/
-	public void avoidCheck()
+	private void avoidCheck()
 	{
 		if(inCheck(Player.BLACK))
 		{
@@ -1118,30 +1124,55 @@ public class ChessModel {
 				// loops through all the columns in the chess board
 				for (int c = 0; c < 8; c++)
 				{
-					// checks if the piece at each space is a king
-					if(pieceAt(r, c) != null)
+					if(protect != 1)
 					{
-						// if the piece at a space is black
-						if(pieceAt(r, c).player() == Player.BLACK)
+						// checks if the piece at each space is a king
+						if(pieceAt(r, c) != null)
 						{
-							// loops through all the rows
-							for (int row = 0; row < 8; row++)
+							// if the piece at a space is black
+							if(pieceAt(r, c).player() == Player.BLACK)
 							{
-								// loops through all the columns
-								for (int col = 0; col < 8; col++)
+								// loops through all the rows
+								for (int row = 0; row < 8; row++)
 								{
-
-									// creates Move "m" from piece's location to location being checked
-									Move m = new Move(r,c,row,col);
-
-									// checks if the move is valid for a piece
-									if(isValidMove(m))
+									// loops through all the columns
+									for (int col = 0; col < 8; col++)
 									{
-										move(m);
+
+										// creates Move "m" from piece's location to location being checked
+										Move m = new Move(r,c,row,col);
+
+										// checks if the move is valid for a piece
+										if(isValidMove(m))
+										{
+
+											ChessPiece piece = board[r][c];
+											ChessPiece other = board[row][col];
+
+											setPiece(row, col, piece);
+											board[r][c] = null;
+
+											if(!(inCheck(Player.BLACK)))
+											{
+												setPiece(r, c, piece);
+												board[row][col] = other;
+												move(m);
+												protect = 1;
+											}
+											else
+											{
+												// keep checking cpu, you got this
+												setPiece(r, c, piece);
+												board[row][col] = other;											
+											}
+
+
+
+											
+										}
+										else{/* the space at board[row][column] is null - do nothing*/}	
 									}
-									else{/* the space at board[row][column] is null - do nothing*/}	
 								}
-						
 							}
 						}
 					}
@@ -1157,7 +1188,7 @@ public class ChessModel {
 		* put the other player in check if it is possible
 		
 	***************************************************************************************************************/
-	public void putInCheck()
+	private void putInCheck()
 	{
 		
 		// loops through all the rows in the chess board
@@ -1198,6 +1229,8 @@ public class ChessModel {
 										board[move.fromRow][move.fromColumn] = piece;
 										board[move.toRow][move.toColumn] = other;
 										move(move);
+										protect = 1;
+									
 									}
 									else if((inCheck(player.next())))
 									{
@@ -1205,6 +1238,8 @@ public class ChessModel {
 										board[move.fromRow][move.fromColumn] = piece;
 										board[move.toRow][move.toColumn] = other;
 										move(move);
+										protect = 1;
+									
 									}
 									else
 									{
@@ -1225,10 +1260,258 @@ public class ChessModel {
 		}
 	}
 
+
+
+
+
+
+	private void queenPawn()
+	{
+		if(turnCounter == 1)
+		{
+			if(pieceAt(5, 3) != null)
+			{
+				queenPawnOffense();
+			}
+			else if(pieceAt(4,3) != null)
+			{
+				queenPawnDefense();
+			}
+		}
+		if(turnCounter == 2)
+		{
+			if(pieceAt(5, 3) != null && pieceAt(5, 2) != null)
+			{
+				queenPawnOffense();
+			}
+			else
+			{
+				queenPawnDefense();
+			}
+		}
+		if(turnCounter == 3)
+		{
+			if(pieceAt(5, 3) != null && pieceAt(5, 2) != null)
+			{
+				queenPawnOffense();
+			}
+			else
+			{
+				queenPawnDefense();
+			}
+
+		}
+		if(turnCounter > 3)
+		{
+			generalPiece();
+		}
+	}
+
+	private void queenPawnOffense()
+	{
+		if(turnCounter == 1)
+		{
+			Move open = new Move(1,3,3,3);
+			if(isValidMove(open))
+			{
+				move(open);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter == 2)
+		{
+			Move second = new Move(1,2,2,2);
+			if(isValidMove(second))
+			{
+				move(second);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter == 3)
+		{
+			Move third = new Move(0,2,1,3);
+			if(isValidMove(third))
+			{
+				move(third);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+	}
+
+	private void queenPawnDefense()
+	{
+		if(turnCounter == 1)
+		{
+			Move open = new Move(1,6,2,6);
+			if(isValidMove(open))
+			{
+				move(open);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter == 2)
+		{
+			Move second = new Move(0,6,2,5);
+			if(isValidMove(second))
+			{
+				move(second);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter == 3)
+		{
+			Move third = new Move(0,5,1,6);
+			if(isValidMove(third))
+			{
+				move(third);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+			
+		}
+		if(turnCounter > 4)
+		{
+			generalPiece();
+		}
+	}
+
+	private void kingPawnStart()
+	{
+		if(turnCounter == 1)
+		{
+			Move open = new Move(1,4,3,4);
+			if(isValidMove(open))
+			{
+				move(open);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter == 2)
+		{
+			Move second = new Move(1,3,2,3);
+			if(isValidMove(second))
+			{
+				move(second);
+				protect = 1;
+
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		if(turnCounter > 2)
+		{
+			generalPiece();
+		}
+	}
+
+	private boolean isPossibleMove(int fr, int fc)
+	{
+		boolean isPossibleMove = false;
+		for(int x = 0; x < 8; x++)
+		{
+			for(int y = 0; y < 8; y++)
+			{
+				Move move = new Move(fr,fc,x,y);
+				if(isValidMove(move))
+				{
+					return true;
+				}
+
+			}
+		}
+		return isPossibleMove;
+	}
 	
+	private void generalMove(int fr, int fc)
+	{
+		Random r = new Random();
+		Random c = new Random();
+
+		int row = r.nextInt(8);
+		int col = c.nextInt(8);
+
+		Move move = new Move(fr,fc,row,col);
+		if(isValidMove(move))
+		{
+			move(move);
+			protect = 1;
+
+		}
+		else
+		{
+			generalMove(fr, fc);
+		}
+	}
+
+	private void generalPiece()
+	{
+		Random r = new Random();
+		Random c = new Random();
+		
+		int row = r.nextInt(8);
+		int col = c.nextInt(8);
+
+		if(pieceAt(row,col) != null && pieceAt(row,col).player() == Player.BLACK)
+		{
+			if(isPossibleMove(row, col))
+			{
+				generalMove(row,col);
+			}
+			else
+			{
+				generalPiece();
+			}
+		}
+		else
+		{
+			generalPiece();
+		}
+	}
+
+
 	public void AI() {
 		
-
+		setNextPlayer();
+		turnCounter++;
+		escapeDanger = null;
+		protectMove = null;
+		protect = 0;
 		/*******************************************************************************************
 		 * 
 		 *  Checking if the AI is in check
@@ -1259,11 +1542,18 @@ public class ChessModel {
 		 * checks if the queen is in danger
 		 * if true, move to protect queen
 		 */
-		if(checkPiece("Queen"))
+		if(protect != 1)
 		{
-			if(!(otherPieceInDanger("King")))
+			if(checkPiece("Queen"))
 			{
-				moveToProtect("Queen");
+				if(!(otherPieceInDanger("King")))
+				{
+					
+					moveToProtect("Queen");
+					protect = 1;
+
+					
+				}
 			}
 		}
 		
@@ -1274,13 +1564,20 @@ public class ChessModel {
 		 * the queen in danger. If it would not,
 		 * move to protect bishop
 		 */
-		if(checkPiece("Bishop"))
+		if(protect != 1)
 		{
-			if(!(otherPieceInDanger("King")))
+			if(checkPiece("Bishop"))
 			{
-				if(!(otherPieceInDanger("Queen")))
+				if(!(otherPieceInDanger("King")))
 				{
-					moveToProtect("Bishop");
+					if(!(otherPieceInDanger("Queen")))
+					{
+						
+						moveToProtect("Bishop");
+						protect = 1;
+
+					}
+
 				}
 			}
 		}
@@ -1293,15 +1590,20 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect rook
 		 */
-		if(checkPiece("Rook"))
+		if(protect != 1)
 		{
-			if(!otherPieceInDanger("King"))
+			if(checkPiece("Rook"))
 			{
-				if(!(otherPieceInDanger("Queen")))
+				if(!otherPieceInDanger("King"))
 				{
-					if(!(otherPieceInDanger("Bishop")))
+					if(!(otherPieceInDanger("Queen")))
 					{
-						moveToProtect("Rook");
+						if(!(otherPieceInDanger("Bishop")))
+						{
+							
+							moveToProtect("Rook");
+							protect = 1;
+						}
 					}
 				}
 			}
@@ -1315,17 +1617,22 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect knight
 		 */
-		if(checkPiece("Knight"))
+		if(protect != 1)
 		{
-			if(!(otherPieceInDanger("King")))
+			if(checkPiece("Knight"))
 			{
-				if(!(otherPieceInDanger("Queen")))
+				if(!(otherPieceInDanger("King")))
 				{
-					if(!(otherPieceInDanger("Bishop")))
+					if(!(otherPieceInDanger("Queen")))
 					{
-						if(!(otherPieceInDanger("Rook")))
+						if(!(otherPieceInDanger("Bishop")))
 						{
-							moveToProtect("Knight");
+							if(!(otherPieceInDanger("Rook")))
+							{
+								
+								moveToProtect("Knight");
+								protect = 1;
+							}
 						}
 					}
 				}
@@ -1341,23 +1648,79 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect pawn
 		 */
-		if(checkPiece("Pawn"))
+		if(protect != 1)
 		{
-			if(!(otherPieceInDanger("King")))
+			if(checkPiece("Pawn"))
 			{
-				if(!(otherPieceInDanger("Queen")))
+				if(!(otherPieceInDanger("King")))
 				{
-					if(!(otherPieceInDanger("Bishop")))
+					if(!(otherPieceInDanger("Queen")))
 					{
-						if(!(otherPieceInDanger("Rook")))
+						if(!(otherPieceInDanger("Bishop")))
 						{
-							if(!(otherPieceInDanger("Knight")))
+							if(!(otherPieceInDanger("Rook")))
 							{
-								moveToProtect("Pawn");
+								if(!(otherPieceInDanger("Knight")))
+								{
+									
+									moveToProtect("Pawn");
+									protect = 1;
+
+								}
+
+									
 							}
 						}
 					}
 				}	
+			}
+		}
+
+		String start = "";
+
+		if(protect != 1)
+		{
+			if(turnCounter == 1)
+			{
+				if(pieceAt(6, 3) == null)
+				{
+					start = "Queen";
+					queenPawn();
+				}
+				else if(pieceAt(6, 4) == null)
+				{
+					start = "King";
+					kingPawnStart();
+				}
+				else
+				{
+					start = "Other";
+					generalPiece();
+
+				}
+			}
+			else if(turnCounter >= 1 && turnCounter < 4)
+			{
+				if(start == "Queen")
+				{
+					queenPawn();
+				}
+				else if(start == "King")
+				{
+					kingPawnStart();
+				}
+				else if(start == "Other" || start == "")
+				{
+					generalPiece();
+				}
+				else
+				{
+					generalPiece();
+				}
+			}
+			else
+			{
+				generalPiece();
 			}
 		}
 	

@@ -249,7 +249,7 @@ public class ChessPanel extends JPanel {
 			displayMessage();
 
 			// After implementing AI method in ChessModel.java, uncomment to turn on AI
-            //AITurn();
+            AITurn();
 		}
 		
         public void AITurn() {
@@ -294,9 +294,6 @@ public class ChessPanel extends JPanel {
 			if (messageCode == GUIcodes.InvalidMove){
 				JOptionPane.showConfirmDialog(null, "Invalid Move", "warning", JOptionPane.CLOSED_OPTION);
 			}
-			
-			 
-			 
 			 if(model.isComplete())
 			 {
 				 JOptionPane.showConfirmDialog(null, "The Game is Over, " + model.currentPlayer().next() + " won", "WINNER WINNER CHICKEN DINNER", JOptionPane.CLOSED_OPTION);			 }
