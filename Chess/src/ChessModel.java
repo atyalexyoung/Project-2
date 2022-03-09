@@ -340,7 +340,7 @@ public class ChessModel {
 
 	***************************************************************************************************************/
 	public boolean isValidMove(Move move) {
-		
+	
 		/** create boolean variable 
 		 * set to true if move is valid
 		 * false otherwise
@@ -373,8 +373,11 @@ public class ChessModel {
 							board[move.toRow][move.toColumn] = other;
 						}
 			}
+		
+
 		}
 		return validMove;
+		
 	}
 
 

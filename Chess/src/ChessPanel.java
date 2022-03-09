@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class ChessPanel extends JPanel {
     public enum GUIcodes {
-        NoMessage, NotYourTurn, inCheck, Checkmate
+        NoMessage, NotYourTurn, inCheck, Checkmate, InvalidMove
     
     }
 
@@ -198,6 +198,7 @@ public class ChessPanel extends JPanel {
 		int toColumn = -1;
 		Move tempMove;
 		Color tempColor;
+		
 
 		public void actionPerformed(ActionEvent event) {
 
@@ -241,6 +242,9 @@ public class ChessPanel extends JPanel {
 				}
 				displayBoard();
 			}
+			else{
+				messageCode = GUIcodes.InvalidMove;
+			}
 			pieceChosen = false;
 			displayMessage();
 
@@ -276,6 +280,7 @@ public class ChessPanel extends JPanel {
 		}
 
 		private void displayMessage() {
+			
 			if (messageCode == GUIcodes.NotYourTurn) {
 				JOptionPane.showConfirmDialog(null, "It is not your turn.", 
 						"Warning", JOptionPane.CLOSED_OPTION);
@@ -286,10 +291,9 @@ public class ChessPanel extends JPanel {
 			if (model.inCheck(Player.WHITE) == true){
 				JOptionPane.showConfirmDialog(null, "White in check", "warning", JOptionPane.CLOSED_OPTION);
 			}
-			
-			 if (model.isValidMove(tempMove) == true){
-				JOptionPane.showConfirmDialog(null, "Invalid move", "Warning", JOptionPane.CLOSED_OPTION);
-			 }
+			if (messageCode == GUIcodes.InvalidMove){
+				JOptionPane.showConfirmDialog(null, "Invalid Move", "warning", JOptionPane.CLOSED_OPTION);
+			}
 			 if(model.isComplete())
 			 {
 				 JOptionPane.showConfirmDialog(null, "The Game is Over, " + model.currentPlayer().next() + " won", "WINNER WINNER CHICKEN DINNER", JOptionPane.CLOSED_OPTION);			 }
