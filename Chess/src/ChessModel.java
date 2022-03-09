@@ -683,6 +683,13 @@ public class ChessModel {
 	}
 
 
+	/***************************************************************************************************************
+
+		* This method is used to undo a move.
+		* Can undo multiple move until the starting position
+		* is reached
+
+	***************************************************************************************************************/
 	public void undo(){
 	
 		/** new reference for the last element in moves ArrayList
@@ -695,6 +702,10 @@ public class ChessModel {
 		 */
 		ChessPiece undoPiece = undoLocation.get(undoLocation.size()-1);
 
+		/** 
+		 * creates Integer object with reference "promotion"
+		 * for the last element in the promotions ArrayList
+		 */
 		Integer promotion = promotions.get(promotions.size()-1);
 
 		/** creates new reference for the undo move
@@ -708,6 +719,7 @@ public class ChessModel {
 		int undoToRow = undoMove.fromRow;
 		int undoToColumn = undoMove.fromColumn;
 
+		// checks if the move was a promotion from pawn to queen
 		if(promotion == 1)
 		{
 			/** sets the piece that was moved to it's precious location */
@@ -717,8 +729,6 @@ public class ChessModel {
 			 * back into it's place. Can be null
 			 */
 			setPiece(undoFromRow, undoFromColumn, undoPiece);
-
-
 
 			/** removes the undo move from the moves ArrayList */
 			moves.remove(moves.size()-1);
@@ -731,6 +741,7 @@ public class ChessModel {
 			/** removes the last moves promotion */
 			promotions.remove(promotions.size()-1);
 
+			// sets the next player
 			setNextPlayer();
 		}
 		/** the move was not a promotion (0) */
@@ -745,8 +756,6 @@ public class ChessModel {
 			 */
 			setPiece(undoFromRow, undoFromColumn, undoPiece);
 
-
-
 			/** removes the undo move from the moves ArrayList */
 			moves.remove(moves.size()-1);
 
@@ -758,18 +767,11 @@ public class ChessModel {
 			/** removes the last moves promotion */
 			promotions.remove(promotions.size()-1);
 			
+			// sets the next player
 			setNextPlayer();
 		}
 
 	}
-
-
-
-
-
-
-
-
 
 
 	/***************************************************************************************************************
@@ -785,21 +787,35 @@ public class ChessModel {
 
 		boolean inDanger = false;
 
-		// loop through every space on board
+		// loop through every row on the board
 		for(int x = 0; x < 8; x++)
 		{
+			
+			// loop through every column on the board
 			for(int y = 0; y < 8; y++)
 			{
+
+				// checks if there is a piece at the location (x,y)
 				if(pieceAt(x, y) != null)
 				{
+
 					// checks if the piece at location being checked is white
 					if(pieceAt(x, y).player() == Player.WHITE)
 					{
+
+						/** creates move object with referene "attack" with
+						 * fromRow = x, fromColumn = y,
+						 * toRow = row and toColumn = col
+						 */
 						Move attack = new Move(x, y, row, col);
 						
+						// checks if the "attack" move is valid
 						if(isValidMove(attack))
 						{
+
+							// returns true
 							return true;
+
 						}
 						else
 						{/** the move is not valid for piece attacking queen */}
@@ -807,6 +823,8 @@ public class ChessModel {
 				}
 			}
 		}
+
+		// returns inDanger boolean variable
 		return inDanger;
 	}
 
@@ -822,12 +840,18 @@ public class ChessModel {
 	private boolean escapeDanger(int fromRow, int fromCol)
 	{
 
+		
+		// initializes boolean variable "canEscape" to false
 		boolean canEscape = false;
 
+		// loops though every row on the board
 		for(int x = 0; x < 8; x++)
 		{
+
+			// loops through every column on the board
 			for(int y = 0; y < 8; y++)
 			{
+
 				// creates Move "m" from piece's location to location being checked
 				Move escape = new Move(fromRow,fromCol,x,y);
 
@@ -835,34 +859,49 @@ public class ChessModel {
 				if(isValidMove(escape))
 				{
 					
+					// creates new reference "piece" for the starting location
 					ChessPiece piece = board[fromRow][fromCol];
+
+					// creates new reference "other" to the move location
 					ChessPiece other = board[x][y];
 
+					// sets the piece to the move location
 					setPiece(x, y, piece);
 
+					// sets the move from location to null
 					board[fromRow][fromCol] = null;
 
+					// checks if the piece at (x,y) is in danger
 					if(inDanger(x, y))
 					{
+
+						// sets the piece back to original location
 						setPiece(fromRow, fromCol, piece);
 
+						// sets move location back to original condition
 						board[x][y] = other;
 
 					}
+					// the piece at (x,y) is not in danger
 					else
 					{
+						// sets the piece back to it's original location
 						setPiece(fromRow, fromCol, piece);
 
+						// sets the move location to it's original condition
 						board[x][y] = other;
 
+						// sets "escapeDanger" move to escape move
 						escapeDanger = escape;
 
+						// returns true
 						return true;
 					}
 				}
 			}
 		}
 
+		// returns canEscape boolean variable
 		return canEscape;
 
 				
@@ -1217,34 +1256,70 @@ public class ChessModel {
 								if(isValidMove(move))
 								{
 									
+									/**
+									 * creates a new reference for the chess piece at the
+									 * location of the piece being checked
+									 */
 									ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
+
+
+									/**
+									 * creates a new reference for the chess piece at the
+									 * location of the move being checked
+									 */
 									ChessPiece other = pieceAt(move.toRow,move.toColumn);
 
+
+									// sets the piece in question the the move location in question
 									setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
 
+									// clears the initial location of the piece
 									board[move.fromRow][move.fromColumn] = null;
 
+									// checks if the move causes the game to be over
 									if(isComplete())
 									{
+
+										// sets the piece to its original location
 										board[move.fromRow][move.fromColumn] = piece;
+
+										// sets the move location back to its original condition
 										board[move.toRow][move.toColumn] = other;
+
+										// moves the piece to the location
 										move(move);
+
+										// sets protect variable to 1
 										protect = 1;
 									
 									}
+
+									// checks if the move causes the player to be in check
 									else if((inCheck(player.next())))
 									{
-										
+
+										// sets the piece to its original location
 										board[move.fromRow][move.fromColumn] = piece;
+
+										// sets the move location back to its original condition
 										board[move.toRow][move.toColumn] = other;
+
+										// moves the piece to the location
 										move(move);
+
+										// sets protect variable to 1
 										protect = 1;
 									
 									}
 									else
 									{
+
+										// sets the piece to its original location
 										board[move.fromRow][move.fromColumn] = piece;
+
+										// sets the move location back to its original condition
 										board[move.toRow][move.toColumn] = other;
+
 									}
 								}
 								else
@@ -1261,274 +1336,635 @@ public class ChessModel {
 	}
 
 
+	/***************************************************************************************************************
 
-
-
-
+		* This is a helper method for the AI,
+		* uses queenPawnOffense and queenPawnDefense
+		* to make the first 3 moves of a game depending
+		* on the players first 3 moves. Used if the player
+		* moves the pawn in front of the queen first
+		
+	***************************************************************************************************************/
 	private void queenPawn()
 	{
+
+		// checks if it's the first turn
 		if(turnCounter == 1)
 		{
+			
+			/**
+			 * checks if the piece in front of the queen was
+			 * moved 2 spaces
+			 */
 			if(pieceAt(5, 3) != null)
 			{
+
+				// exectures the queenPawnOffense() method
 				queenPawnOffense();
+
 			}
+
+			/**
+			 * checks if the piece in front of the queen was moved
+			 * 1 space
+			 */
 			else if(pieceAt(4,3) != null)
 			{
+
+				// executes the queenPawnDefense() method
 				queenPawnDefense();
+
 			}
 		}
+
+		// checks if it's the second turn
 		if(turnCounter == 2)
 		{
+
+			// checks if the the player is using queen's gambit start
 			if(pieceAt(5, 3) != null && pieceAt(5, 2) != null)
 			{
+
+				// executes queenPawnOffense() method
 				queenPawnOffense();
+
 			}
+			// the player is not using the queen's gambit start
 			else
 			{
+
+				// executes queenPawnDefense() method
 				queenPawnDefense();
+
 			}
 		}
+
+		// checks if it's the third turn
 		if(turnCounter == 3)
 		{
+
+			// checks if the player is using the queen's gambit start
 			if(pieceAt(5, 3) != null && pieceAt(5, 2) != null)
 			{
+
+				// executes the queenPawnOffense() method
 				queenPawnOffense();
+
 			}
+			// the player is not using the queen's gambit start
 			else
 			{
+
+				// executes queenPawnDefense() method
 				queenPawnDefense();
+
 			}
 
 		}
+
+		// checks if the turn is greater than 3
 		if(turnCounter > 3)
 		{
+
+			// executes the generalPiece() method
 			generalPiece();
+
 		}
 	}
 
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* and for queenPawn. Used if the player is using
+		* the queen gambit's start.
+		
+	***************************************************************************************************************/
 	private void queenPawnOffense()
 	{
+
+		// checks if the turn is 1
 		if(turnCounter == 1)
 		{
+
+			/**
+			 * creates a new move object with
+			 * fromRow = 1, fromColumn = 3,
+			 * toRow = 3, toColumn = 3
+			 */
 			Move open = new Move(1,3,3,3);
+
+			// checks if the "open" move object is a valid move
 			if(isValidMove(open))
 			{
+
+				// executes "open" move
 				move(open);
+
+				// sets protect int variable to 1
 				protect = 1;
 
 			}
+			// the move is not valid for the pawn
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 		}
+		// checks if it's the second turn
 		if(turnCounter == 2)
 		{
+
+			/**
+			 * creates a move object "second" with
+			 * fromRow = 1, fromColumn = 2,
+			 * toRow = 2 and toColumn = 2
+			 */
 			Move second = new Move(1,2,2,2);
+
+			// checks if move "second" is valid
 			if(isValidMove(second))
 			{
+
+				// executes "second" move
 				move(second);
+
+				// sets int variable protect to 1
 				protect = 1;
 
 			}
+			// the move "second" is not valid
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 		}
+		
+		// checks if it's the third turn
 		if(turnCounter == 3)
 		{
+
+			/**
+			 * creates move object "third" with
+			 * fromRow = 0, fromColumn = 2,
+			 * toRow = 1 and toColumn = 3
+			 */
 			Move third = new Move(0,2,1,3);
+
+			// checks if "third" move is valid
 			if(isValidMove(third))
 			{
+
+				// executes "third" move
 				move(third);
+
+				// sets int variable "protect" to 1
 				protect = 1;
 
 			}
+			// the move "third" is not valid
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 		}
 	}
 
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* and for queenPawn. Used if the player moves the
+		* pawn in front of the queen but is not using the
+		* queen gambit's start
+		
+	***************************************************************************************************************/
 	private void queenPawnDefense()
 	{
+
+		// checks if it's the 1st turn
 		if(turnCounter == 1)
 		{
+
+			/** 
+			 * creates move object "open" with
+			 * fromRow = 1, fromColumn = 6,
+			 * toRow = 2 and toColumn = 6
+			 */
 			Move open = new Move(1,6,2,6);
+
+			// checks if "open" move is valid
 			if(isValidMove(open))
 			{
+
+				// executes "open" move
 				move(open);
+
+				// sets int variable "protect" to 1
 				protect = 1;
 
 			}
+			// the "open" move is not valid
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 		}
+
+		// checks if it's the second turn
 		if(turnCounter == 2)
 		{
+
+			/** 
+			 * creates new Move object "second" with
+			 * fromRow = 0, fromColumn = 6,
+			 * toColumn = 2 and toColumn = 5
+			 */
 			Move second = new Move(0,6,2,5);
+
+			// checks if "second" move is valid
 			if(isValidMove(second))
 			{
+
+				// executes "second" move
 				move(second);
+
+				// sets int variable "protect" to 1
 				protect = 1;
 
 			}
+			// the "second" move is not valid
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 		}
+
+		// checks if it's the third turn
 		if(turnCounter == 3)
 		{
+
+			/** 
+			 * creates move object "third" with
+			 * fromRow = 0, fromColumn = 5,
+			 * toRow = 1 and toColumn = 6
+			 */
 			Move third = new Move(0,5,1,6);
+
+			// checks if "third" move is valid
 			if(isValidMove(third))
 			{
+
+				// executes "third" move
 				move(third);
+
+				// sets int variable "protect" to 1
 				protect = 1;
 
 			}
+			// the "third" move is not valid
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
+
 			}
 			
 		}
-		if(turnCounter > 4)
+
+		// checks if the turn is greater than 4
+		if(turnCounter >= 4)
 		{
+
+			// executes generalPiece() method
 			generalPiece();
+
 		}
 	}
 
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		*  Used if the player moves the pawn in front
+		* of the king for the start.
+		
+	***************************************************************************************************************/
 	private void kingPawnStart()
 	{
+
+		// checks if it's the first turn
 		if(turnCounter == 1)
 		{
+
+			/** 
+			 * creates move object "open" with
+			 * fromRow = 1, fromColumn = 4,
+			 * toRow = 3 and toColumn = 4
+			 */
 			Move open = new Move(1,4,3,4);
+
+			// checks if the "open" move is valid
 			if(isValidMove(open))
 			{
+
+				// executes "open" move
 				move(open);
+
+				// sets "protect" variable to 1
 				protect = 1;
 
 			}
+			// the move "open" is not valid
 			else
 			{
+				// executes generalPiece() method
 				generalPiece();
 			}
 		}
+
+		// checks if it's the second turn
 		if(turnCounter == 2)
 		{
+
+			/** 
+			 * creates move object "second" with
+			 * fromRow = 1, fromColumn = 3,
+			 * toRow = 2 and toColumn = 3
+			 */
 			Move second = new Move(1,3,2,3);
+
+			// checks if "second" move is valid
 			if(isValidMove(second))
 			{
+
+				// executes "second" move
 				move(second);
+
+				// sets protect to 1
 				protect = 1;
 
 			}
+			// the "second" move is not valid
 			else
 			{
+				// executes generalPiece() method
 				generalPiece();
 			}
 		}
+
+		// checks if the turn is greater than 2
 		if(turnCounter > 2)
 		{
+			// executes generalPiece() method
 			generalPiece();
 		}
 	}
 
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* and for generalPiece() method. Used to check
+		* if a move is possible for a selected piece
+		* @param fr from row of the piece being checked
+		* @param fc from column of the piece being checked
+		* @return boolean, true if a move is possible for the piece,
+		* false otherwise
+		
+	***************************************************************************************************************/
 	private boolean isPossibleMove(int fr, int fc)
 	{
+
+		/** 
+		 * creates isPossibleMove variable 
+		 * initialized to false
+		 */
 		boolean isPossibleMove = false;
+
+		// for loop to go through every row
 		for(int x = 0; x < 8; x++)
 		{
+
+			// for loop to go through every column
 			for(int y = 0; y < 8; y++)
 			{
+
+				/**
+				 * creates move object "move" with
+				 * fromRow = fr parameter, fromColumn = fc parameter,
+				 * toRow = x and toColumn = y
+				*/
 				Move move = new Move(fr,fc,x,y);
+
+				// checks if the "move" move is valid
 				if(isValidMove(move))
 				{
+					// return true
 					return true;
 				}
 
 			}
 		}
+
+		// returns isPossibleMove
 		return isPossibleMove;
 	}
 	
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* and for generalPiece() method. Used to generate
+		* a move for the piece selected in generatePiece()
+		* @param fr from row of the piece to be moved
+		* @param fc from column of the piece to be moved
+		
+	***************************************************************************************************************/
 	private void generalMove(int fr, int fc)
 	{
+
+		// creates new Random object with reference "r"
 		Random r = new Random();
+
+		// creates new Random object with reference "c"
 		Random c = new Random();
 
+		// sets int variable "row" to random integer between 0 and 8
 		int row = r.nextInt(8);
+
+		// sets int variable "col" to random integer between 0 and 8
 		int col = c.nextInt(8);
 
+		/**
+		 * creates new Move object "move" with
+		 * fromRow = fr parameter, fromColumn = fc parameter,
+		 * toRow = row and toColumn = col
+		 */
 		Move move = new Move(fr,fc,row,col);
+
+		// checks if "move" move is valid
 		if(isValidMove(move))
 		{
+			// executes "move" move
 			move(move);
+
+			// sets "protect" variable to 1
 			protect = 1;
 
 		}
+		// the "move" move is not valid
 		else
 		{
+			/**
+			 * calls itself with fr and fc as parameters
+			 * to generate to move location
+			 */
 			generalMove(fr, fc);
 		}
 	}
 
+
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* uses generalMove() and isPossibleMove()
+		* to select a piece to be moved
+		
+	***************************************************************************************************************/
 	private void generalPiece()
 	{
+
+		// creates random number reference r
 		Random r = new Random();
+
+		// creates random number reference c
 		Random c = new Random();
 		
+		/**
+		 * sets random number between 0 and 8 to
+		 * the int varibale row
+		 */
 		int row = r.nextInt(8);
+
+		/**
+		 * sets random number between 0 and 8 to
+		 * the int varibale row
+		 */
 		int col = c.nextInt(8);
 
+
+		// checks if there is a piece at the random spot is a black piece
 		if(pieceAt(row,col) != null && pieceAt(row,col).player() == Player.BLACK)
 		{
+
+			// checks if a move is possible for that piece
 			if(isPossibleMove(row, col))
 			{
+
+				/**
+				 * executes the generalMove() method with the
+				 * row and col variable as parameters
+				 */
 				generalMove(row,col);
 			}
+
+			// the move is not possible for this piece
 			else
-			{
+			{	
+
+				// calls itself to generate new random numbers
 				generalPiece();
+
 			}
 		}
+
+		/** 
+		 *  there is no piece or the piece
+		 *  is not black at the generated location
+		 * */
 		else
 		{
+
+			// calls itself to generate new position
 			generalPiece();
+
 		}
 	}
 
 
+	/***************************************************************************************************************
+
+		* This is a helper method for the AI,
+		* uses generalMove() and isPossibleMove()
+		* to select a piece to be moved
+		
+	***************************************************************************************************************/
 	public void AI() {
 		
+		/** 
+		 * sets the next player to the player and then
+		 * carries out the code below
+		 */
 		setNextPlayer();
+
+		/** 
+		 * counter variable incremented by 1,
+		 * used to check if a start move or general
+		 * move should be made
+		 */
 		turnCounter++;
+
+		/** escape danger Move object set to null */
 		escapeDanger = null;
+
+		/** protectMove Move object set to null */
 		protectMove = null;
+
+		/**
+		 *  protect int variable set to zero
+		 * used to ensure that the AI only carries out
+		 * one move per turn. Set to one if a move is
+		 * made by the AI
+		 */
 		protect = 0;
+
+
 		/*******************************************************************************************
 		 * 
-		 *  Checking if the AI is in check
+		 *  Method that checks if the AI is in check
 		 * 	and if they are, make move to get out of check
 		 * 
 		 *******************************************************************************************/
-
 		avoidCheck();
 
 
 		/************************************************************************************** 
 		 * 
-		 *  Checking if AI can put the player in check
+		 *  Method that checks if AI can put the player in check,
+		 * move to put player in check if possible
 		 * 
 		****************************************************************************************/
-
 		putInCheck();
+
+
+
 
 		/************************************************************************************************************
 		 * 
@@ -1538,9 +1974,12 @@ public class ChessModel {
 		 ***********************************************************************************************************/
 
 
+
 		/** 
-		 * checks if the queen is in danger
-		 * if true, move to protect queen
+		 * checks if the queen is in danger.
+		 * if true, checks if protecting the queen would
+		 * put the king into check. If it would not,
+		 * move to protect the queen
 		 */
 		if(protect != 1)
 		{
@@ -1550,6 +1989,8 @@ public class ChessModel {
 				{
 					
 					moveToProtect("Queen");
+
+					// sets the protect int variable to 1
 					protect = 1;
 
 					
@@ -1561,7 +2002,7 @@ public class ChessModel {
 		/** 
 		 * checks if the bishop is in danger
 		 * if true, checks if the move would put
-		 * the queen in danger. If it would not,
+		 * the queen or King in danger. If it would not,
 		 * move to protect bishop
 		 */
 		if(protect != 1)
@@ -1574,6 +2015,8 @@ public class ChessModel {
 					{
 						
 						moveToProtect("Bishop");
+
+						// sets protect int variable to 1
 						protect = 1;
 
 					}
@@ -1586,7 +2029,7 @@ public class ChessModel {
 		/** 
 		 * checks if rook is in danger
 		 * if true, checks if the move would put
-		 * the queen in danger or bishop in
+		 * the king, queen, or bishop in
 		 * danger. If it would not,
 		 * move to protect rook
 		 */
@@ -1602,6 +2045,8 @@ public class ChessModel {
 						{
 							
 							moveToProtect("Rook");
+
+							// sets the protect int variable to 1
 							protect = 1;
 						}
 					}
@@ -1613,7 +2058,7 @@ public class ChessModel {
 		/** 
 		 * checks if knight is in danger
 		 * if true, checks if the move would put
-		 * the queen,bishop or rook in
+		 * the king, queen, bishop or rook in
 		 * danger. If it would not,
 		 * move to protect knight
 		 */
@@ -1631,6 +2076,8 @@ public class ChessModel {
 							{
 								
 								moveToProtect("Knight");
+
+								// sets the protect int variable to 1
 								protect = 1;
 							}
 						}
@@ -1644,7 +2091,7 @@ public class ChessModel {
 		/** 
 		 * checks if pawn is in danger
 		 * if true, checks if the move would put
-		 * the queen,bishop, rook, or knight in
+		 * the king, queen, bishop, rook, or knight in
 		 * danger. If it would not,
 		 * move to protect pawn
 		 */
@@ -1676,50 +2123,106 @@ public class ChessModel {
 			}
 		}
 
+		// sets start String variable to empty
 		String start = "";
 
+		// checks if the protect variable is not 1
 		if(protect != 1)
 		{
+
+			// checks if the turn counter is 1
 			if(turnCounter == 1)
 			{
+				/** 
+				 * checks if the piece in front of the queen
+				 * has been moved
+				 */
 				if(pieceAt(6, 3) == null)
 				{
+
+					// sets start String variable to "Queen"
 					start = "Queen";
+
+					// carries out queenPawn method
 					queenPawn();
 				}
+
+				/**
+				 * checks if the piece in front of the king
+				 * has been moved
+				 */
 				else if(pieceAt(6, 4) == null)
 				{
+
+					// sets the start String variable to "King"
 					start = "King";
+
+					// executes the kingPawnStart() method
 					kingPawnStart();
 				}
+
+				/**
+				 * the piece that has been moved is not
+				 * the pawn in front of the king or queen
+				 */
 				else
 				{
+
+					// sets start String Variable to Other
 					start = "Other";
+
+					// executes the generalPiece() method
 					generalPiece();
 
 				}
 			}
+
+			// checks if the turn is between 1 and 4
 			else if(turnCounter >= 1 && turnCounter < 4)
 			{
+
+				// checks if the start was a Queen start
 				if(start == "Queen")
 				{
+
+					// executes the queenPawn() method
 					queenPawn();
+
 				}
+
+				// checks if the start was a king start
 				else if(start == "King")
 				{
+
+					// executes the kingPawnStart() method
 					kingPawnStart();
+
 				}
+
+				// checks if the start varibale is "Other"
 				else if(start == "Other" || start == "")
 				{
+
+					// executes generalPiece() method
 					generalPiece();
+
 				}
+				
+				// To catch if the string variable was not set
 				else
 				{
+
+					// executes generalPiece() method
 					generalPiece();
+
 				}
 			}
+
+			// the turn counter is over 3
 			else
 			{
+
+				// executes generalPiece() method
 				generalPiece();
 			}
 		}
@@ -1732,7 +2235,7 @@ public class ChessModel {
 		
 		
 		
-		/* TODO: implement this method (manually graded)
+		/* 
 
 		 * Write a simple AI set of rules in the following order. 
 		 * a. Check to see if you are in check.
