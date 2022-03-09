@@ -34,7 +34,6 @@ public class ChessPanel extends JPanel {
 		listener = new listener();
 		undo = new JButton("undo");
 		undo.setSize(1000,1000);
-		
 		createIcons();
 
 		JPanel boardpanel = new JPanel();
@@ -64,8 +63,8 @@ public class ChessPanel extends JPanel {
 			board[r][c].setBackground(Color.LIGHT_GRAY);
 		} else if ((c % 2 == 0 && r % 2 == 0) || (c % 2 == 1 && r % 2 == 1)) {
 			board[r][c].setBackground(Color.WHITE);
-		}
 	}
+}
 
 	private void placeBlackPieces(int r, int c) {
 		if (model.pieceAt(r, c).type().equals("Pawn")) {
@@ -188,7 +187,6 @@ public class ChessPanel extends JPanel {
 		}
 		repaint();
 	}
-
 	// inner class that represents action listener for buttons
 	private class listener implements ActionListener {
         boolean pieceChosen = false;
@@ -198,10 +196,11 @@ public class ChessPanel extends JPanel {
 		int toColumn = -1;
 		Move tempMove;
 		Color tempColor;
-		
-
 		public void actionPerformed(ActionEvent event) {
-
+			undo.addActionListener(e -> {
+				model.undo();
+				displayBoard();
+			});
 			for (int r = 0; r < model.numRows(); r++) {
 				for (int c = 0; c < model.numColumns(); c++) {
 					if (board[r][c] == event.getSource()) {
@@ -225,7 +224,6 @@ public class ChessPanel extends JPanel {
 
 			
 		}
-
 		private void tryMoveTo(int r, int c) {
 			board[fromRow][fromColumn].setBackground(tempColor);
 			toRow = r;
@@ -294,14 +292,9 @@ public class ChessPanel extends JPanel {
 			if (messageCode == GUIcodes.InvalidMove){
 				JOptionPane.showConfirmDialog(null, "Invalid Move", "warning", JOptionPane.CLOSED_OPTION);
 			}
-			 if(model.isComplete())
-			 {
+			 if(model.isComplete()){
 				 JOptionPane.showConfirmDialog(null, "The Game is Over, " + model.currentPlayer().next() + " won", "WINNER WINNER CHICKEN DINNER", JOptionPane.CLOSED_OPTION);			 }
 
-			
-            // TODO:  add other code here to display other dialogs
-
-		}
-
+			 }
 	}
 }

@@ -2197,7 +2197,7 @@ public class ChessTest {
             model.setPiece(3, 0, br);
             model.setPiece(5, 0, br2);
     
-            assertTrue(model.isComplete());
+            assertFalse(model.isComplete());
         }
 /*
         // Tests if White king is in check
