@@ -13,7 +13,7 @@ public class ChessModel {
 	private Move protectMove;
 	private ChessPiece pieceInCheck;
 	private int turnCounter;
-	private int protect;
+	private int moveBeenMade;
 
 
 	
@@ -1131,16 +1131,26 @@ public class ChessModel {
 							
 		if(escapeDanger != null)
 		{
-			if(isValidMove(escapeDanger))
+			if(moveBeenMade != 1)
 			{
-				move(escapeDanger);
+				if(isValidMove(escapeDanger))
+				{
+					move(escapeDanger);
+
+					setNextPlayer();
+				}
 			}
 		}
 		else if(protectMove != null)
 		{
-			if(isValidMove(protectMove))
+			if(moveBeenMade != 1)
 			{
-				move(protectMove);
+				if(isValidMove(protectMove))
+				{
+					move(protectMove);
+
+					setNextPlayer();
+				}
 			}
 		}
 							
@@ -1163,7 +1173,7 @@ public class ChessModel {
 				// loops through all the columns in the chess board
 				for (int c = 0; c < 8; c++)
 				{
-					if(protect != 1)
+					if(moveBeenMade != 1)
 					{
 						// checks if the piece at each space is a king
 						if(pieceAt(r, c) != null)
@@ -1181,35 +1191,37 @@ public class ChessModel {
 										// creates Move "m" from piece's location to location being checked
 										Move m = new Move(r,c,row,col);
 
-										// checks if the move is valid for a piece
-										if(isValidMove(m))
+										if(moveBeenMade != 1)
 										{
-
-											ChessPiece piece = board[r][c];
-											ChessPiece other = board[row][col];
-
-											setPiece(row, col, piece);
-											board[r][c] = null;
-
-											if(!(inCheck(Player.BLACK)))
+											// checks if the move is valid for a piece
+											if(isValidMove(m))
 											{
-												setPiece(r, c, piece);
-												board[row][col] = other;
-												move(m);
-												protect = 1;
+
+												ChessPiece piece = board[r][c];
+												ChessPiece other = board[row][col];
+
+												setPiece(row, col, piece);
+												board[r][c] = null;
+
+												if(!(inCheck(Player.BLACK)))
+												{
+													setPiece(r, c, piece);
+													board[row][col] = other;
+													move(m);
+
+													setNextPlayer();
+													moveBeenMade = 1;
+												}
+												else
+												{
+													// keep checking cpu, you got this
+													setPiece(r, c, piece);
+													board[row][col] = other;											
+												}
+
 											}
-											else
-											{
-												// keep checking cpu, you got this
-												setPiece(r, c, piece);
-												board[row][col] = other;											
-											}
-
-
-
-											
+											else{/* the space at board[row][column] is null - do nothing*/}	
 										}
-										else{/* the space at board[row][column] is null - do nothing*/}	
 									}
 								}
 							}
@@ -1252,78 +1264,89 @@ public class ChessModel {
 								// creates Move "m" from piece's location to location being checked
 								Move move = new Move(r,c,row,col);
 
-								// checks if the move is valid for a piece
-								if(isValidMove(move))
+
+								if(moveBeenMade != 1)
 								{
-									
-									/**
-									 * creates a new reference for the chess piece at the
-									 * location of the piece being checked
-									 */
-									ChessPiece piece = pieceAt(move.fromRow, move.fromColumn);
-
-
-									/**
-									 * creates a new reference for the chess piece at the
-									 * location of the move being checked
-									 */
-									ChessPiece other = pieceAt(move.toRow,move.toColumn);
-
-
-									// sets the piece in question the the move location in question
-									setPiece(move.toRow, move.toColumn, pieceAt(move.fromRow, move.fromColumn));
-
-									// clears the initial location of the piece
-									board[move.fromRow][move.fromColumn] = null;
-
-									// checks if the move causes the game to be over
-									if(isComplete())
+									// checks if the move is valid for a piece
+									if(isValidMove(move))
 									{
+										
+										/**
+										 * creates a new reference for the chess piece at the
+										 * location of the piece being checked
+										 */
+										ChessPiece piece = board[r][c];
 
-										// sets the piece to its original location
-										board[move.fromRow][move.fromColumn] = piece;
 
-										// sets the move location back to its original condition
-										board[move.toRow][move.toColumn] = other;
+										/**
+										 * creates a new reference for the chess piece at the
+										 * location of the move being checked
+										 */
+										ChessPiece other = board[row][col];
 
-										// moves the piece to the location
-										move(move);
 
-										// sets protect variable to 1
-										protect = 1;
-									
-									}
+										// sets the piece in question the the move location in question
+										setPiece(row, col, piece);
 
-									// checks if the move causes the player to be in check
-									else if((inCheck(player.next())))
-									{
+										// clears the initial location of the piece
+										board[r][c] = null;
 
-										// sets the piece to its original location
-										board[move.fromRow][move.fromColumn] = piece;
+										// checks if the move causes the game to be over
+										if(isComplete())
+										{
 
-										// sets the move location back to its original condition
-										board[move.toRow][move.toColumn] = other;
+											// sets the piece to its original location
+											board[r][c] = piece;
 
-										// moves the piece to the location
-										move(move);
+											// sets the move location back to its original condition
+											board[row][col] = other;
 
-										// sets protect variable to 1
-										protect = 1;
-									
+											// moves the piece to the location
+											move(move);
+
+											setNextPlayer();
+
+											// sets protect variable to 1
+											moveBeenMade = 1;
+										
+										}
+
+										// checks if the move causes the player to be in check
+										else if((inCheck(player.next())))
+										{
+
+											// sets the piece to its original location
+											board[r][c] = piece;
+
+											// sets the move location back to its original condition
+											board[row][col] = other;
+
+											// moves the piece to the location
+											move(move);
+
+											setNextPlayer();
+
+											// sets protect variable to 1
+											moveBeenMade = 1;
+
+											break;
+											
+										
+										}
+										else
+										{
+
+											// sets the piece to its original location
+											board[r][c] = piece;
+
+											// sets the move location back to its original condition
+											board[row][col] = other;
+
+										}
 									}
 									else
-									{
-
-										// sets the piece to its original location
-										board[move.fromRow][move.fromColumn] = piece;
-
-										// sets the move location back to its original condition
-										board[move.toRow][move.toColumn] = other;
-
-									}
+									{/** the move is not valid and should not be carried out */}
 								}
-								else
-								{/** the move is not valid and should not be carried out */}
 							}
 							
 						}
@@ -1446,63 +1469,71 @@ public class ChessModel {
 		// checks if the turn is 1
 		if(turnCounter == 1)
 		{
-
-			/**
-			 * creates a new move object with
-			 * fromRow = 1, fromColumn = 3,
-			 * toRow = 3, toColumn = 3
-			 */
-			Move open = new Move(1,3,3,3);
-
-			// checks if the "open" move object is a valid move
-			if(isValidMove(open))
+			if(moveBeenMade != 1)
 			{
+				/**
+				 * creates a new move object with
+				 * fromRow = 1, fromColumn = 3,
+				 * toRow = 3, toColumn = 3
+				 */
+				Move open = new Move(1,3,3,3);
 
-				// executes "open" move
-				move(open);
+				// checks if the "open" move object is a valid move
+				if(isValidMove(open))
+				{
 
-				// sets protect int variable to 1
-				protect = 1;
+					// executes "open" move
+					move(open);
 
-			}
-			// the move is not valid for the pawn
-			else
-			{
+					setNextPlayer();
 
-				// executes generalPiece() method
-				generalPiece();
+					// sets protect int variable to 1
+					moveBeenMade = 1;
 
+				}
+				// the move is not valid for the pawn
+				else
+				{
+
+					// executes generalPiece() method
+					generalPiece();
+
+				}
 			}
 		}
 		// checks if it's the second turn
 		if(turnCounter == 2)
 		{
-
-			/**
-			 * creates a move object "second" with
-			 * fromRow = 1, fromColumn = 2,
-			 * toRow = 2 and toColumn = 2
-			 */
-			Move second = new Move(1,2,2,2);
-
-			// checks if move "second" is valid
-			if(isValidMove(second))
+			if(moveBeenMade != 1)
 			{
+				/**
+				 * creates a move object "second" with
+				 * fromRow = 1, fromColumn = 2,
+				 * toRow = 2 and toColumn = 2
+				 */
+				Move second = new Move(1,2,2,2);
 
-				// executes "second" move
-				move(second);
+				// checks if move "second" is valid
+				if(isValidMove(second))
+				{
 
-				// sets int variable protect to 1
-				protect = 1;
+					// executes "second" move
+					move(second);
+					
+					setNextPlayer();
 
-			}
-			// the move "second" is not valid
-			else
-			{
+					// sets int variable protect to 1
+					moveBeenMade = 1;
 
-				// executes generalPiece() method
-				generalPiece();
+				}
+				// the move "second" is not valid
+				else
+				{
 
+					// executes generalPiece() method
+					generalPiece();
+
+				}
 			}
 		}
 		
@@ -1510,31 +1541,36 @@ public class ChessModel {
 		if(turnCounter == 3)
 		{
 
-			/**
-			 * creates move object "third" with
-			 * fromRow = 0, fromColumn = 2,
-			 * toRow = 1 and toColumn = 3
-			 */
-			Move third = new Move(0,2,1,3);
-
-			// checks if "third" move is valid
-			if(isValidMove(third))
+			if(moveBeenMade != 1)
 			{
+				/**
+				 * creates move object "third" with
+				 * fromRow = 0, fromColumn = 2,
+				 * toRow = 1 and toColumn = 3
+				 */
+				Move third = new Move(0,2,1,3);
 
-				// executes "third" move
-				move(third);
+				// checks if "third" move is valid
+				if(isValidMove(third))
+				{
 
-				// sets int variable "protect" to 1
-				protect = 1;
+					// executes "third" move
+					move(third);
 
-			}
-			// the move "third" is not valid
-			else
-			{
+					setNextPlayer();
 
-				// executes generalPiece() method
-				generalPiece();
+					// sets int variable "protect" to 1
+					moveBeenMade = 1;
 
+				}
+				// the move "third" is not valid
+				else
+				{
+
+					// executes generalPiece() method
+					generalPiece();
+
+				}
 			}
 		}
 	}
@@ -1569,8 +1605,10 @@ public class ChessModel {
 				// executes "open" move
 				move(open);
 
+				setNextPlayer();
+
 				// sets int variable "protect" to 1
-				protect = 1;
+				moveBeenMade = 1;
 
 			}
 			// the "open" move is not valid
@@ -1601,8 +1639,10 @@ public class ChessModel {
 				// executes "second" move
 				move(second);
 
+				setNextPlayer();
+
 				// sets int variable "protect" to 1
-				protect = 1;
+				moveBeenMade = 1;
 
 			}
 			// the "second" move is not valid
@@ -1633,8 +1673,10 @@ public class ChessModel {
 				// executes "third" move
 				move(third);
 
+				setNextPlayer();
+
 				// sets int variable "protect" to 1
-				protect = 1;
+				moveBeenMade = 1;
 
 			}
 			// the "third" move is not valid
@@ -1687,8 +1729,10 @@ public class ChessModel {
 				// executes "open" move
 				move(open);
 
+				setNextPlayer();
+
 				// sets "protect" variable to 1
-				protect = 1;
+				moveBeenMade = 1;
 
 			}
 			// the move "open" is not valid
@@ -1696,6 +1740,8 @@ public class ChessModel {
 			{
 				// executes generalPiece() method
 				generalPiece();
+
+				
 			}
 		}
 
@@ -1717,8 +1763,10 @@ public class ChessModel {
 				// executes "second" move
 				move(second);
 
+				setNextPlayer();
+
 				// sets protect to 1
-				protect = 1;
+				moveBeenMade = 1;
 
 			}
 			// the "second" move is not valid
@@ -1824,9 +1872,11 @@ public class ChessModel {
 		{
 			// executes "move" move
 			move(move);
+			
+			setNextPlayer();
 
 			// sets "protect" variable to 1
-			protect = 1;
+			moveBeenMade = 1;
 
 		}
 		// the "move" move is not valid
@@ -1922,7 +1972,7 @@ public class ChessModel {
 		 * sets the next player to the player and then
 		 * carries out the code below
 		 */
-		setNextPlayer();
+		
 
 		/** 
 		 * counter variable incremented by 1,
@@ -1943,7 +1993,7 @@ public class ChessModel {
 		 * one move per turn. Set to one if a move is
 		 * made by the AI
 		 */
-		protect = 0;
+		moveBeenMade = 0;
 
 
 		/*******************************************************************************************
@@ -1981,7 +2031,7 @@ public class ChessModel {
 		 * put the king into check. If it would not,
 		 * move to protect the queen
 		 */
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 			if(checkPiece("Queen"))
 			{
@@ -1991,7 +2041,7 @@ public class ChessModel {
 					moveToProtect("Queen");
 
 					// sets the protect int variable to 1
-					protect = 1;
+					moveBeenMade = 1;
 
 					
 				}
@@ -2005,7 +2055,7 @@ public class ChessModel {
 		 * the queen or King in danger. If it would not,
 		 * move to protect bishop
 		 */
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 			if(checkPiece("Bishop"))
 			{
@@ -2017,7 +2067,7 @@ public class ChessModel {
 						moveToProtect("Bishop");
 
 						// sets protect int variable to 1
-						protect = 1;
+						moveBeenMade = 1;
 
 					}
 
@@ -2033,7 +2083,7 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect rook
 		 */
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 			if(checkPiece("Rook"))
 			{
@@ -2047,7 +2097,7 @@ public class ChessModel {
 							moveToProtect("Rook");
 
 							// sets the protect int variable to 1
-							protect = 1;
+							moveBeenMade = 1;
 						}
 					}
 				}
@@ -2062,7 +2112,7 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect knight
 		 */
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 			if(checkPiece("Knight"))
 			{
@@ -2078,7 +2128,7 @@ public class ChessModel {
 								moveToProtect("Knight");
 
 								// sets the protect int variable to 1
-								protect = 1;
+								moveBeenMade = 1;
 							}
 						}
 					}
@@ -2095,7 +2145,7 @@ public class ChessModel {
 		 * danger. If it would not,
 		 * move to protect pawn
 		 */
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 			if(checkPiece("Pawn"))
 			{
@@ -2111,7 +2161,7 @@ public class ChessModel {
 								{
 									
 									moveToProtect("Pawn");
-									protect = 1;
+									moveBeenMade = 1;
 
 								}
 
@@ -2127,7 +2177,7 @@ public class ChessModel {
 		String start = "";
 
 		// checks if the protect variable is not 1
-		if(protect != 1)
+		if(moveBeenMade != 1)
 		{
 
 			// checks if the turn counter is 1
